@@ -11,6 +11,7 @@
     <p>Welcome to the Computer Laboratory Access System!</p>
 
     <label for="studentID">Student ID:</label>
+
     <input
         type="text"
         id="studentID"
@@ -25,40 +26,32 @@
 
     <p id="message"></p>
 
+    <script>
 
+        const scriptURL =
+            "https://script.google.com/macros/s/AKfycbwu2k7fy4IE-dPFmuah0DEEkNaEMV6HiAHPMT-PhJPkfSTbAnx_M8hEiFr98qBCZCsM/exec";
 
-   <script>
+        // Record student access
+        function recordAccess() {
 
-    // Sample student records
-    const students = {
-        "2026-0001": "Juan Dela Cruz",
-        "2026-0002": "Maria Santos",
-        "2026-0003": "Pedro Reyes"
-    };
+            const studentID =
+                document.getElementById("studentID").value.trim();
 
-    const scriptURL = "https://script.google.com/macros/s/AKfycbwu2k7fy4IE-dPFmuah0DEEkNaEMV6HiAHPMT-PhJPkfSTbAnx_M8hEiFr98qBCZCsM/exec";
+            if (studentID === "") {
 
-    // Record student access
-    function recordAccess() {
+                document.getElementById("message").textContent =
+                    "Please enter your Student ID.";
 
-        const studentID =
-            document.getElementById("studentID").value.trim();
-
-        // Check if Student ID exists
-        if (students[studentID]) {
-
-            const name = students[studentID];
+                return;
+            }
 
             const now = new Date();
 
             const date = now.toLocaleDateString();
-
             const time = now.toLocaleTimeString();
 
-            // Data to send to Google Sheets
             const data = {
                 studentID: studentID,
-                name: name,
                 date: date,
                 time: time
             };
@@ -75,20 +68,14 @@
 
             // Display confirmation
             document.getElementById("message").textContent =
-                "Access recorded successfully for " + name + ".";
+                "Access recorded successfully.";
 
             // Clear Student ID field
             document.getElementById("studentID").value = "";
 
-        } else {
-
-            document.getElementById("message").textContent =
-                "Student ID not found. Please enter a valid Student ID.";
-
         }
-    }
 
-</script>
+    </script>
 
 </body>
 </html>
