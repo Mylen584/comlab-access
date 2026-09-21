@@ -32,48 +32,79 @@
             "https://script.google.com/macros/s/AKfycbwu2k7fy4IE-dPFmuah0DEEkNaEMV6HiAHPMT-PhJPkfSTbAnx_M8hEiFr98qBCZCsM/exec";
 
         // Record student access
-        function recordAccess() {
+        async function recordAccess() {
 
-            const studentID =
-                document.getElementById("studentID").value.trim();
+    const studentID =
+        document.getElementById("studentID").value.trim();
 
-            if (studentID === "") {
+    const message =
+        document.getElementById("message");
 
-                document.getElementById("message").textContent =
-                    "Please enter your Student ID.";
+    if (studentID === "") {
 
-                return;
-            }
+        message.textContent =
+            "Please enter your Student ID.";
 
-            const now = new Date();
+        return;
+    }
 
-            const date = now.toLocaleDateString();
-            const time = now.toLocaleTimeString();
+    message.textContent = "Checking Student ID...";
 
-            const data = {
-                studentID: studentID,
-                date: date,
-                time: time
-            };
+    try {
 
-            // Send data to Google Sheets
-            fetch(scriptURL, {
-                method: "POST",
-                mode: "no-cors",
-                headers: {
-                    "Content-Type": "text/plain;charset=utf-8"
-                },
-                body: JSON.stringify(data)
-            });
+        // Look up the student's name
+        const response = await fetch(
+            scriptURL + "?studentID=" +
+            encodeURIComponent(studentID)
+        );
 
-            // Display confirmation
-            document.getElementById("message").textContent =
-                "Access recorded successfully.";
+        const student = await response.json();
 
-            // Clear Student ID field
-            document.getElementById("studentID").value = "";
+        if (!student.found) {
 
+            message.textContent =
+                "Student ID not found. Please enter a valid Student ID.";
+
+            return;
         }
+
+        const now = new Date();
+
+        const date = now.toLocaleDateString();
+        const time = now.toLocaleTimeString();
+
+        const data = {
+            studentID: studentID,
+            date: date,
+            time: time
+        };
+
+        // Record access in Google Sheets
+        await fetch(scriptURL, {
+            method: "POST",
+            mode: "no-cors",
+            headers: {
+                "Content-Type": "text/plain;charset=utf-8"
+            },
+            body: JSON.stringify(data)
+        });
+
+        message.textContent =
+            "Access recorded successfully for " +
+            student.name + ".";
+
+        document.getElementById("studentID").value = "";
+
+    } catch (error) {
+
+        message.textContent =
+            "An error occurred. Please try again.";
+
+        console.error(error);
+
+    }
+
+}
 
     </script>
 
