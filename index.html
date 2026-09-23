@@ -31,80 +31,127 @@
         const scriptURL =
             "https://script.google.com/macros/s/AKfycbwu2k7fy4IE-dPFmuah0DEEkNaEMV6HiAHPMT-PhJPkfSTbAnx_M8hEiFr98qBCZCsM/exec";
 
+        let students = {};
+
+        // Load student list when webpage opens
+        async function loadStudents() {
+
+            const message =
+                document.getElementById("message");
+
+            message.textContent =
+                "Loading student information...";
+
+            try {
+
+                const response =
+                    await fetch(scriptURL);
+
+                students =
+                    await response.json();
+
+                message.textContent =
+                    "System ready. Please enter your Student ID.";
+
+            } catch (error) {
+
+                message.textContent =
+                    "Unable to load student information.";
+
+                console.error(error);
+
+            }
+
+        }
+
         // Record student access
         async function recordAccess() {
 
-    const studentID =
-        document.getElementById("studentID").value.trim();
+            const studentID =
+                document.getElementById("studentID").value.trim();
 
-    const message =
-        document.getElementById("message");
+            const message =
+                document.getElementById("message");
 
-    if (studentID === "") {
+            if (studentID === "") {
 
-        message.textContent =
-            "Please enter your Student ID.";
+                message.textContent =
+                    "Please enter your Student ID.";
 
-        return;
-    }
+                return;
 
-    message.textContent = "Checking Student ID...";
+            }
 
-    try {
+            if (!students[studentID]) {
 
-        // Look up the student's name
-        const response = await fetch(
-            scriptURL + "?studentID=" +
-            encodeURIComponent(studentID)
-        );
+                message.textContent =
+                    "Student ID not found. Please enter a valid Student ID.";
 
-        const student = await response.json();
+                return;
 
-        if (!student.found) {
+            }
+
+            const name =
+                students[studentID];
+
+            const now =
+                new Date();
+
+            const date =
+                now.toLocaleDateString();
+
+            const time =
+                now.toLocaleTimeString();
+
+            const data = {
+
+                studentID: studentID,
+                date: date,
+                time: time
+
+            };
 
             message.textContent =
-                "Student ID not found. Please enter a valid Student ID.";
+                "Recording access...";
 
-            return;
+            try {
+
+                await fetch(scriptURL, {
+
+                    method: "POST",
+
+                    mode: "no-cors",
+
+                    headers: {
+
+                        "Content-Type":
+                            "text/plain;charset=utf-8"
+
+                    },
+
+                    body: JSON.stringify(data)
+
+                });
+
+                message.textContent =
+                    "Access recorded successfully for " +
+                    name + ".";
+
+                document.getElementById("studentID").value = "";
+
+            } catch (error) {
+
+                message.textContent =
+                    "An error occurred. Please try again.";
+
+                console.error(error);
+
+            }
+
         }
 
-        const now = new Date();
-
-        const date = now.toLocaleDateString();
-        const time = now.toLocaleTimeString();
-
-        const data = {
-            studentID: studentID,
-            date: date,
-            time: time
-        };
-
-        // Record access in Google Sheets
-        await fetch(scriptURL, {
-            method: "POST",
-            mode: "no-cors",
-            headers: {
-                "Content-Type": "text/plain;charset=utf-8"
-            },
-            body: JSON.stringify(data)
-        });
-
-        message.textContent =
-            "Access recorded successfully for " +
-            student.name + ".";
-
-        document.getElementById("studentID").value = "";
-
-    } catch (error) {
-
-        message.textContent =
-            "An error occurred. Please try again.";
-
-        console.error(error);
-
-    }
-
-}
+        // Automatically load students when webpage opens
+        loadStudents();
 
     </script>
 
