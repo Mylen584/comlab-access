@@ -214,9 +214,14 @@
         } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
 
+        // =============================
+        // FIREBASE CONFIGURATION
+        // =============================
+
         const firebaseConfig = {
 
-            apiKey: "AIzaSyC8vy5n9RcdZXCgxK7HZAWGo9NzTtqOga8",
+            apiKey:
+                "AIzaSyC8vy5n9RcdZXCgxK7HZAWGo9NzTtqOga8",
 
             authDomain:
                 "comlab-access-system.firebaseapp.com",
@@ -238,6 +243,10 @@
 
         };
 
+
+        // =============================
+        // INITIALIZE FIREBASE
+        // =============================
 
         const app =
             initializeApp(
@@ -361,7 +370,7 @@
 
         onAuthStateChanged(
             auth,
-            function(user) {
+            async function(user) {
 
                 if (!user) {
 
@@ -373,9 +382,9 @@
                 }
 
 
-                loadStudents();
+                await loadStudents();
 
-                loadRecords();
+                await loadRecords();
 
             }
         );
@@ -563,7 +572,11 @@
 
             } catch (error) {
 
-                console.error(error);
+                console.error(
+                    "Student loading error:",
+                    error
+                );
+
 
                 studentMessage.textContent =
                     "Unable to load students.";
@@ -620,9 +633,6 @@
                             );
 
 
-                        // If Student ID was changed,
-                        // create the new document
-                        // and delete the old one.
                         if (
                             editingStudentID !==
                             studentID
@@ -756,7 +766,11 @@
 
                 } catch (error) {
 
-                    console.error(error);
+                    console.error(
+                        "Student save error:",
+                        error
+                    );
+
 
                     studentMessage.textContent =
                         "Unable to save student.";
@@ -841,10 +855,13 @@
                     0
                 );
 
-
             } catch (error) {
 
-                console.error(error);
+                console.error(
+                    "Edit error:",
+                    error
+                );
+
 
                 studentMessage.textContent =
                     "Unable to load student information.";
@@ -901,10 +918,13 @@
 
                 await loadStudents();
 
-
             } catch (error) {
 
-                console.error(error);
+                console.error(
+                    "Delete error:",
+                    error
+                );
+
 
                 studentMessage.textContent =
                     "Unable to delete student.";
@@ -967,14 +987,26 @@
                 "Loading access records...";
 
 
+            recordCount.textContent =
+                "";
+
+
+            recordsTableBody.innerHTML =
+                "";
+
+
             try {
+
+                const recordsCollection =
+                    collection(
+                        db,
+                        "accessRecords"
+                    );
+
 
                 const snapshot =
                     await getDocs(
-                        collection(
-                            db,
-                            "accessRecords"
-                        )
+                        recordsCollection
                     );
 
 
@@ -983,10 +1015,10 @@
 
 
                 snapshot.forEach(
-                    function(record) {
+                    function(recordDoc) {
 
                         const data =
-                            record.data();
+                            recordDoc.data();
 
 
                         allRecords.push({
@@ -1022,6 +1054,18 @@
                 );
 
 
+                // Sort newest date first.
+                allRecords.sort(
+                    function(a, b) {
+
+                        return b.date.localeCompare(
+                            a.date
+                        );
+
+                    }
+                );
+
+
                 displayRecords(
                     "",
                     ""
@@ -1031,12 +1075,22 @@
                 recordMessage.textContent =
                     "Access records loaded successfully.";
 
+
             } catch (error) {
 
-                console.error(error);
+                console.error(
+                    "ACCESS RECORD ERROR:",
+                    error
+                );
+
 
                 recordMessage.textContent =
-                    "Unable to load access records.";
+                    "Unable to load access records. Error: " +
+                    error.message;
+
+
+                recordCount.textContent =
+                    "0 record(s).";
 
             }
 
@@ -1085,11 +1139,9 @@
 
                         const matchesSearch =
                             searchText === "" ||
-
                             studentID.includes(
                                 searchText
                             ) ||
-
                             fullName.includes(
                                 searchText
                             );
@@ -1097,7 +1149,6 @@
 
                         const matchesDate =
                             selectedDate === "" ||
-
                             recordDate ===
                             selectedDate;
 
@@ -1236,11 +1287,8 @@
             function() {
 
                 displayRecords(
-
                     searchInput.value,
-
                     dateFilter.value
-
                 );
 
             };
@@ -1254,11 +1302,8 @@
             function() {
 
                 displayRecords(
-
                     searchInput.value,
-
                     dateFilter.value
-
                 );
 
             };
@@ -1304,10 +1349,13 @@
                     window.location.href =
                         "login.html";
 
-
                 } catch (error) {
 
-                    console.error(error);
+                    console.error(
+                        "Logout error:",
+                        error
+                    );
+
 
                     recordMessage.textContent =
                         "Unable to log out.";
