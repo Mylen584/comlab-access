@@ -2355,16 +2355,22 @@
         // SEARCH
         // =========================
 
-        searchButton.onclick =
-            function() {
+        function applyRecordFilters() {
 
-                displayRecords(
-                    searchInput.value,
-                    dateFilter.value
-                );
+    displayRecords(
+        searchInput.value,
+        dateFilter.value
+    );
 
-            };
+}
 
+searchButton.onclick =
+    applyRecordFilters;
+
+searchInput.addEventListener(
+    "input",
+    applyRecordFilters
+);
 
         // =========================
         // DATE FILTER
