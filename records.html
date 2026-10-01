@@ -30,6 +30,10 @@
         placeholder="Enter Student ID or name"
     >
 
+    <button type="button" id="searchButton">
+        Search
+    </button>
+
     <br><br>
 
     <label for="dateFilter">
@@ -147,6 +151,12 @@
             );
 
 
+        const searchButton =
+            document.getElementById(
+                "searchButton"
+            );
+
+
         const dateFilter =
             document.getElementById(
                 "dateFilter"
@@ -162,7 +172,7 @@
         let allRecords = [];
 
 
-        // LOAD RECORDS FROM FIRESTORE
+        // LOAD RECORDS
         async function loadRecords() {
 
             message.textContent =
@@ -184,7 +194,7 @@
 
 
                 snapshot.forEach(
-                    (record) => {
+                    function(record) {
 
                         const data =
                             record.data();
@@ -223,7 +233,10 @@
                 );
 
 
-                displayRecords();
+                displayRecords(
+                    "",
+                    ""
+                );
 
 
                 message.textContent =
@@ -242,20 +255,19 @@
         }
 
 
-        // DISPLAY FILTERED RECORDS
-        function displayRecords() {
+        // DISPLAY RECORDS
+        function displayRecords(
+            searchText,
+            selectedDate
+        ) {
 
             tableBody.innerHTML = "";
 
 
-            const searchText =
-                searchInput.value
+            searchText =
+                searchText
                     .trim()
                     .toLowerCase();
-
-
-            const selectedDate =
-                dateFilter.value;
 
 
             const filteredRecords =
@@ -316,69 +328,69 @@
                         );
 
 
-                    const studentIDCell =
+                    const studentID =
                         document.createElement(
                             "td"
                         );
 
-                    studentIDCell.textContent =
+                    studentID.textContent =
                         record.studentId;
 
 
-                    const fullNameCell =
+                    const fullName =
                         document.createElement(
                             "td"
                         );
 
-                    fullNameCell.textContent =
+                    fullName.textContent =
                         record.fullName;
 
 
-                    const dateCell =
+                    const date =
                         document.createElement(
                             "td"
                         );
 
-                    dateCell.textContent =
+                    date.textContent =
                         record.date;
 
 
-                    const timeInCell =
+                    const timeIn =
                         document.createElement(
                             "td"
                         );
 
-                    timeInCell.textContent =
+                    timeIn.textContent =
                         record.timeIn;
 
 
-                    const timeOutCell =
+                    const timeOut =
                         document.createElement(
                             "td"
                         );
 
-                    timeOutCell.textContent =
+                    timeOut.textContent =
                         record.timeOut;
 
 
                     row.appendChild(
-                        studentIDCell
+                        studentID
                     );
 
                     row.appendChild(
-                        fullNameCell
+                        fullName
                     );
 
                     row.appendChild(
-                        dateCell
+                        date
                     );
 
                     row.appendChild(
-                        timeInCell
+                        timeIn
                     );
 
                     row.appendChild(
-                        timeOutCell
+                        timeOut
                     );
 
 
@@ -415,44 +427,53 @@
         }
 
 
-        // SEARCH WHILE TYPING
-        searchInput.addEventListener(
-            "input",
+        // SEARCH BUTTON
+        searchButton.onclick =
             function() {
 
-                displayRecords();
+                displayRecords(
 
-            }
-        );
+                    searchInput.value,
+
+                    dateFilter.value
+
+                );
+
+            };
 
 
-        // FILTER BY DATE
-        dateFilter.addEventListener(
-            "change",
+        // DATE FILTER
+        dateFilter.onchange =
             function() {
 
-                displayRecords();
+                displayRecords(
 
-            }
-        );
+                    searchInput.value,
+
+                    dateFilter.value
+
+                );
+
+            };
 
 
-        // CLEAR FILTERS
-        clearButton.addEventListener(
-            "click",
+        // CLEAR BUTTON
+        clearButton.onclick =
             function() {
 
                 searchInput.value = "";
 
                 dateFilter.value = "";
 
-                displayRecords();
+                displayRecords(
+                    "",
+                    ""
+                );
 
-            }
-        );
+            };
 
 
-        // LOAD RECORDS WHEN PAGE OPENS
+        // LOAD DATA
         loadRecords();
 
     </script>
