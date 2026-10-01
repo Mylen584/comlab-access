@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html>
 
@@ -239,6 +238,18 @@
 
         tr:hover td {
             background: #f8fbfd;
+        }
+
+        /* =========================
+           SEARCH HIGHLIGHT
+        ========================= */
+
+        .search-highlight {
+            background: #fff176;
+            color: #222;
+            font-weight: bold;
+            padding: 1px 3px;
+            border-radius: 3px;
         }
 
         /* =========================
@@ -528,6 +539,7 @@
 
     </div>
 
+
     <!-- =========================
          SIDEBAR
     ========================= -->
@@ -550,6 +562,7 @@
 
         </button>
 
+
         <button
             class="menu-button"
             data-page="studentsPage"
@@ -565,6 +578,7 @@
             </span>
 
         </button>
+
 
         <button
             class="menu-button"
@@ -584,11 +598,13 @@
 
     </div>
 
+
     <!-- =========================
          MAIN
     ========================= -->
 
     <main class="main">
+
 
         <!-- =========================
              DASHBOARD PAGE
@@ -607,7 +623,9 @@
                 Overview of the Computer Laboratory Access System.
             </p>
 
+
             <div class="cards">
+
 
                 <div class="card">
 
@@ -628,6 +646,7 @@
 
                 </div>
 
+
                 <div class="card">
 
                     <div class="card-label">
@@ -646,6 +665,7 @@
                     </div>
 
                 </div>
+
 
                 <div class="card">
 
@@ -668,6 +688,7 @@
 
             </div>
 
+
             <div class="content-box">
 
                 <h2>
@@ -680,6 +701,7 @@
                 >
                     Loading recent activity...
                 </p>
+
 
                 <div class="table-container">
 
@@ -713,6 +735,7 @@
 
         </section>
 
+
         <!-- =========================
              STUDENT MANAGEMENT PAGE
         ========================= -->
@@ -730,13 +753,16 @@
                 Manage students registered in the Computer Laboratory Access System.
             </p>
 
+
             <div class="content-box">
 
                 <h2>
                     Add Student
                 </h2>
 
+
                 <div class="form-grid">
+
 
                     <div class="form-group">
 
@@ -752,6 +778,7 @@
 
                     </div>
 
+
                     <div class="form-group">
 
                         <label for="fullName">
@@ -765,6 +792,7 @@
                         >
 
                     </div>
+
 
                     <div class="form-buttons">
 
@@ -789,6 +817,7 @@
 
                 </div>
 
+
                 <p
                     class="message"
                     id="studentMessage"
@@ -796,11 +825,13 @@
 
             </div>
 
+
             <div class="content-box">
 
                 <h2>
                     Registered Students
                 </h2>
+
 
                 <div class="table-container">
 
@@ -827,6 +858,7 @@
 
                 </div>
 
+
                 <p
                     class="count-text"
                     id="studentCount"
@@ -836,6 +868,7 @@
             </div>
 
         </section>
+
 
         <!-- =========================
              ACCESS RECORDS PAGE
@@ -854,7 +887,9 @@
                 View and search computer laboratory access records.
             </p>
 
+
             <div class="content-box">
+
 
                 <div class="filter-area">
 
@@ -864,10 +899,12 @@
                         placeholder="Search Student ID or Full Name"
                     >
 
+
                     <input
                         type="date"
                         id="dateFilter"
                     >
+
 
                     <button
                         class="primary-button"
@@ -876,6 +913,7 @@
                     >
                         Search
                     </button>
+
 
                     <button
                         class="secondary-button"
@@ -887,12 +925,14 @@
 
                 </div>
 
+
                 <p
                     class="message"
                     id="recordMessage"
                 >
                     Loading access records...
                 </p>
+
 
                 <div class="table-container">
 
@@ -921,6 +961,7 @@
 
                 </div>
 
+
                 <p
                     class="count-text"
                     id="recordCount"
@@ -933,6 +974,7 @@
 
     </main>
 
+
     <!-- =========================
          FIREBASE
     ========================= -->
@@ -944,12 +986,14 @@
         } from
         "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
 
+
         import {
             getAuth,
             onAuthStateChanged,
             signOut
         } from
         "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
 
         import {
             getFirestore,
@@ -1025,70 +1069,84 @@
                 "studentID"
             );
 
+
         const fullNameInput =
             document.getElementById(
                 "fullName"
             );
+
 
         const saveButton =
             document.getElementById(
                 "saveButton"
             );
 
+
         const cancelButton =
             document.getElementById(
                 "cancelButton"
             );
+
 
         const logoutButton =
             document.getElementById(
                 "logoutButton"
             );
 
+
         const studentMessage =
             document.getElementById(
                 "studentMessage"
             );
+
 
         const studentsTableBody =
             document.getElementById(
                 "studentsTableBody"
             );
 
+
         const studentCount =
             document.getElementById(
                 "studentCount"
             );
+
 
         const searchInput =
             document.getElementById(
                 "searchInput"
             );
 
+
         const searchButton =
             document.getElementById(
                 "searchButton"
             );
+
 
         const dateFilter =
             document.getElementById(
                 "dateFilter"
             );
 
+
         const clearButton =
             document.getElementById(
                 "clearButton"
             );
+
 
         const recordMessage =
             document.getElementById(
                 "recordMessage"
             );
 
+
         const recordsTableBody =
             document.getElementById(
                 "recordsTableBody"
             );
+
 
         const recordCount =
             document.getElementById(
@@ -1105,10 +1163,12 @@
                 ".menu-button"
             );
 
+
         const pageSections =
             document.querySelectorAll(
                 ".page-section"
             );
+
 
         menuButtons.forEach(
             function(button) {
@@ -1122,6 +1182,7 @@
                                 "data-page"
                             );
 
+
                         menuButtons.forEach(
                             function(item) {
 
@@ -1132,9 +1193,11 @@
                             }
                         );
 
+
                         button.classList.add(
                             "active"
                         );
+
 
                         pageSections.forEach(
                             function(section) {
@@ -1145,6 +1208,7 @@
 
                             }
                         );
+
 
                         document
                             .getElementById(
@@ -1178,6 +1242,7 @@
 
                 }
 
+
                 await loadStudents();
 
                 await loadRecords();
@@ -1195,6 +1260,7 @@
             studentMessage.textContent =
                 "Loading students...";
 
+
             try {
 
                 const snapshot =
@@ -1205,10 +1271,13 @@
                         )
                     );
 
+
                 studentsTableBody.innerHTML =
                     "";
 
+
                 let count = 0;
+
 
                 snapshot.forEach(
                     function(studentDoc) {
@@ -1216,52 +1285,64 @@
                         const data =
                             studentDoc.data();
 
+
                         const studentID =
                             String(
                                 data.studentId || ""
                             );
+
 
                         const fullName =
                             String(
                                 data.fullName || ""
                             );
 
+
                         const row =
                             document.createElement(
                                 "tr"
                             );
+
 
                         const idCell =
                             document.createElement(
                                 "td"
                             );
 
+
                         idCell.textContent =
                             studentID;
+
 
                         const nameCell =
                             document.createElement(
                                 "td"
                             );
 
+
                         nameCell.textContent =
                             fullName;
+
 
                         const actionCell =
                             document.createElement(
                                 "td"
                             );
 
+
                         const editButton =
                             document.createElement(
                                 "button"
                             );
 
+
                         editButton.className =
                             "edit-button";
 
+
                         editButton.textContent =
                             "Edit";
+
 
                         editButton.onclick =
                             function() {
@@ -1272,16 +1353,20 @@
 
                             };
 
+
                         const deleteButton =
                             document.createElement(
                                 "button"
                             );
 
+
                         deleteButton.className =
                             "delete-button";
 
+
                         deleteButton.textContent =
                             "Delete";
+
 
                         deleteButton.onclick =
                             function() {
@@ -1293,9 +1378,11 @@
 
                             };
 
+
                         actionCell.appendChild(
                             editButton
                         );
+
 
                         actionCell.appendChild(
                             document.createTextNode(
@@ -1303,42 +1390,52 @@
                             )
                         );
 
+
                         actionCell.appendChild(
                             deleteButton
                         );
+
 
                         row.appendChild(
                             idCell
                         );
 
+
                         row.appendChild(
                             nameCell
                         );
+
 
                         row.appendChild(
                             actionCell
                         );
 
+
                         studentsTableBody.appendChild(
                             row
                         );
+
 
                         count++;
 
                     }
                 );
 
+
                 studentCount.textContent =
                     "Total students: " +
                     count;
+
 
                 document.getElementById(
                     "dashboardStudentCount"
                 ).textContent =
                     count;
 
+
                 studentMessage.textContent =
                     "Students loaded successfully.";
+
 
             } catch (error) {
 
@@ -1346,6 +1443,7 @@
                     "Student loading error:",
                     error
                 );
+
 
                 studentMessage.textContent =
                     "Unable to load students.";
@@ -1365,8 +1463,10 @@
                 const studentID =
                     studentIDInput.value.trim();
 
+
                 const fullName =
                     fullNameInput.value.trim();
+
 
                 if (
                     studentID === "" ||
@@ -1380,8 +1480,10 @@
 
                 }
 
+
                 saveButton.disabled =
                     true;
+
 
                 try {
 
@@ -1396,6 +1498,7 @@
                                 editingStudentID
                             );
 
+
                         if (
                             editingStudentID !==
                             studentID
@@ -1408,10 +1511,12 @@
                                     studentID
                                 );
 
+
                             const existingStudent =
                                 await getDoc(
                                     newStudentRef
                                 );
+
 
                             if (
                                 existingStudent.exists()
@@ -1427,6 +1532,7 @@
 
                             }
 
+
                             await setDoc(
                                 newStudentRef,
                                 {
@@ -1440,9 +1546,11 @@
                                 }
                             );
 
+
                             await deleteDoc(
                                 oldStudentRef
                             );
+
 
                         } else {
 
@@ -1461,8 +1569,10 @@
 
                         }
 
+
                         studentMessage.textContent =
                             "Student updated successfully.";
+
 
                     } else {
 
@@ -1473,10 +1583,12 @@
                                 studentID
                             );
 
+
                         const existingStudent =
                             await getDoc(
                                 studentRef
                             );
+
 
                         if (
                             existingStudent.exists()
@@ -1492,6 +1604,7 @@
 
                         }
 
+
                         await setDoc(
                             studentRef,
                             {
@@ -1505,14 +1618,17 @@
                             }
                         );
 
+
                         studentMessage.textContent =
                             "Student added successfully.";
 
                     }
 
+
                     clearForm();
 
                     await loadStudents();
+
 
                 } catch (error) {
 
@@ -1521,10 +1637,12 @@
                         error
                     );
 
+
                     studentMessage.textContent =
                         "Unable to save student.";
 
                 }
+
 
                 saveButton.disabled =
                     false;
@@ -1549,10 +1667,12 @@
                         studentID
                     );
 
+
                 const snapshot =
                     await getDoc(
                         studentRef
                     );
+
 
                 if (
                     !snapshot.exists()
@@ -1565,28 +1685,36 @@
 
                 }
 
+
                 const data =
                     snapshot.data();
+
 
                 studentIDInput.value =
                     data.studentId || "";
 
+
                 fullNameInput.value =
                     data.fullName || "";
+
 
                 editingStudentID =
                     studentID;
 
+
                 saveButton.textContent =
                     "Update Student";
 
+
                 cancelButton.style.display =
                     "inline-block";
+
 
                 studentMessage.textContent =
                     "Editing student " +
                     studentID +
                     ".";
+
 
                 document
                     .querySelector(
@@ -1594,11 +1722,13 @@
                     )
                     .click();
 
+
             } catch (error) {
 
                 console.error(
                     error
                 );
+
 
                 studentMessage.textContent =
                     "Unable to load student.";
@@ -1626,11 +1756,13 @@
                     ")?"
                 );
 
+
             if (!confirmed) {
 
                 return;
 
             }
+
 
             try {
 
@@ -1642,16 +1774,20 @@
                     )
                 );
 
+
                 studentMessage.textContent =
                     "Student deleted successfully.";
 
+
                 await loadStudents();
+
 
             } catch (error) {
 
                 console.error(
                     error
                 );
+
 
                 studentMessage.textContent =
                     "Unable to delete student.";
@@ -1670,6 +1806,7 @@
 
                 clearForm();
 
+
                 studentMessage.textContent =
                     "Edit cancelled.";
 
@@ -1685,14 +1822,18 @@
             studentIDInput.value =
                 "";
 
+
             fullNameInput.value =
                 "";
+
 
             editingStudentID =
                 null;
 
+
             saveButton.textContent =
                 "Add Student";
+
 
             cancelButton.style.display =
                 "none";
@@ -1737,6 +1878,7 @@
             recordMessage.textContent =
                 "Loading access records...";
 
+
             try {
 
                 const snapshot =
@@ -1747,14 +1889,17 @@
                         )
                     );
 
+
                 allRecords =
                     [];
+
 
                 snapshot.forEach(
                     function(recordDoc) {
 
                         const data =
                             recordDoc.data();
+
 
                         allRecords.push({
 
@@ -1788,6 +1933,7 @@
                     }
                 );
 
+
                 allRecords.sort(
                     function(a, b) {
 
@@ -1801,6 +1947,7 @@
 
                         }
 
+
                         return b.timeIn.localeCompare(
                             a.timeIn
                         );
@@ -1808,15 +1955,19 @@
                     }
                 );
 
+
                 updateDashboard();
+
 
                 displayRecords(
                     searchInput.value,
                     dateFilter.value
                 );
 
+
                 recordMessage.textContent =
                     "Access records loaded successfully.";
+
 
             } catch (error) {
 
@@ -1824,6 +1975,7 @@
                     "Access record error:",
                     error
                 );
+
 
                 recordMessage.textContent =
                     "Unable to load access records. " +
@@ -1843,6 +1995,7 @@
             const today =
                 getTodayDate();
 
+
             const todayRecords =
                 allRecords.filter(
                     function(record) {
@@ -1859,6 +2012,7 @@
                     }
                 );
 
+
             const currentlyIn =
                 todayRecords.filter(
                     function(record) {
@@ -1871,15 +2025,18 @@
                     }
                 );
 
+
             document.getElementById(
                 "dashboardTodayVisits"
             ).textContent =
                 todayRecords.length;
 
+
             document.getElementById(
                 "dashboardCurrentlyIn"
             ).textContent =
                 currentlyIn.length;
+
 
             const recentRecords =
                 allRecords.slice(
@@ -1887,13 +2044,16 @@
                     10
                 );
 
+
             const recentTable =
                 document.getElementById(
                     "recentRecordsTable"
                 );
 
+
             recentTable.innerHTML =
                 "";
+
 
             if (
                 recentRecords.length === 0
@@ -1921,7 +2081,9 @@
                                 "tr"
                             );
 
+
                         let statusHTML;
+
 
                         if (
                             record.timeOut === ""
@@ -1948,6 +2110,7 @@
                                 `;
 
                         }
+
 
                         row.innerHTML =
                             `
@@ -1976,6 +2139,7 @@
                             </td>
                             `;
 
+
                         recentTable.appendChild(
                             row
                         );
@@ -1984,6 +2148,7 @@
                 );
 
             }
+
 
             document.getElementById(
                 "dashboardMessage"
@@ -2012,6 +2177,108 @@
 
 
         // =========================
+        // HIGHLIGHT SEARCH TEXT
+        // =========================
+
+        function highlightMatch(
+            value,
+            searchText
+        ) {
+
+            const text =
+                String(
+                    value ?? ""
+                );
+
+
+            const search =
+                String(
+                    searchText ?? ""
+                ).trim();
+
+
+            if (
+                search === ""
+            ) {
+
+                return escapeHTML(
+                    text
+                );
+
+            }
+
+
+            const lowerText =
+                text.toLowerCase();
+
+
+            const lowerSearch =
+                search.toLowerCase();
+
+
+            let result = "";
+
+            let currentIndex = 0;
+
+            let matchIndex =
+                lowerText.indexOf(
+                    lowerSearch
+                );
+
+
+            while (
+                matchIndex !== -1
+            ) {
+
+                result +=
+                    escapeHTML(
+                        text.substring(
+                            currentIndex,
+                            matchIndex
+                        )
+                    );
+
+
+                result +=
+                    '<span class="search-highlight">' +
+                    escapeHTML(
+                        text.substring(
+                            matchIndex,
+                            matchIndex +
+                            search.length
+                        )
+                    ) +
+                    '</span>';
+
+
+                currentIndex =
+                    matchIndex +
+                    search.length;
+
+
+                matchIndex =
+                    lowerText.indexOf(
+                        lowerSearch,
+                        currentIndex
+                    );
+
+            }
+
+
+            result +=
+                escapeHTML(
+                    text.substring(
+                        currentIndex
+                    )
+                );
+
+
+            return result;
+
+        }
+
+
+        // =========================
         // DISPLAY ACCESS RECORDS
         // =========================
 
@@ -2024,6 +2291,7 @@
                 normalizeValue(
                     searchText
                 );
+
 
             const date =
                 String(
@@ -2040,25 +2308,18 @@
                                 record.studentId
                             );
 
+
                         const fullName =
                             normalizeValue(
                                 record.fullName
                             );
+
 
                         const recordDate =
                             String(
                                 record.date ?? ""
                             ).trim();
 
-
-                        /*
-                         * SEARCH MATCH
-                         *
-                         * Empty search = show all.
-                         *
-                         * Otherwise, match either:
-                         * Student ID OR Full Name.
-                         */
 
                         const matchesSearch =
                             search === "" ||
@@ -2069,14 +2330,6 @@
                                 search
                             );
 
-
-                        /*
-                         * DATE MATCH
-                         *
-                         * Empty date = show all dates.
-                         *
-                         * Otherwise, exact date match.
-                         */
 
                         const matchesDate =
                             date === "" ||
@@ -2092,17 +2345,17 @@
                 );
 
 
-            /*
-             * CLEAR CURRENT TABLE
-             */
+            // =========================
+            // CLEAR TABLE
+            // =========================
 
             recordsTableBody.innerHTML =
                 "";
 
 
-            /*
-             * DISPLAY EMPTY MESSAGE
-             */
+            // =========================
+            // NO RESULTS
+            // =========================
 
             if (
                 filteredRecords.length === 0
@@ -2123,9 +2376,9 @@
             } else {
 
 
-                /*
-                 * DISPLAY FILTERED RECORDS
-                 */
+                // =========================
+                // DISPLAY RESULTS
+                // =========================
 
                 filteredRecords.forEach(
                     function(record) {
@@ -2139,23 +2392,35 @@
                         row.innerHTML =
                             `
                             <td>
-                                ${escapeHTML(record.studentId)}
+                                ${highlightMatch(
+                                    record.studentId,
+                                    searchText
+                                )}
                             </td>
 
                             <td>
-                                ${escapeHTML(record.fullName)}
+                                ${highlightMatch(
+                                    record.fullName,
+                                    searchText
+                                )}
                             </td>
 
                             <td>
-                                ${escapeHTML(record.date)}
+                                ${escapeHTML(
+                                    record.date
+                                )}
                             </td>
 
                             <td>
-                                ${escapeHTML(record.timeIn)}
+                                ${escapeHTML(
+                                    record.timeIn
+                                )}
                             </td>
 
                             <td>
-                                ${escapeHTML(record.timeOut || "-")}
+                                ${escapeHTML(
+                                    record.timeOut || "-"
+                                )}
                             </td>
                             `;
 
@@ -2170,9 +2435,9 @@
             }
 
 
-            /*
-             * UPDATE COUNT
-             */
+            // =========================
+            // UPDATE COUNT
+            // =========================
 
             recordCount.textContent =
                 "Showing " +
@@ -2251,8 +2516,10 @@
                 searchInput.value =
                     "";
 
+
                 dateFilter.value =
                     "";
+
 
                 displayRecords(
                     "",
@@ -2312,8 +2579,10 @@
                         auth
                     );
 
+
                     window.location.href =
                         "login.html";
+
 
                 } catch (error) {
 
@@ -2331,4 +2600,3 @@
 </body>
 
 </html>
-```
