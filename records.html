@@ -45,7 +45,7 @@
 
     <br><br>
 
-    <button type="button" onclick="clearFilters()">
+    <button type="button" id="clearButton">
         Clear Filters
     </button>
 
@@ -68,7 +68,6 @@
         </thead>
 
         <tbody id="recordsTableBody">
-
         </tbody>
 
     </table>
@@ -154,13 +153,17 @@
             );
 
 
+        const clearButton =
+            document.getElementById(
+                "clearButton"
+            );
+
+
         let allRecords = [];
 
 
         // LOAD RECORDS FROM FIRESTORE
         async function loadRecords() {
-
-            tableBody.innerHTML = "";
 
             message.textContent =
                 "Loading records...";
@@ -190,19 +193,29 @@
                         allRecords.push({
 
                             studentId:
-                                data.studentId || "",
+                                String(
+                                    data.studentId || ""
+                                ),
 
                             fullName:
-                                data.fullName || "",
+                                String(
+                                    data.fullName || ""
+                                ),
 
                             date:
-                                data.date || "",
+                                String(
+                                    data.date || ""
+                                ),
 
                             timeIn:
-                                data.timeIn || "",
+                                String(
+                                    data.timeIn || ""
+                                ),
 
                             timeOut:
-                                data.timeOut || ""
+                                String(
+                                    data.timeOut || ""
+                                )
 
                         });
 
@@ -229,7 +242,7 @@
         }
 
 
-        // DISPLAY RECORDS
+        // DISPLAY FILTERED RECORDS
         function displayRecords() {
 
             tableBody.innerHTML = "";
@@ -247,29 +260,41 @@
 
             const filteredRecords =
                 allRecords.filter(
-                    (record) => {
+                    function(record) {
+
+                        const studentID =
+                            record.studentId
+                                .trim()
+                                .toLowerCase();
+
+
+                        const fullName =
+                            record.fullName
+                                .trim()
+                                .toLowerCase();
+
+
+                        const recordDate =
+                            record.date
+                                .trim();
 
 
                         const matchesSearch =
+                            searchText === "" ||
 
-                            record.studentId
-                                .toLowerCase()
-                                .includes(searchText)
+                            studentID.includes(
+                                searchText
+                            ) ||
 
-                            ||
-
-                            record.fullName
-                                .toLowerCase()
-                                .includes(searchText);
+                            fullName.includes(
+                                searchText
+                            );
 
 
                         const matchesDate =
+                            selectedDate === "" ||
 
-                            selectedDate === ""
-
-                            ||
-
-                            record.date ===
+                            recordDate ===
                             selectedDate;
 
 
@@ -283,7 +308,7 @@
 
 
             filteredRecords.forEach(
-                (record) => {
+                function(record) {
 
                     const row =
                         document.createElement(
@@ -291,69 +316,69 @@
                         );
 
 
-                    const studentID =
+                    const studentIDCell =
                         document.createElement(
                             "td"
                         );
 
-                    studentID.textContent =
+                    studentIDCell.textContent =
                         record.studentId;
 
 
-                    const fullName =
+                    const fullNameCell =
                         document.createElement(
                             "td"
                         );
 
-                    fullName.textContent =
+                    fullNameCell.textContent =
                         record.fullName;
 
 
-                    const date =
+                    const dateCell =
                         document.createElement(
                             "td"
                         );
 
-                    date.textContent =
+                    dateCell.textContent =
                         record.date;
 
 
-                    const timeIn =
+                    const timeInCell =
                         document.createElement(
                             "td"
                         );
 
-                    timeIn.textContent =
+                    timeInCell.textContent =
                         record.timeIn;
 
 
-                    const timeOut =
+                    const timeOutCell =
                         document.createElement(
                             "td"
                         );
 
-                    timeOut.textContent =
+                    timeOutCell.textContent =
                         record.timeOut;
 
 
                     row.appendChild(
-                        studentID
+                        studentIDCell
                     );
 
                     row.appendChild(
-                        fullName
+                        fullNameCell
                     );
 
                     row.appendChild(
-                        date
+                        dateCell
                     );
 
                     row.appendChild(
-                        timeIn
+                        timeInCell
                     );
 
                     row.appendChild(
-                        timeOut
+                        timeOutCell
                     );
 
 
@@ -368,6 +393,8 @@
             recordCount.textContent =
                 "Showing " +
                 filteredRecords.length +
+                " of " +
+                allRecords.length +
                 " record(s).";
 
 
@@ -378,37 +405,50 @@
                 message.textContent =
                     "No matching records found.";
 
+            } else {
+
+                message.textContent =
+                    "";
+
             }
 
         }
 
 
-        // CLEAR FILTERS
-        window.clearFilters = function() {
-
-            searchInput.value = "";
-
-            dateFilter.value = "";
-
-            displayRecords();
-
-            message.textContent =
-                "Filters cleared.";
-
-        };
-
-
-        // SEARCH AS USER TYPES
+        // SEARCH WHILE TYPING
         searchInput.addEventListener(
             "input",
-            displayRecords
+            function() {
+
+                displayRecords();
+
+            }
         );
 
 
-        // FILTER WHEN DATE CHANGES
+        // FILTER BY DATE
         dateFilter.addEventListener(
             "change",
-            displayRecords
+            function() {
+
+                displayRecords();
+
+            }
+        );
+
+
+        // CLEAR FILTERS
+        clearButton.addEventListener(
+            "click",
+            function() {
+
+                searchInput.value = "";
+
+                dateFilter.value = "";
+
+                displayRecords();
+
+            }
         );
 
 
