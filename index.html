@@ -8,36 +8,13 @@
 
 <body>
 
-    <h1>Computer Laboratory Access Monitoring System</h1>
-
-    <nav>
-
-        <a href="index.html">
-            QR Access
-        </a>
-
-        &nbsp; | &nbsp;
-
-        <a href="students.html">
-            Student Management
-        </a>
-
-        &nbsp; | &nbsp;
-
-        <a href="records.html">
-            Access Records
-        </a>
-
-    </nav>
-
-    <hr>
-
-    <h2>Record Computer Laboratory Access</h2>
+    <h1>Computer Laboratory Access</h1>
 
     <p>
-        Enter your Student ID to record your laboratory access.
+        Welcome to the Computer Laboratory Access System!
     </p>
 
+    <hr>
 
     <label for="studentID">
         Student ID:
@@ -60,7 +37,9 @@
         Record Access
     </button>
 
-    <p id="message"></p>
+    <p id="message">
+        System ready. Please enter your Student ID.
+    </p>
 
 
     <script type="module">
@@ -84,7 +63,7 @@
 
         const firebaseConfig = {
 
-            apiKey: "AIzaSyC8vy5nR9cdZXCgxK7HZAWGo9NzTtqOga8",
+            apiKey: "AIzaSyC8vy5n9RcdZXCgxK7HZAWGo9NzTtqOga8",
 
             authDomain:
                 "comlab-access-system.firebaseapp.com",
@@ -179,7 +158,7 @@
                     studentData.fullName;
 
 
-                // PHILIPPINE DATE AND TIME
+                // PHILIPPINE DATE
                 const now =
                     new Date();
 
@@ -203,6 +182,7 @@
                     ).format(now);
 
 
+                // PHILIPPINE TIME
                 const time =
                     new Intl.DateTimeFormat(
                         "en-US",
@@ -225,7 +205,7 @@
                     ).format(now);
 
 
-                // CHECK FOR OPEN TIME-IN RECORD
+                // CHECK FOR OPEN RECORD
                 const recordsRef =
                     collection(
                         db,
@@ -288,7 +268,6 @@
                         "Time Out recorded successfully for " +
                         fullName +
                         ".";
-
 
                 }
 
