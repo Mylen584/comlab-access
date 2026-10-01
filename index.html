@@ -1,46 +1,442 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Computer Laboratory Access</title>
 
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f1f5f9;
+            color: #1e293b;
+            min-height: 100vh;
+        }
+
+        /* =========================
+           TOP HEADER
+        ========================= */
+
+        .topbar {
+            background: #1f4e79;
+            color: white;
+            padding: 20px 30px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+        }
+
+        .topbar-content {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .system-title {
+            font-size: 25px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .system-subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+
+        /* =========================
+           MAIN CONTENT
+        ========================= */
+
+        .main-container {
+            width: 100%;
+            max-width: 650px;
+            margin: 55px auto;
+            padding: 0 20px;
+        }
+
+
+        /* =========================
+           ACCESS CARD
+        ========================= */
+
+        .access-card {
+            background: white;
+            border-radius: 14px;
+            padding: 40px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            border: 1px solid #e2e8f0;
+        }
+
+
+        /* =========================
+           ICON
+        ========================= */
+
+        .icon-container {
+            width: 75px;
+            height: 75px;
+            background: #e8f1f8;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 34px;
+        }
+
+
+        /* =========================
+           TITLE
+        ========================= */
+
+        .card-title {
+            text-align: center;
+            color: #1f4e79;
+            font-size: 27px;
+            margin-bottom: 10px;
+        }
+
+        .card-description {
+            text-align: center;
+            color: #64748b;
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+
+        /* =========================
+           INSTRUCTION BOX
+        ========================= */
+
+        .instruction-box {
+            background: #f8fafc;
+            border-left: 5px solid #1f4e79;
+            border-radius: 7px;
+
+            padding: 15px 17px;
+            margin-bottom: 25px;
+        }
+
+        .instruction-title {
+            font-weight: bold;
+            color: #1f4e79;
+            margin-bottom: 5px;
+        }
+
+        .instruction-text {
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+
+        /* =========================
+           FORM
+        ========================= */
+
+        .form-label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 9px;
+            color: #334155;
+            font-size: 14px;
+        }
+
+        .student-id-input {
+            width: 100%;
+            padding: 15px 16px;
+
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+
+            font-size: 16px;
+            outline: none;
+
+            transition: 0.2s;
+        }
+
+        .student-id-input:focus {
+            border-color: #1f4e79;
+            box-shadow: 0 0 0 3px rgba(31,78,121,0.12);
+        }
+
+
+        /* =========================
+           BUTTON
+        ========================= */
+
+        .record-button {
+            width: 100%;
+            margin-top: 18px;
+
+            padding: 15px;
+
+            border: none;
+            border-radius: 7px;
+
+            background: #1f4e79;
+            color: white;
+
+            font-size: 16px;
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .record-button:hover {
+            background: #173a5c;
+        }
+
+        .record-button:active {
+            transform: scale(0.99);
+        }
+
+        .record-button:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+        }
+
+
+        /* =========================
+           LOADING
+        ========================= */
+
+        #loadingMessage {
+            display: none;
+            text-align: center;
+            margin-top: 18px;
+            color: #1f4e79;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+
+        /* =========================
+           RESULT MESSAGE
+        ========================= */
+
+        #message {
+            margin-top: 20px;
+            padding: 14px;
+            border-radius: 7px;
+
+            text-align: center;
+
+            font-size: 14px;
+            font-weight: bold;
+
+            display: none;
+        }
+
+        .success-message {
+            display: block !important;
+            background: #ecfdf5;
+            color: #047857;
+            border: 1px solid #a7f3d0;
+        }
+
+        .error-message {
+            display: block !important;
+            background: #fef2f2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        .footer {
+            text-align: center;
+            margin-top: 25px;
+
+            color: #94a3b8;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 600px) {
+
+            .topbar {
+                padding: 18px 20px;
+            }
+
+            .system-title {
+                font-size: 20px;
+            }
+
+            .system-subtitle {
+                font-size: 12px;
+            }
+
+            .main-container {
+                margin: 30px auto;
+                padding: 0 15px;
+            }
+
+            .access-card {
+                padding: 28px 22px;
+            }
+
+            .card-title {
+                font-size: 23px;
+            }
+
+            .card-description {
+                font-size: 14px;
+            }
+
+        }
+
+    </style>
 </head>
 
 <body>
 
-    <h1>Computer Laboratory Access</h1>
 
-    <p>
-        Welcome to the Computer Laboratory Access System!
-    </p>
+    <!-- =========================
+         TOP HEADER
+    ========================= -->
 
-    <hr>
+    <header class="topbar">
 
-    <label for="studentID">
-        Student ID:
-    </label>
+        <div class="topbar-content">
 
-    <br>
+            <div class="system-title">
+                Computer Laboratory Access System
+            </div>
 
-    <input
-        type="text"
-        id="studentID"
-        placeholder="Enter Student ID"
-    >
+            <div class="system-subtitle">
+                Access Monitoring System
+            </div>
 
-    <br><br>
+        </div>
 
-    <button
-        type="button"
-        onclick="recordAccess()"
-    >
-        Record Access
-    </button>
+    </header>
 
-    <p id="message">
-        System ready. Please enter your Student ID.
-    </p>
 
+
+    <!-- =========================
+         MAIN CONTENT
+    ========================= -->
+
+    <main class="main-container">
+
+        <div class="access-card">
+
+
+            <!-- ICON -->
+
+            <div class="icon-container">
+                💻
+            </div>
+
+
+            <!-- TITLE -->
+
+            <h1 class="card-title">
+                Record Laboratory Access
+            </h1>
+
+            <p class="card-description">
+                Enter your Student ID below to record your
+                computer laboratory access.
+            </p>
+
+
+            <!-- INSTRUCTIONS -->
+
+            <div class="instruction-box">
+
+                <div class="instruction-title">
+                    Student Access
+                </div>
+
+                <div class="instruction-text">
+                    Enter your registered Student ID and press
+                    the button below to record your laboratory access.
+                </div>
+
+            </div>
+
+
+            <!-- STUDENT ID -->
+
+            <label
+                for="studentId"
+                class="form-label">
+
+                Student ID
+
+            </label>
+
+            <input
+                type="text"
+                id="studentId"
+                class="student-id-input"
+                placeholder="Enter your Student ID"
+                autocomplete="off"
+            >
+
+
+            <!-- BUTTON -->
+
+            <button
+                id="recordAccessButton"
+                class="record-button">
+
+                Record Access
+
+            </button>
+
+
+            <!-- LOADING -->
+
+            <div id="loadingMessage">
+                Processing your access...
+            </div>
+
+
+            <!-- MESSAGE -->
+
+            <div id="message"></div>
+
+
+            <!-- FOOTER -->
+
+            <div class="footer">
+
+                Please make sure your Student ID is correct
+                before recording your access.
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+
+    <!-- =========================
+         FIREBASE
+    ========================= -->
 
     <script type="module">
 
@@ -48,19 +444,26 @@
             initializeApp
         } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
 
-
         import {
             getFirestore,
             doc,
             getDoc,
-            setDoc,
+            collection,
+            getDocs,
+            query,
+            where,
+            addDoc,
             updateDoc
         } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
 
+        // =========================
+        // FIREBASE CONFIG
+        // =========================
+
         const firebaseConfig = {
 
-            apiKey: "AIzaSyC8vy5n9RcdZXCgxK7HZAWGo9NzTtqOga8",
+            apiKey: "AIzaSyC8vy5n9RcdZXCgxK7HZAWGo9NzTtQOga8",
 
             authDomain:
                 "comlab-access-system.firebaseapp.com",
@@ -83,53 +486,146 @@
         };
 
 
-        const app =
-            initializeApp(
-                firebaseConfig
-            );
+        // =========================
+        // INITIALIZE FIREBASE
+        // =========================
 
+        const app =
+            initializeApp(firebaseConfig);
 
         const db =
             getFirestore(app);
 
 
+
+        // =========================
+        // ELEMENTS
+        // =========================
+
+        const studentIdInput =
+            document.getElementById("studentId");
+
+        const recordButton =
+            document.getElementById("recordAccessButton");
+
+        const loadingMessage =
+            document.getElementById("loadingMessage");
+
         const message =
-            document.getElementById(
-                "message"
+            document.getElementById("message");
+
+
+
+        // =========================
+        // PHILIPPINE DATE
+        // =========================
+
+        function getPhilippineDate() {
+
+            return new Intl.DateTimeFormat(
+                "en-CA",
+                {
+                    timeZone: "Asia/Manila"
+                }
+            ).format(new Date());
+
+        }
+
+
+
+        // =========================
+        // PHILIPPINE TIME
+        // =========================
+
+        function getPhilippineTime() {
+
+            return new Intl.DateTimeFormat(
+                "en-US",
+                {
+                    timeZone: "Asia/Manila",
+                    hour: "numeric",
+                    minute: "2-digit",
+                    second: "2-digit",
+                    hour12: true
+                }
+            ).format(new Date());
+
+        }
+
+
+
+        // =========================
+        // SHOW MESSAGE
+        // =========================
+
+        function showMessage(
+            text,
+            type
+        ) {
+
+            message.textContent = text;
+
+            message.className = "";
+
+            message.classList.add(
+                type === "success"
+                    ? "success-message"
+                    : "error-message"
             );
 
+        }
 
-        window.recordAccess =
-            async function() {
+
+
+        // =========================
+        // RECORD ACCESS
+        // =========================
+
+        recordButton.addEventListener(
+            "click",
+            async function () {
 
                 const studentID =
-                    document
-                        .getElementById(
-                            "studentID"
-                        )
-                        .value
-                        .trim();
+                    studentIdInput.value.trim();
 
 
-                if (
-                    studentID === ""
-                ) {
+                // Clear previous message
 
-                    message.textContent =
-                        "Please enter your Student ID.";
+                message.textContent = "";
+
+                message.className = "";
+
+
+                // Check Student ID
+
+                if (!studentID) {
+
+                    showMessage(
+                        "Please enter your Student ID.",
+                        "error"
+                    );
+
+                    studentIdInput.focus();
 
                     return;
 
                 }
 
 
-                message.textContent =
-                    "Processing...";
+                // Disable button
+
+                recordButton.disabled = true;
+
+                loadingMessage.style.display =
+                    "block";
 
 
                 try {
 
+                    // =========================
                     // FIND STUDENT
+                    // =========================
+
                     const studentRef =
                         doc(
                             db,
@@ -137,19 +633,16 @@
                             studentID
                         );
 
-
                     const studentSnapshot =
-                        await getDoc(
-                            studentRef
+                        await getDoc(studentRef);
+
+
+                    if (!studentSnapshot.exists()) {
+
+                        showMessage(
+                            "Student ID not found. Please enter a valid Student ID.",
+                            "error"
                         );
-
-
-                    if (
-                        !studentSnapshot.exists()
-                    ) {
-
-                        message.textContent =
-                            "Student ID not found. Please enter a valid Student ID.";
 
                         return;
 
@@ -164,124 +657,121 @@
                         studentData.fullName;
 
 
-                    // CURRENT DATE AND TIME
-                    const now =
-                        new Date();
+                    // =========================
+                    // GET TODAY'S DATE
+                    // =========================
+
+                    const today =
+                        getPhilippineDate();
 
 
-                    const date =
-                        new Intl.DateTimeFormat(
-                            "en-CA",
-                            {
-                                timeZone:
-                                    "Asia/Manila",
+                    // =========================
+                    // CHECK TODAY'S RECORD
+                    // =========================
 
-                                year:
-                                    "numeric",
-
-                                month:
-                                    "2-digit",
-
-                                day:
-                                    "2-digit"
-                            }
-                        ).format(now);
-
-
-                    const time =
-                        new Intl.DateTimeFormat(
-                            "en-US",
-                            {
-                                timeZone:
-                                    "Asia/Manila",
-
-                                hour:
-                                    "numeric",
-
-                                minute:
-                                    "2-digit",
-
-                                second:
-                                    "2-digit",
-
-                                hour12:
-                                    true
-                            }
-                        ).format(now);
-
-
-                    // ONE DOCUMENT PER STUDENT PER DAY
-                    const recordID =
-                        studentID +
-                        "_" +
-                        date;
-
-
-                    const recordRef =
-                        doc(
-                            db,
-                            "accessRecords",
-                            recordID
+                    const recordsQuery =
+                        query(
+                            collection(
+                                db,
+                                "accessRecords"
+                            ),
+                            where(
+                                "studentId",
+                                "==",
+                                studentID
+                            ),
+                            where(
+                                "date",
+                                "==",
+                                today
+                            )
                         );
 
 
-                    const recordSnapshot =
-                        await getDoc(
-                            recordRef
+                    const recordsSnapshot =
+                        await getDocs(
+                            recordsQuery
                         );
 
 
-                    // TIME OUT
-                    if (
-                        recordSnapshot.exists()
-                    ) {
-
-                        const existingData =
-                            recordSnapshot.data();
+                    let openRecord = null;
 
 
-                        if (
-                            existingData.timeOut !== ""
-                        ) {
+                    recordsSnapshot.forEach(
+                        function (record) {
 
-                            message.textContent =
-                                "Time Out has already been recorded for " +
-                                fullName +
-                                " today.";
+                            const data =
+                                record.data();
 
-                            return;
+
+                            if (
+                                data.timeIn &&
+                                data.timeOut === ""
+                            ) {
+
+                                openRecord = {
+                                    id: record.id,
+                                    ...data
+                                };
+
+                            }
 
                         }
+                    );
+
+
+                    // =========================
+                    // TIME OUT
+                    // =========================
+
+                    if (openRecord) {
+
+                        const timeOut =
+                            getPhilippineTime();
 
 
                         await updateDoc(
 
-                            recordRef,
+                            doc(
+                                db,
+                                "accessRecords",
+                                openRecord.id
+                            ),
 
                             {
-
                                 timeOut:
-                                    time
-
+                                    timeOut
                             }
 
                         );
 
 
-                        message.textContent =
-                            "Time Out recorded successfully for " +
+                        showMessage(
+                            "Goodbye, " +
                             fullName +
-                            ".";
+                            "! Your Time Out has been recorded.",
+                            "success"
+                        );
 
                     }
 
 
+                    // =========================
                     // TIME IN
+                    // =========================
+
                     else {
 
-                        await setDoc(
+                        const timeIn =
+                            getPhilippineTime();
 
-                            recordRef,
+
+                        await addDoc(
+
+                            collection(
+                                db,
+                                "accessRecords"
+                            ),
 
                             {
 
@@ -292,10 +782,10 @@
                                     fullName,
 
                                 date:
-                                    date,
+                                    today,
 
                                 timeIn:
-                                    time,
+                                    timeIn,
 
                                 timeOut:
                                     ""
@@ -305,31 +795,83 @@
                         );
 
 
-                        message.textContent =
-                            "Time In recorded successfully for " +
+                        showMessage(
+                            "Welcome, " +
                             fullName +
-                            ".";
+                            "! Your Time In has been recorded.",
+                            "success"
+                        );
 
                     }
 
 
-                    document
-                        .getElementById(
-                            "studentID"
-                        )
-                        .value = "";
+                    // Clear input
 
+                    studentIdInput.value = "";
 
-                } catch (error) {
-
-                    console.error(error);
-
-                    message.textContent =
-                        "Unable to record access. Please try again.";
 
                 }
 
-            };
+                catch (error) {
+
+                    console.error(
+                        error
+                    );
+
+                    showMessage(
+                        "Something went wrong while recording your access. Please try again.",
+                        "error"
+                    );
+
+                }
+
+                finally {
+
+                    loadingMessage.style.display =
+                        "none";
+
+                    recordButton.disabled =
+                        false;
+
+                }
+
+            }
+        );
+
+
+
+        // =========================
+        // ENTER KEY
+        // =========================
+
+        studentIdInput.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (
+                    event.key === "Enter"
+                ) {
+
+                    recordButton.click();
+
+                }
+
+            }
+        );
+
+
+        // =========================
+        // AUTO FOCUS
+        // =========================
+
+        window.addEventListener(
+            "load",
+            function () {
+
+                studentIdInput.focus();
+
+            }
+        );
 
     </script>
 
