@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Management - Computer Laboratory</title>
+</head>
+
+<body>
+
+    <h1>Student Management</h1>
+
+    <p>Add, update, or remove student information.</p>
+
+    <hr>
+
+    <h2>Add Student</h2>
+
+    <label for="studentID">Student ID:</label>
+    <br>
+
+    <input
+        type="text"
+        id="studentID"
+        placeholder="Enter Student ID"
+    >
+
+    <br><br>
+
+    <label for="fullName">Full Name:</label>
+    <br>
+
+    <input
+        type="text"
+        id="fullName"
+        placeholder="Enter Full Name"
+    >
+
+    <br><br>
+
+    <button type="button" onclick="saveStudent()">
+        Save Student
+    </button>
+
+    <p id="message"></p>
+
+    <hr>
+
+    <h2>Student List</h2>
+
+    <table border="1" cellpadding="8" id="studentTable">
+
+        <thead>
+            <tr>
+                <th>Student ID</th>
+                <th>Full Name</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody id="studentTableBody">
+        </tbody>
+
+    </table>
+
+
+    <script type="module">
+
+        import {
+            initializeApp
+        } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+
+        import {
+            getFirestore,
+            doc,
+            setDoc,
+            deleteDoc,
+            collection,
+            getDocs
+        } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+
+        const firebaseConfig = {
+
+            apiKey: "AIzaSyC8vy5n9RcdZXCgxK7HZAWGo9NzTtqOga8",
+
+            authDomain:
+                "comlab-access-system.firebaseapp.com",
+
+            projectId:
+                "comlab-access-system",
+
+            storageBucket:
+                "comlab-access-system.firebasestorage.app",
+
+            messagingSenderId:
+                "136458270853",
+
+            appId:
+                "1:136458270853:web:0ee5c5d822b109c9d151ec",
+
+            measurementId:
+                "G-6PMJ2STTDD"
+
+        };
+
+
+        const app =
+            initializeApp(firebaseConfig);
+
+
+        const db =
+            getFirestore(app);
+
+
+        const message =
+            document.getElementById("message");
+
+
+        // Save student
+        window.saveStudent = async function() {
+
+            const studentID =
+                document
+                    .getElementById("studentID")
+                    .value
+                    .trim();
+
+
+            const fullName =
+                document
+                    .getElementById("fullName")
+                    .value
+                    .trim();
+
+
+            if (studentID === "") {
+
+                message.textContent =
+                    "Please enter a Student ID.";
+
+                return;
+
+            }
+
+
+            if (fullName === "") {
+
+                message.textContent =
+                    "Please enter the student's full name.";
+
+                return;
+
+            }
+
+
+            try {
+
+                await setDoc(
+
+                    doc(
+                        db,
+                        "students",
+                        studentID
+                    ),
+
+                    {
+
+                        studentId:
+                            studentID,
+
+                        fullName:
+                            fullName
+
+                    }
+
+                );
+
+
+                message.textContent =
+                    "Student saved successfully.";
+
+
+                document
+                    .getElementById("studentID")
+                    .value = "";
+
+
+                document
+                    .getElementById("fullName")
+                    .value = "";
+
+
+                loadStudents();
+
+
+            } catch (error) {
+
+                console.error(error);
+
+                message.textContent =
+                    "Unable to save student.";
+
+            }
+
+        };
+
+
+        // Load students
+        async function loadStudents() {
+
+            const tableBody =
+                document
+                    .getElementById("studentTableBody");
+
+
+            tableBody.innerHTML =
+                "";
+
+
+            try {
+
+                const snapshot =
+                    await getDocs(
+                        collection(
+                            db,
+                            "students"
+                        )
+                    );
+
+
+                snapshot.forEach(
+                    (student) => {
+
+                        const data =
+                            student.data();
+
+
+                        const row =
+                            document.createElement("tr");
+
+
+                        row.innerHTML = `
+
+                            <td>
+                                ${data.studentId}
+                            </td>
+
+                            <td>
+                                ${data.fullName}
+                            </td>
+
+                            <td>
+
+                                <button
+                                    onclick="deleteStudent('${data.studentId}')"
+                                >
+                                    Delete
+                                </button>
+
+                            </td>
+
+                        `;
+
+
+                        tableBody.appendChild(row);
+
+                    }
+                );
+
+
+            } catch (error) {
+
+                console.error(error);
+
+                message.textContent =
+                    "Unable to load students.";
+
+            }
+
+        }
+
+
+        // Delete student
+        window.deleteStudent = async function(studentID) {
+
+            const confirmDelete =
+                confirm(
+                    "Delete student " +
+                    studentID +
+                    "?"
+                );
+
+
+            if (!confirmDelete) {
+
+                return;
+
+            }
+
+
+            try {
+
+                await deleteDoc(
+
+                    doc(
+                        db,
+                        "students",
+                        studentID
+                    )
+
+                );
+
+
+                message.textContent =
+                    "Student deleted successfully.";
+
+
+                loadStudents();
+
+
+            } catch (error) {
+
+                console.error(error);
+
+                message.textContent =
+                    "Unable to delete student.";
+
+            }
+
+        };
+
+
+        // Load students when page opens
+        loadStudents();
+
+    </script>
+
+</body>
+</html>
