@@ -1,34 +1,70 @@
 <!DOCTYPE html>
 <html>
 <head>
+
     <title>Computer Laboratory Access</title>
+
 </head>
 
 <body>
 
-    <h1>Computer Laboratory Access</h1>
+    <h1>Computer Laboratory Access Monitoring System</h1>
 
-    <p>Welcome to the Computer Laboratory Access System!</p>
+    <nav>
 
-    <label for="studentID">Student ID:</label>
+        <a href="index.html">
+            QR Access
+        </a>
+
+        &nbsp; | &nbsp;
+
+        <a href="students.html">
+            Student Management
+        </a>
+
+        &nbsp; | &nbsp;
+
+        <a href="records.html">
+            Access Records
+        </a>
+
+    </nav>
+
+    <hr>
+
+    <h2>Record Computer Laboratory Access</h2>
+
+    <p>
+        Enter your Student ID to record your laboratory access.
+    </p>
+
+
+    <label for="studentID">
+        Student ID:
+    </label>
+
+    <br>
 
     <input
         type="text"
         id="studentID"
-        placeholder="Enter your Student ID"
+        placeholder="Enter Student ID"
     >
 
     <br><br>
 
-    <button type="button" onclick="recordAccess()">
+    <button
+        type="button"
+        onclick="recordAccess()"
+    >
         Record Access
     </button>
 
     <p id="message"></p>
 
+
     <script type="module">
 
-        // Firebase SDK
         import {
             initializeApp
         } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
@@ -46,10 +82,9 @@
         } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
 
-        // Firebase configuration
         const firebaseConfig = {
 
-            apiKey: "AIzaSyC8vy5n9RcdZXCgxK7HZAWGo9NzTtqOga8",
+            apiKey: "AIzaSyC8vy5nR9cdZXCgxK7HZAWGo9NzTtqOga8",
 
             authDomain:
                 "comlab-access-system.firebaseapp.com",
@@ -68,64 +103,24 @@
 
             measurementId:
                 "G-6PMJ2STTDD"
+
         };
 
 
-        // Initialize Firebase
         const app =
             initializeApp(firebaseConfig);
 
 
-        // Initialize Firestore
         const db =
             getFirestore(app);
 
 
-        // Message element
         const message =
-            document.getElementById("message");
+            document.getElementById(
+                "message"
+            );
 
 
-        // Philippine date
-        function getPhilippineDate() {
-
-            const now =
-                new Date();
-
-            return new Intl.DateTimeFormat(
-                "en-CA",
-                {
-                    timeZone: "Asia/Manila",
-                    year: "numeric",
-                    month: "2-digit",
-                    day: "2-digit"
-                }
-            ).format(now);
-
-        }
-
-
-        // Philippine time
-        function getPhilippineTime() {
-
-            const now =
-                new Date();
-
-            return new Intl.DateTimeFormat(
-                "en-US",
-                {
-                    timeZone: "Asia/Manila",
-                    hour: "2-digit",
-                    minute: "2-digit",
-                    second: "2-digit",
-                    hour12: true
-                }
-            ).format(now);
-
-        }
-
-
-        // Record student access
         window.recordAccess = async function() {
 
             const studentID =
@@ -146,12 +141,12 @@
 
 
             message.textContent =
-                "Checking student information...";
+                "Processing...";
 
 
             try {
 
-                // Find student document
+                // FIND STUDENT
                 const studentRef =
                     doc(
                         db,
@@ -161,10 +156,11 @@
 
 
                 const studentSnapshot =
-                    await getDoc(studentRef);
+                    await getDoc(
+                        studentRef
+                    );
 
 
-                // Student ID does not exist
                 if (!studentSnapshot.exists()) {
 
                     message.textContent =
@@ -175,7 +171,6 @@
                 }
 
 
-                // Get student information
                 const studentData =
                     studentSnapshot.data();
 
@@ -184,81 +179,108 @@
                     studentData.fullName;
 
 
-                const today =
-                    getPhilippineDate();
+                // PHILIPPINE DATE AND TIME
+                const now =
+                    new Date();
 
 
-                const currentTime =
-                    getPhilippineTime();
+                const date =
+                    new Intl.DateTimeFormat(
+                        "en-CA",
+                        {
+                            timeZone:
+                                "Asia/Manila",
+
+                            year:
+                                "numeric",
+
+                            month:
+                                "2-digit",
+
+                            day:
+                                "2-digit"
+                        }
+                    ).format(now);
 
 
-                message.textContent =
-                    "Recording access...";
+                const time =
+                    new Intl.DateTimeFormat(
+                        "en-US",
+                        {
+                            timeZone:
+                                "Asia/Manila",
+
+                            hour:
+                                "numeric",
+
+                            minute:
+                                "2-digit",
+
+                            second:
+                                "2-digit",
+
+                            hour12:
+                                true
+                        }
+                    ).format(now);
 
 
-                // Find today's records for this student
-                const accessQuery =
+                // CHECK FOR OPEN TIME-IN RECORD
+                const recordsRef =
+                    collection(
+                        db,
+                        "accessRecords"
+                    );
+
+
+                const q =
                     query(
-                        collection(db, "accessRecords"),
+
+                        recordsRef,
+
                         where(
                             "studentId",
                             "==",
                             studentID
+                        ),
+
+                        where(
+                            "date",
+                            "==",
+                            date
+                        ),
+
+                        where(
+                            "timeOut",
+                            "==",
+                            ""
                         )
+
                     );
 
 
-                const accessSnapshot =
-                    await getDocs(accessQuery);
-
-
-                let openRecord = null;
-
-
-                accessSnapshot.forEach(
-                    (record) => {
-
-                        const data =
-                            record.data();
-
-
-                        // Find today's record
-                        // that does not yet have Time Out
-                        if (
-                            data.date === today &&
-                            (
-                                !data.timeOut ||
-                                data.timeOut === ""
-                            )
-                        ) {
-
-                            openRecord = {
-                                id: record.id,
-                                data: data
-                            };
-
-                        }
-
-                    }
-                );
+                const existingRecords =
+                    await getDocs(q);
 
 
                 // TIME OUT
-                if (openRecord !== null) {
+                if (
+                    !existingRecords.empty
+                ) {
 
-                    const recordRef =
-                        doc(
-                            db,
-                            "accessRecords",
-                            openRecord.id
-                        );
+                    const existingRecord =
+                        existingRecords.docs[0];
 
 
                     await updateDoc(
-                        recordRef,
+
+                        existingRecord.ref,
+
                         {
-                            timeOut: currentTime
+                            timeOut:
+                                time
                         }
+
                     );
 
 
@@ -267,17 +289,16 @@
                         fullName +
                         ".";
 
-                }
 
+                }
 
                 // TIME IN
                 else {
 
                     await addDoc(
-                        collection(
-                            db,
-                            "accessRecords"
-                        ),
+
+                        recordsRef,
+
                         {
 
                             studentId:
@@ -287,15 +308,16 @@
                                 fullName,
 
                             date:
-                                today,
+                                date,
 
                             timeIn:
-                                currentTime,
+                                time,
 
                             timeOut:
                                 ""
 
                         }
+
                     );
 
 
@@ -307,7 +329,6 @@
                 }
 
 
-                // Clear input
                 document
                     .getElementById("studentID")
                     .value = "";
@@ -315,23 +336,14 @@
 
             } catch (error) {
 
-                console.error(
-                    "Firestore error:",
-                    error
-                );
-
+                console.error(error);
 
                 message.textContent =
-                    "An error occurred while recording access. Please try again.";
+                    "Unable to record access. Please try again.";
 
             }
 
         };
-
-
-        // System ready
-        message.textContent =
-            "System ready. Please enter your Student ID.";
 
     </script>
 
