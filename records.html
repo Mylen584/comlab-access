@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Access Records - Computer Laboratory</title>
+
+</head>
+
+<body>
+
+    <h1>Computer Laboratory Access Records</h1>
+
+    <p>
+        Records stored in the Firebase Firestore database.
+    </p>
+
+    <hr>
+
+    <table border="1" cellpadding="8">
+
+        <thead>
+
+            <tr>
+                <th>Student ID</th>
+                <th>Full Name</th>
+                <th>Date</th>
+                <th>Time In</th>
+                <th>Time Out</th>
+            </tr>
+
+        </thead>
+
+        <tbody id="recordsTableBody">
+
+        </tbody>
+
+    </table>
+
+    <p id="message"></p>
+
+
+    <script type="module">
+
+        import {
+            initializeApp
+        } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+
+        import {
+            getFirestore,
+            collection,
+            getDocs
+        } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+
+        const firebaseConfig = {
+
+            apiKey: "AIzaSyC8vy5nR9cdZXCgxK7HZAWGo9NzTtqOga8",
+
+            authDomain:
+                "comlab-access-system.firebaseapp.com",
+
+            projectId:
+                "comlab-access-system",
+
+            storageBucket:
+                "comlab-access-system.firebasestorage.app",
+
+            messagingSenderId:
+                "136458270853",
+
+            appId:
+                "1:136458270853:web:0ee5c5d822b109c9d151ec",
+
+            measurementId:
+                "G-6PMJ2STTDD"
+
+        };
+
+
+        const app =
+            initializeApp(firebaseConfig);
+
+
+        const db =
+            getFirestore(app);
+
+
+        const tableBody =
+            document.getElementById(
+                "recordsTableBody"
+            );
+
+
+        const message =
+            document.getElementById(
+                "message"
+            );
+
+
+        async function loadRecords() {
+
+            tableBody.innerHTML = "";
+
+            message.textContent =
+                "Loading records...";
+
+
+            try {
+
+                const snapshot =
+                    await getDocs(
+                        collection(
+                            db,
+                            "accessRecords"
+                        )
+                    );
+
+
+                if (snapshot.empty) {
+
+                    message.textContent =
+                        "No access records found.";
+
+                    return;
+
+                }
+
+
+                snapshot.forEach(
+                    (record) => {
+
+                        const data =
+                            record.data();
+
+
+                        const row =
+                            document.createElement(
+                                "tr"
+                            );
+
+
+                        const studentID =
+                            document.createElement(
+                                "td"
+                            );
+
+                        studentID.textContent =
+                            data.studentId || "";
+
+
+                        const fullName =
+                            document.createElement(
+                                "td"
+                            );
+
+                        fullName.textContent =
+                            data.fullName || "";
+
+
+                        const date =
+                            document.createElement(
+                                "td"
+                            );
+
+                        date.textContent =
+                            data.date || "";
+
+
+                        const timeIn =
+                            document.createElement(
+                                "td"
+                            );
+
+                        timeIn.textContent =
+                            data.timeIn || "";
+
+
+                        const timeOut =
+                            document.createElement(
+                                "td"
+                            );
+
+                        timeOut.textContent =
+                            data.timeOut || "";
+
+
+                        row.appendChild(
+                            studentID
+                        );
+
+                        row.appendChild(
+                            fullName
+                        );
+
+                        row.appendChild(
+                            date
+                        );
+
+                        row.appendChild(
+                            timeIn
+                        );
+
+                        row.appendChild(
+                            timeOut
+                        );
+
+
+                        tableBody.appendChild(
+                            row
+                        );
+
+                    }
+                );
+
+
+                message.textContent =
+                    "Access records loaded successfully.";
+
+
+            } catch (error) {
+
+                console.error(error);
+
+                message.textContent =
+                    "Unable to load access records.";
+
+            }
+
+        }
+
+
+        loadRecords();
+
+    </script>
+
+</body>
+</html>
