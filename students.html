@@ -12,7 +12,7 @@
 
     <hr>
 
-    <h2>Add Student</h2>
+    <h2>Add / Update Student</h2>
 
     <label for="studentID">Student ID:</label>
     <br>
@@ -38,6 +38,10 @@
 
     <button type="button" onclick="saveStudent()">
         Save Student
+    </button>
+
+    <button type="button" onclick="clearForm()">
+        Clear
     </button>
 
     <p id="message"></p>
@@ -115,7 +119,7 @@
             document.getElementById("message");
 
 
-        // Save student
+        // Save or update student
         window.saveStudent = async function() {
 
             const studentID =
@@ -163,13 +167,11 @@
                     ),
 
                     {
-
                         studentId:
                             studentID,
 
                         fullName:
                             fullName
-
                     }
 
                 );
@@ -179,15 +181,7 @@
                     "Student saved successfully.";
 
 
-                document
-                    .getElementById("studentID")
-                    .value = "";
-
-
-                document
-                    .getElementById("fullName")
-                    .value = "";
-
+                clearForm();
 
                 loadStudents();
 
@@ -251,6 +245,15 @@
                             <td>
 
                                 <button
+                                    onclick="editStudent(
+                                        '${data.studentId}',
+                                        '${data.fullName.replace(/'/g, "\\'")}'
+                                    )"
+                                >
+                                    Edit
+                                </button>
+
+                                <button
                                     onclick="deleteStudent('${data.studentId}')"
                                 >
                                     Delete
@@ -279,8 +282,34 @@
         }
 
 
+        // Edit student
+        window.editStudent = function(
+            studentID,
+            fullName
+        ) {
+
+            document
+                .getElementById("studentID")
+                .value =
+                studentID;
+
+
+            document
+                .getElementById("fullName")
+                .value =
+                fullName;
+
+
+            message.textContent =
+                "Student information loaded. Make your changes and click Save Student.";
+
+        };
+
+
         // Delete student
-        window.deleteStudent = async function(studentID) {
+        window.deleteStudent = async function(
+            studentID
+        ) {
 
             const confirmDelete =
                 confirm(
@@ -325,6 +354,24 @@
                     "Unable to delete student.";
 
             }
+
+        };
+
+
+        // Clear form
+        window.clearForm = function() {
+
+            document
+                .getElementById("studentID")
+                .value = "";
+
+
+            document
+                .getElementById("fullName")
+                .value = "";
+
+
+            message.textContent = "";
 
         };
 
