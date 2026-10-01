@@ -26,52 +26,114 @@
 
     <p id="message"></p>
 
-    <script>
+    <script type="module">
 
-        const scriptURL =
-            "https://script.google.com/macros/s/AKfycbwu2k7fy4IE-dPFmuah0DEEkNaEMV6HiAHPMT-PhJPkfSTbAnx_M8hEiFr98qBCZCsM/exec";
+        // Firebase SDK
+        import {
+            initializeApp
+        } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
 
-        let students = {};
+        import {
+            getFirestore,
+            doc,
+            getDoc,
+            collection,
+            addDoc,
+            query,
+            where,
+            getDocs,
+            updateDoc
+        } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
-        // Load student list when webpage opens
-        async function loadStudents() {
 
-            const message =
-                document.getElementById("message");
+        // Firebase configuration
+        const firebaseConfig = {
 
-            message.textContent =
-                "Loading student information...";
+            apiKey: "AIzaSyC8vy5n9RcdZXCgxK7HZAWGo9NzTtqOga8",
 
-            try {
+            authDomain:
+                "comlab-access-system.firebaseapp.com",
 
-                const response =
-                    await fetch(scriptURL);
+            projectId:
+                "comlab-access-system",
 
-                students =
-                    await response.json();
+            storageBucket:
+                "comlab-access-system.firebasestorage.app",
 
-                message.textContent =
-                    "System ready. Please enter your Student ID.";
+            messagingSenderId:
+                "136458270853",
 
-            } catch (error) {
+            appId:
+                "1:136458270853:web:0ee5c5d822b109c9d151ec",
 
-                message.textContent =
-                    "Unable to load student information.";
+            measurementId:
+                "G-6PMJ2STTDD"
+        };
 
-                console.error(error);
 
-            }
+        // Initialize Firebase
+        const app =
+            initializeApp(firebaseConfig);
+
+
+        // Initialize Firestore
+        const db =
+            getFirestore(app);
+
+
+        // Message element
+        const message =
+            document.getElementById("message");
+
+
+        // Philippine date
+        function getPhilippineDate() {
+
+            const now =
+                new Date();
+
+            return new Intl.DateTimeFormat(
+                "en-CA",
+                {
+                    timeZone: "Asia/Manila",
+                    year: "numeric",
+                    month: "2-digit",
+                    day: "2-digit"
+                }
+            ).format(now);
 
         }
 
+
+        // Philippine time
+        function getPhilippineTime() {
+
+            const now =
+                new Date();
+
+            return new Intl.DateTimeFormat(
+                "en-US",
+                {
+                    timeZone: "Asia/Manila",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit",
+                    hour12: true
+                }
+            ).format(now);
+
+        }
+
+
         // Record student access
-        async function recordAccess() {
+        window.recordAccess = async function() {
 
             const studentID =
-                document.getElementById("studentID").value.trim();
+                document
+                    .getElementById("studentID")
+                    .value
+                    .trim();
 
-            const message =
-                document.getElementById("message");
 
             if (studentID === "") {
 
@@ -82,76 +144,194 @@
 
             }
 
-            if (!students[studentID]) {
-
-                message.textContent =
-                    "Student ID not found. Please enter a valid Student ID.";
-
-                return;
-
-            }
-
-            const name =
-                students[studentID];
-
-            const now =
-                new Date();
-
-            const date =
-                now.toLocaleDateString();
-
-            const time =
-                now.toLocaleTimeString();
-
-            const data = {
-
-                studentID: studentID,
-                date: date,
-                time: time
-
-            };
 
             message.textContent =
-                "Recording access...";
+                "Checking student information...";
+
 
             try {
 
-                await fetch(scriptURL, {
+                // Find student document
+                const studentRef =
+                    doc(
+                        db,
+                        "students",
+                        studentID
+                    );
 
-                    method: "POST",
 
-                    mode: "no-cors",
+                const studentSnapshot =
+                    await getDoc(studentRef);
 
-                    headers: {
 
-                        "Content-Type":
-                            "text/plain;charset=utf-8"
+                // Student ID does not exist
+                if (!studentSnapshot.exists()) {
 
-                    },
+                    message.textContent =
+                        "Student ID not found. Please enter a valid Student ID.";
 
-                    body: JSON.stringify(data)
+                    return;
 
-                });
+                }
+
+
+                // Get student information
+                const studentData =
+                    studentSnapshot.data();
+
+
+                const fullName =
+                    studentData.fullName;
+
+
+                const today =
+                    getPhilippineDate();
+
+
+                const currentTime =
+                    getPhilippineTime();
+
 
                 message.textContent =
-                    "Access recorded successfully for " +
-                    name + ".";
+                    "Recording access...";
 
-                document.getElementById("studentID").value = "";
+
+                // Find today's records for this student
+                const accessQuery =
+                    query(
+                        collection(db, "accessRecords"),
+                        where(
+                            "studentId",
+                            "==",
+                            studentID
+                        )
+                    );
+
+
+                const accessSnapshot =
+                    await getDocs(accessQuery);
+
+
+                let openRecord = null;
+
+
+                accessSnapshot.forEach(
+                    (record) => {
+
+                        const data =
+                            record.data();
+
+
+                        // Find today's record
+                        // that does not yet have Time Out
+                        if (
+                            data.date === today &&
+                            (
+                                !data.timeOut ||
+                                data.timeOut === ""
+                            )
+                        ) {
+
+                            openRecord = {
+                                id: record.id,
+                                data: data
+                            };
+
+                        }
+
+                    }
+                );
+
+
+                // TIME OUT
+                if (openRecord !== null) {
+
+                    const recordRef =
+                        doc(
+                            db,
+                            "accessRecords",
+                            openRecord.id
+                        );
+
+
+                    await updateDoc(
+                        recordRef,
+                        {
+                            timeOut: currentTime
+                        }
+                    );
+
+
+                    message.textContent =
+                        "Time Out recorded successfully for " +
+                        fullName +
+                        ".";
+
+                }
+
+
+                // TIME IN
+                else {
+
+                    await addDoc(
+                        collection(
+                            db,
+                            "accessRecords"
+                        ),
+                        {
+
+                            studentId:
+                                studentID,
+
+                            fullName:
+                                fullName,
+
+                            date:
+                                today,
+
+                            timeIn:
+                                currentTime,
+
+                            timeOut:
+                                ""
+
+                        }
+                    );
+
+
+                    message.textContent =
+                        "Time In recorded successfully for " +
+                        fullName +
+                        ".";
+
+                }
+
+
+                // Clear input
+                document
+                    .getElementById("studentID")
+                    .value = "";
+
 
             } catch (error) {
 
-                message.textContent =
-                    "An error occurred. Please try again.";
+                console.error(
+                    "Firestore error:",
+                    error
+                );
 
-                console.error(error);
+
+                message.textContent =
+                    "An error occurred while recording access. Please try again.";
 
             }
 
-        }
+        };
 
-        // Automatically load students when webpage opens
-        loadStudents();
+
+        // System ready
+        message.textContent =
+            "System ready. Please enter your Student ID.";
 
     </script>
 
