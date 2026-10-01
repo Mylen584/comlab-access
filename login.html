@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Administrator Login</title>
+
+</head>
+
+<body>
+
+    <h1>Administrator Login</h1>
+
+    <p>
+        Please enter your administrator account.
+    </p>
+
+    <hr>
+
+    <label for="email">
+        Email:
+    </label>
+
+    <br>
+
+    <input
+        type="email"
+        id="email"
+        placeholder="Enter administrator email"
+    >
+
+    <br><br>
+
+    <label for="password">
+        Password:
+    </label>
+
+    <br>
+
+    <input
+        type="password"
+        id="password"
+        placeholder="Enter password"
+    >
+
+    <br><br>
+
+    <button
+        type="button"
+        id="loginButton"
+    >
+        Login
+    </button>
+
+    <p id="message">
+        Please enter your administrator credentials.
+    </p>
+
+
+    <script type="module">
+
+        import {
+            initializeApp
+        } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+
+        import {
+            getAuth,
+            signInWithEmailAndPassword
+        } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
+
+        const firebaseConfig = {
+
+            apiKey: "AIzaSyC8vy5n9RcdZXCgxK7HZAWGo9NzTtqOga8",
+
+            authDomain:
+                "comlab-access-system.firebaseapp.com",
+
+            projectId:
+                "comlab-access-system",
+
+            storageBucket:
+                "comlab-access-system.firebasestorage.app",
+
+            messagingSenderId:
+                "136458270853",
+
+            appId:
+                "1:136458270853:web:0ee5c5d822b109c9d151ec",
+
+            measurementId:
+                "G-6PMJ2STTDD"
+
+        };
+
+
+        const app =
+            initializeApp(
+                firebaseConfig
+            );
+
+
+        const auth =
+            getAuth(app);
+
+
+        const emailInput =
+            document.getElementById(
+                "email"
+            );
+
+
+        const passwordInput =
+            document.getElementById(
+                "password"
+            );
+
+
+        const loginButton =
+            document.getElementById(
+                "loginButton"
+            );
+
+
+        const message =
+            document.getElementById(
+                "message"
+            );
+
+
+        loginButton.onclick =
+            async function() {
+
+                const email =
+                    emailInput.value.trim();
+
+
+                const password =
+                    passwordInput.value;
+
+
+                if (
+                    email === "" ||
+                    password === ""
+                ) {
+
+                    message.textContent =
+                        "Please enter your email and password.";
+
+                    return;
+
+                }
+
+
+                message.textContent =
+                    "Logging in...";
+
+
+                try {
+
+                    await signInWithEmailAndPassword(
+                        auth,
+                        email,
+                        password
+                    );
+
+
+                    message.textContent =
+                        "Login successful. Redirecting...";
+
+
+                    window.location.href =
+                        "students.html";
+
+
+                } catch (error) {
+
+                    console.error(error);
+
+
+                    message.textContent =
+                        "Login failed. Please check your email and password.";
+
+                }
+
+            };
+
+    </script>
+
+</body>
+</html>
