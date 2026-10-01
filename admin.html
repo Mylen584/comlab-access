@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Administrator Dashboard - Computer Laboratory</title>
+
+</head>
+
+<body>
+
+    <h1>Administrator Dashboard</h1>
+
+    <p>
+        Computer Laboratory Access Monitoring System
+    </p>
+
+    <button
+        type="button"
+        id="logoutButton"
+    >
+        Logout
+    </button>
+
+    <hr>
+
+
+    <!-- ============================= -->
+    <!-- STUDENT MANAGEMENT -->
+    <!-- ============================= -->
+
+    <h2>Student Management</h2>
+
+    <label for="studentID">
+        Student ID:
+    </label>
+
+    <br>
+
+    <input
+        type="text"
+        id="studentID"
+        placeholder="Enter Student ID"
+    >
+
+    <br><br>
+
+    <label for="fullName">
+        Full Name:
+    </label>
+
+    <br>
+
+    <input
+        type="text"
+        id="fullName"
+        placeholder="Enter Full Name"
+    >
+
+    <br><br>
+
+    <button
+        type="button"
+        id="saveButton"
+    >
+        Add Student
+    </button>
+
+    <button
+        type="button"
+        id="cancelButton"
+        style="display: none;"
+    >
+        Cancel Edit
+    </button>
+
+    <p id="studentMessage"></p>
+
+    <br>
+
+    <table
+        border="1"
+        cellpadding="8"
+    >
+
+        <thead>
+
+            <tr>
+
+                <th>Student ID</th>
+
+                <th>Full Name</th>
+
+                <th>Actions</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody id="studentsTableBody">
+        </tbody>
+
+    </table>
+
+    <p id="studentCount"></p>
+
+
+    <hr>
+
+
+    <!-- ============================= -->
+    <!-- ACCESS RECORDS -->
+    <!-- ============================= -->
+
+    <h2>Access Records</h2>
+
+    <label for="searchInput">
+        Search Student ID or Full Name:
+    </label>
+
+    <br>
+
+    <input
+        type="text"
+        id="searchInput"
+        placeholder="Enter Student ID or name"
+    >
+
+    <button
+        type="button"
+        id="searchButton"
+    >
+        Search
+    </button>
+
+    <br><br>
+
+    <label for="dateFilter">
+        Filter by Date:
+    </label>
+
+    <br>
+
+    <input
+        type="date"
+        id="dateFilter"
+    >
+
+    <br><br>
+
+    <button
+        type="button"
+        id="clearButton"
+    >
+        Clear Filters
+    </button>
+
+    <p id="recordMessage"></p>
+
+    <br>
+
+    <table
+        border="1"
+        cellpadding="8"
+    >
+
+        <thead>
+
+            <tr>
+
+                <th>Student ID</th>
+
+                <th>Full Name</th>
+
+                <th>Date</th>
+
+                <th>Time In</th>
+
+                <th>Time Out</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody id="recordsTableBody">
+        </tbody>
+
+    </table>
+
+    <p id="recordCount"></p>
+
+
+    <script type="module">
+
+        import {
+            initializeApp
+        } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+
+
+        import {
+            getAuth,
+            onAuthStateChanged,
+            signOut
+        } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
+
+        import {
+            getFirestore,
+            collection,
+            getDocs,
+            doc,
+            getDoc,
+            setDoc,
+            deleteDoc
+        } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+
+        const firebaseConfig = {
+
+            apiKey: "AIzaSyC8vy5n9RcdZXCgxK7HZAWGo9NzTtqOga8",
+
+            authDomain:
+                "comlab-access-system.firebaseapp.com",
+
+            projectId:
+                "comlab-access-system",
+
+            storageBucket:
+                "comlab-access-system.firebasestorage.app",
+
+            messagingSenderId:
+                "136458270853",
+
+            appId:
+                "1:136458270853:web:0ee5c5d822b109c9d151ec",
+
+            measurementId:
+                "G-6PMJ2STTDD"
+
+        };
+
+
+        const app =
+            initializeApp(
+                firebaseConfig
+            );
+
+
+        const auth =
+            getAuth(app);
+
+
+        const db =
+            getFirestore(app);
+
+
+        // =============================
+        // ELEMENTS
+        // =============================
+
+        const studentIDInput =
+            document.getElementById(
+                "studentID"
+            );
+
+
+        const fullNameInput =
+            document.getElementById(
+                "fullName"
+            );
+
+
+        const saveButton =
+            document.getElementById(
+                "saveButton"
+            );
+
+
+        const cancelButton =
+            document.getElementById(
+                "cancelButton"
+            );
+
+
+        const logoutButton =
+            document.getElementById(
+                "logoutButton"
+            );
+
+
+        const studentMessage =
+            document.getElementById(
+                "studentMessage"
+            );
+
+
+        const studentsTableBody =
+            document.getElementById(
+                "studentsTableBody"
+            );
+
+
+        const studentCount =
+            document.getElementById(
+                "studentCount"
+            );
+
+
+        const searchInput =
+            document.getElementById(
+                "searchInput"
+            );
+
+
+        const searchButton =
+            document.getElementById(
+                "searchButton"
+            );
+
+
+        const dateFilter =
+            document.getElementById(
+                "dateFilter"
+            );
+
+
+        const clearButton =
+            document.getElementById(
+                "clearButton"
+            );
+
+
+        const recordMessage =
+            document.getElementById(
+                "recordMessage"
+            );
+
+
+        const recordsTableBody =
+            document.getElementById(
+                "recordsTableBody"
+            );
+
+
+        const recordCount =
+            document.getElementById(
+                "recordCount"
+            );
+
+
+        let editingStudentID =
+            null;
+
+
+        let allRecords =
+            [];
+
+
+        // =============================
+        // CHECK LOGIN
+        // =============================
+
+        onAuthStateChanged(
+            auth,
+            function(user) {
+
+                if (!user) {
+
+                    window.location.href =
+                        "login.html";
+
+                    return;
+
+                }
+
+
+                loadStudents();
+
+                loadRecords();
+
+            }
+        );
+
+
+        // =============================
+        // STUDENT MANAGEMENT
+        // =============================
+
+        async function loadStudents() {
+
+            studentMessage.textContent =
+                "Loading students...";
+
+
+            try {
+
+                const snapshot =
+                    await getDocs(
+                        collection(
+                            db,
+                            "students"
+                        )
+                    );
+
+
+                studentsTableBody.innerHTML =
+                    "";
+
+
+                let count =
+                    0;
+
+
+                snapshot.forEach(
+                    function(studentDoc) {
+
+                        const data =
+                            studentDoc.data();
+
+
+                        const studentID =
+                            String(
+                                data.studentId || ""
+                            );
+
+
+                        const fullName =
+                            String(
+                                data.fullName || ""
+                            );
+
+
+                        const row =
+                            document.createElement(
+                                "tr"
+                            );
+
+
+                        const idCell =
+                            document.createElement(
+                                "td"
+                            );
+
+
+                        idCell.textContent =
+                            studentID;
+
+
+                        const nameCell =
+                            document.createElement(
+                                "td"
+                            );
+
+
+                        nameCell.textContent =
+                            fullName;
+
+
+                        const actionCell =
+                            document.createElement(
+                                "td"
+                            );
+
+
+                        const editButton =
+                            document.createElement(
+                                "button"
+                            );
+
+
+                        editButton.textContent =
+                            "Edit";
+
+
+                        editButton.type =
+                            "button";
+
+
+                        editButton.onclick =
+                            function() {
+
+                                editStudent(
+                                    studentID
+                                );
+
+                            };
+
+
+                        const deleteButton =
+                            document.createElement(
+                                "button"
+                            );
+
+
+                        deleteButton.textContent =
+                            "Delete";
+
+
+                        deleteButton.type =
+                            "button";
+
+
+                        deleteButton.onclick =
+                            function() {
+
+                                deleteStudent(
+                                    studentID,
+                                    fullName
+                                );
+
+                            };
+
+
+                        actionCell.appendChild(
+                            editButton
+                        );
+
+
+                        actionCell.appendChild(
+                            document.createTextNode(
+                                " "
+                            )
+                        );
+
+
+                        actionCell.appendChild(
+                            deleteButton
+                        );
+
+
+                        row.appendChild(
+                            idCell
+                        );
+
+
+                        row.appendChild(
+                            nameCell
+                        );
+
+
+                        row.appendChild(
+                            actionCell
+                        );
+
+
+                        studentsTableBody.appendChild(
+                            row
+                        );
+
+
+                        count++;
+
+                    }
+                );
+
+
+                studentCount.textContent =
+                    "Total students: " +
+                    count;
+
+
+                studentMessage.textContent =
+                    "Students loaded successfully.";
+
+            } catch (error) {
+
+                console.error(error);
+
+                studentMessage.textContent =
+                    "Unable to load students.";
+
+            }
+
+        }
+
+
+        // =============================
+        // ADD / UPDATE STUDENT
+        // =============================
+
+        saveButton.onclick =
+            async function() {
+
+                const studentID =
+                    studentIDInput.value.trim();
+
+
+                const fullName =
+                    fullNameInput.value.trim();
+
+
+                if (
+                    studentID === "" ||
+                    fullName === ""
+                ) {
+
+                    studentMessage.textContent =
+                        "Please enter both Student ID and Full Name.";
+
+                    return;
+
+                }
+
+
+                saveButton.disabled =
+                    true;
+
+
+                try {
+
+                    // UPDATE
+                    if (
+                        editingStudentID !== null
+                    ) {
+
+                        const oldStudentRef =
+                            doc(
+                                db,
+                                "students",
+                                editingStudentID
+                            );
+
+
+                        // If Student ID was changed,
+                        // create the new document
+                        // and delete the old one.
+                        if (
+                            editingStudentID !==
+                            studentID
+                        ) {
+
+                            const newStudentRef =
+                                doc(
+                                    db,
+                                    "students",
+                                    studentID
+                                );
+
+
+                            const existingStudent =
+                                await getDoc(
+                                    newStudentRef
+                                );
+
+
+                            if (
+                                existingStudent.exists()
+                            ) {
+
+                                studentMessage.textContent =
+                                    "That Student ID already exists.";
+
+                                saveButton.disabled =
+                                    false;
+
+                                return;
+
+                            }
+
+
+                            await setDoc(
+                                newStudentRef,
+                                {
+
+                                    studentId:
+                                        studentID,
+
+                                    fullName:
+                                        fullName
+
+                                }
+                            );
+
+
+                            await deleteDoc(
+                                oldStudentRef
+                            );
+
+                        } else {
+
+                            await setDoc(
+                                oldStudentRef,
+                                {
+
+                                    studentId:
+                                        studentID,
+
+                                    fullName:
+                                        fullName
+
+                                }
+                            );
+
+                        }
+
+
+                        studentMessage.textContent =
+                            "Student updated successfully.";
+
+                    }
+
+                    // ADD
+                    else {
+
+                        const studentRef =
+                            doc(
+                                db,
+                                "students",
+                                studentID
+                            );
+
+
+                        const existingStudent =
+                            await getDoc(
+                                studentRef
+                            );
+
+
+                        if (
+                            existingStudent.exists()
+                        ) {
+
+                            studentMessage.textContent =
+                                "That Student ID already exists.";
+
+                            saveButton.disabled =
+                                false;
+
+                            return;
+
+                        }
+
+
+                        await setDoc(
+                            studentRef,
+                            {
+
+                                studentId:
+                                    studentID,
+
+                                fullName:
+                                    fullName
+
+                            }
+                        );
+
+
+                        studentMessage.textContent =
+                            "Student added successfully.";
+
+                    }
+
+
+                    clearForm();
+
+                    await loadStudents();
+
+                } catch (error) {
+
+                    console.error(error);
+
+                    studentMessage.textContent =
+                        "Unable to save student.";
+
+                }
+
+
+                saveButton.disabled =
+                    false;
+
+            };
+
+
+        // =============================
+        // EDIT STUDENT
+        // =============================
+
+        async function editStudent(
+            studentID
+        ) {
+
+            try {
+
+                const studentRef =
+                    doc(
+                        db,
+                        "students",
+                        studentID
+                    );
+
+
+                const studentSnapshot =
+                    await getDoc(
+                        studentRef
+                    );
+
+
+                if (
+                    !studentSnapshot.exists()
+                ) {
+
+                    studentMessage.textContent =
+                        "Student not found.";
+
+                    return;
+
+                }
+
+
+                const data =
+                    studentSnapshot.data();
+
+
+                studentIDInput.value =
+                    data.studentId || "";
+
+
+                fullNameInput.value =
+                    data.fullName || "";
+
+
+                editingStudentID =
+                    studentID;
+
+
+                saveButton.textContent =
+                    "Update Student";
+
+
+                cancelButton.style.display =
+                    "inline-block";
+
+
+                studentMessage.textContent =
+                    "Editing student " +
+                    studentID +
+                    ".";
+
+
+                window.scrollTo(
+                    0,
+                    0
+                );
+
+
+            } catch (error) {
+
+                console.error(error);
+
+                studentMessage.textContent =
+                    "Unable to load student information.";
+
+            }
+
+        }
+
+
+        // =============================
+        // DELETE STUDENT
+        // =============================
+
+        async function deleteStudent(
+            studentID,
+            fullName
+        ) {
+
+            const confirmed =
+                confirm(
+                    "Are you sure you want to delete " +
+                    fullName +
+                    " (" +
+                    studentID +
+                    ")?"
+                );
+
+
+            if (!confirmed) {
+
+                return;
+
+            }
+
+
+            try {
+
+                const studentRef =
+                    doc(
+                        db,
+                        "students",
+                        studentID
+                    );
+
+
+                await deleteDoc(
+                    studentRef
+                );
+
+
+                studentMessage.textContent =
+                    "Student deleted successfully.";
+
+
+                await loadStudents();
+
+
+            } catch (error) {
+
+                console.error(error);
+
+                studentMessage.textContent =
+                    "Unable to delete student.";
+
+            }
+
+        }
+
+
+        // =============================
+        // CANCEL EDIT
+        // =============================
+
+        cancelButton.onclick =
+            function() {
+
+                clearForm();
+
+                studentMessage.textContent =
+                    "Edit cancelled.";
+
+            };
+
+
+        // =============================
+        // CLEAR FORM
+        // =============================
+
+        function clearForm() {
+
+            studentIDInput.value =
+                "";
+
+
+            fullNameInput.value =
+                "";
+
+
+            editingStudentID =
+                null;
+
+
+            saveButton.textContent =
+                "Add Student";
+
+
+            cancelButton.style.display =
+                "none";
+
+        }
+
+
+        // =============================
+        // LOAD ACCESS RECORDS
+        // =============================
+
+        async function loadRecords() {
+
+            recordMessage.textContent =
+                "Loading access records...";
+
+
+            try {
+
+                const snapshot =
+                    await getDocs(
+                        collection(
+                            db,
+                            "accessRecords"
+                        )
+                    );
+
+
+                allRecords =
+                    [];
+
+
+                snapshot.forEach(
+                    function(record) {
+
+                        const data =
+                            record.data();
+
+
+                        allRecords.push({
+
+                            studentId:
+                                String(
+                                    data.studentId || ""
+                                ),
+
+                            fullName:
+                                String(
+                                    data.fullName || ""
+                                ),
+
+                            date:
+                                String(
+                                    data.date || ""
+                                ),
+
+                            timeIn:
+                                String(
+                                    data.timeIn || ""
+                                ),
+
+                            timeOut:
+                                String(
+                                    data.timeOut || ""
+                                )
+
+                        });
+
+                    }
+                );
+
+
+                displayRecords(
+                    "",
+                    ""
+                );
+
+
+                recordMessage.textContent =
+                    "Access records loaded successfully.";
+
+            } catch (error) {
+
+                console.error(error);
+
+                recordMessage.textContent =
+                    "Unable to load access records.";
+
+            }
+
+        }
+
+
+        // =============================
+        // DISPLAY RECORDS
+        // =============================
+
+        function displayRecords(
+            searchText,
+            selectedDate
+        ) {
+
+            recordsTableBody.innerHTML =
+                "";
+
+
+            searchText =
+                searchText
+                    .trim()
+                    .toLowerCase();
+
+
+            const filteredRecords =
+                allRecords.filter(
+                    function(record) {
+
+                        const studentID =
+                            record.studentId
+                                .trim()
+                                .toLowerCase();
+
+
+                        const fullName =
+                            record.fullName
+                                .trim()
+                                .toLowerCase();
+
+
+                        const recordDate =
+                            record.date
+                                .trim();
+
+
+                        const matchesSearch =
+                            searchText === "" ||
+
+                            studentID.includes(
+                                searchText
+                            ) ||
+
+                            fullName.includes(
+                                searchText
+                            );
+
+
+                        const matchesDate =
+                            selectedDate === "" ||
+
+                            recordDate ===
+                            selectedDate;
+
+
+                        return (
+                            matchesSearch &&
+                            matchesDate
+                        );
+
+                    }
+                );
+
+
+            filteredRecords.forEach(
+                function(record) {
+
+                    const row =
+                        document.createElement(
+                            "tr"
+                        );
+
+
+                    const studentID =
+                        document.createElement(
+                            "td"
+                        );
+
+
+                    studentID.textContent =
+                        record.studentId;
+
+
+                    const fullName =
+                        document.createElement(
+                            "td"
+                        );
+
+
+                    fullName.textContent =
+                        record.fullName;
+
+
+                    const date =
+                        document.createElement(
+                            "td"
+                        );
+
+
+                    date.textContent =
+                        record.date;
+
+
+                    const timeIn =
+                        document.createElement(
+                            "td"
+                        );
+
+
+                    timeIn.textContent =
+                        record.timeIn;
+
+
+                    const timeOut =
+                        document.createElement(
+                            "td"
+                        );
+
+
+                    timeOut.textContent =
+                        record.timeOut;
+
+
+                    row.appendChild(
+                        studentID
+                    );
+
+
+                    row.appendChild(
+                        fullName
+                    );
+
+
+                    row.appendChild(
+                        date
+                    );
+
+
+                    row.appendChild(
+                        timeIn
+                    );
+
+
+                    row.appendChild(
+                        timeOut
+                    );
+
+
+                    recordsTableBody.appendChild(
+                        row
+                    );
+
+                }
+            );
+
+
+            recordCount.textContent =
+                "Showing " +
+                filteredRecords.length +
+                " of " +
+                allRecords.length +
+                " record(s).";
+
+
+            if (
+                filteredRecords.length === 0
+            ) {
+
+                recordMessage.textContent =
+                    "No matching records found.";
+
+            } else {
+
+                recordMessage.textContent =
+                    "";
+
+            }
+
+        }
+
+
+        // =============================
+        // SEARCH
+        // =============================
+
+        searchButton.onclick =
+            function() {
+
+                displayRecords(
+
+                    searchInput.value,
+
+                    dateFilter.value
+
+                );
+
+            };
+
+
+        // =============================
+        // DATE FILTER
+        // =============================
+
+        dateFilter.onchange =
+            function() {
+
+                displayRecords(
+
+                    searchInput.value,
+
+                    dateFilter.value
+
+                );
+
+            };
+
+
+        // =============================
+        // CLEAR FILTERS
+        // =============================
+
+        clearButton.onclick =
+            function() {
+
+                searchInput.value =
+                    "";
+
+
+                dateFilter.value =
+                    "";
+
+
+                displayRecords(
+                    "",
+                    ""
+                );
+
+            };
+
+
+        // =============================
+        // LOGOUT
+        // =============================
+
+        logoutButton.onclick =
+            async function() {
+
+                try {
+
+                    await signOut(
+                        auth
+                    );
+
+
+                    window.location.href =
+                        "login.html";
+
+
+                } catch (error) {
+
+                    console.error(error);
+
+                    recordMessage.textContent =
+                        "Unable to log out.";
+
+                }
+
+            };
+
+    </script>
+
+</body>
+</html>
