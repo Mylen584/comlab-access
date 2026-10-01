@@ -14,6 +14,13 @@
         Records stored in the Firebase Firestore database.
     </p>
 
+    <button
+        type="button"
+        id="logoutButton"
+    >
+        Logout
+    </button>
+
     <hr>
 
     <h2>Search and Filter</h2>
@@ -30,7 +37,10 @@
         placeholder="Enter Student ID or name"
     >
 
-    <button type="button" id="searchButton">
+    <button
+        type="button"
+        id="searchButton"
+    >
         Search
     </button>
 
@@ -49,7 +59,10 @@
 
     <br><br>
 
-    <button type="button" id="clearButton">
+    <button
+        type="button"
+        id="clearButton"
+    >
         Clear Filters
     </button>
 
@@ -57,16 +70,25 @@
 
     <h2>Access Records</h2>
 
-    <table border="1" cellpadding="8">
+    <table
+        border="1"
+        cellpadding="8"
+    >
 
         <thead>
 
             <tr>
+
                 <th>Student ID</th>
+
                 <th>Full Name</th>
+
                 <th>Date</th>
+
                 <th>Time In</th>
+
                 <th>Time Out</th>
+
             </tr>
 
         </thead>
@@ -87,6 +109,14 @@
             initializeApp
         } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
 
+
+        import {
+            getAuth,
+            onAuthStateChanged,
+            signOut
+        } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
+
         import {
             getFirestore,
             collection,
@@ -96,7 +126,7 @@
 
         const firebaseConfig = {
 
-            apiKey: "AIzaSyC8vy5nR9cdZXCgxK7HZAWGo9NzTtqOga8",
+            apiKey: "AIzaSyC8vy5n9RcdZXCgxK7HZAWGo9NzTtqOga8",
 
             authDomain:
                 "comlab-access-system.firebaseapp.com",
@@ -120,7 +150,13 @@
 
 
         const app =
-            initializeApp(firebaseConfig);
+            initializeApp(
+                firebaseConfig
+            );
+
+
+        const auth =
+            getAuth(app);
 
 
         const db =
@@ -169,7 +205,34 @@
             );
 
 
+        const logoutButton =
+            document.getElementById(
+                "logoutButton"
+            );
+
+
         let allRecords = [];
+
+
+        // CHECK LOGIN STATUS
+        onAuthStateChanged(
+            auth,
+            function(user) {
+
+                if (!user) {
+
+                    window.location.href =
+                        "login.html";
+
+                    return;
+
+                }
+
+
+                loadRecords();
+
+            }
+        );
 
 
         // LOAD RECORDS
@@ -377,17 +440,21 @@
                         studentID
                     );
 
+
                     row.appendChild(
                         fullName
                     );
+
 
                     row.appendChild(
                         date
                     );
 
+
                     row.appendChild(
                         timeIn
                     );
+
 
                     row.appendChild(
                         timeOut
@@ -457,13 +524,16 @@
             };
 
 
-        // CLEAR BUTTON
+        // CLEAR FILTERS
         clearButton.onclick =
             function() {
 
-                searchInput.value = "";
+                searchInput.value =
+                    "";
 
-                dateFilter.value = "";
+                dateFilter.value =
+                    "";
+
 
                 displayRecords(
                     "",
@@ -473,8 +543,31 @@
             };
 
 
-        // LOAD DATA
-        loadRecords();
+        // LOGOUT
+        logoutButton.onclick =
+            async function() {
+
+                try {
+
+                    await signOut(
+                        auth
+                    );
+
+
+                    window.location.href =
+                        "login.html";
+
+
+                } catch (error) {
+
+                    console.error(error);
+
+                    message.textContent =
+                        "Unable to log out.";
+
+                }
+
+            };
 
     </script>
 
