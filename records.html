@@ -16,6 +16,43 @@
 
     <hr>
 
+    <h2>Search and Filter</h2>
+
+    <label for="searchInput">
+        Search Student ID or Full Name:
+    </label>
+
+    <br>
+
+    <input
+        type="text"
+        id="searchInput"
+        placeholder="Enter Student ID or name"
+    >
+
+    <br><br>
+
+    <label for="dateFilter">
+        Filter by Date:
+    </label>
+
+    <br>
+
+    <input
+        type="date"
+        id="dateFilter"
+    >
+
+    <br><br>
+
+    <button type="button" onclick="clearFilters()">
+        Clear Filters
+    </button>
+
+    <hr>
+
+    <h2>Access Records</h2>
+
     <table border="1" cellpadding="8">
 
         <thead>
@@ -35,6 +72,8 @@
         </tbody>
 
     </table>
+
+    <p id="recordCount"></p>
 
     <p id="message"></p>
 
@@ -97,6 +136,28 @@
             );
 
 
+        const recordCount =
+            document.getElementById(
+                "recordCount"
+            );
+
+
+        const searchInput =
+            document.getElementById(
+                "searchInput"
+            );
+
+
+        const dateFilter =
+            document.getElementById(
+                "dateFilter"
+            );
+
+
+        let allRecords = [];
+
+
+        // LOAD RECORDS FROM FIRESTORE
         async function loadRecords() {
 
             tableBody.innerHTML = "";
@@ -116,14 +177,7 @@
                     );
 
 
-                if (snapshot.empty) {
-
-                    message.textContent =
-                        "No access records found.";
-
-                    return;
-
-                }
+                allRecords = [];
 
 
                 snapshot.forEach(
@@ -133,84 +187,30 @@
                             record.data();
 
 
-                        const row =
-                            document.createElement(
-                                "tr"
-                            );
+                        allRecords.push({
 
+                            studentId:
+                                data.studentId || "",
 
-                        const studentID =
-                            document.createElement(
-                                "td"
-                            );
+                            fullName:
+                                data.fullName || "",
 
-                        studentID.textContent =
-                            data.studentId || "";
+                            date:
+                                data.date || "",
 
+                            timeIn:
+                                data.timeIn || "",
 
-                        const fullName =
-                            document.createElement(
-                                "td"
-                            );
+                            timeOut:
+                                data.timeOut || ""
 
-                        fullName.textContent =
-                            data.fullName || "";
-
-
-                        const date =
-                            document.createElement(
-                                "td"
-                            );
-
-                        date.textContent =
-                            data.date || "";
-
-
-                        const timeIn =
-                            document.createElement(
-                                "td"
-                            );
-
-                        timeIn.textContent =
-                            data.timeIn || "";
-
-
-                        const timeOut =
-                            document.createElement(
-                                "td"
-                            );
-
-                        timeOut.textContent =
-                            data.timeOut || "";
-
-
-                        row.appendChild(
-                            studentID
-                        );
-
-                        row.appendChild(
-                            fullName
-                        );
-
-                        row.appendChild(
-                            date
-                        );
-
-                        row.appendChild(
-                            timeIn
-                        );
-
-                        row.appendChild(
-                            timeOut
-                        );
-
-
-                        tableBody.appendChild(
-                            row
-                        );
+                        });
 
                     }
                 );
+
+
+                displayRecords();
 
 
                 message.textContent =
@@ -229,6 +229,190 @@
         }
 
 
+        // DISPLAY RECORDS
+        function displayRecords() {
+
+            tableBody.innerHTML = "";
+
+
+            const searchText =
+                searchInput.value
+                    .trim()
+                    .toLowerCase();
+
+
+            const selectedDate =
+                dateFilter.value;
+
+
+            const filteredRecords =
+                allRecords.filter(
+                    (record) => {
+
+
+                        const matchesSearch =
+
+                            record.studentId
+                                .toLowerCase()
+                                .includes(searchText)
+
+                            ||
+
+                            record.fullName
+                                .toLowerCase()
+                                .includes(searchText);
+
+
+                        const matchesDate =
+
+                            selectedDate === ""
+
+                            ||
+
+                            record.date ===
+                            selectedDate;
+
+
+                        return (
+                            matchesSearch &&
+                            matchesDate
+                        );
+
+                    }
+                );
+
+
+            filteredRecords.forEach(
+                (record) => {
+
+                    const row =
+                        document.createElement(
+                            "tr"
+                        );
+
+
+                    const studentID =
+                        document.createElement(
+                            "td"
+                        );
+
+                    studentID.textContent =
+                        record.studentId;
+
+
+                    const fullName =
+                        document.createElement(
+                            "td"
+                        );
+
+                    fullName.textContent =
+                        record.fullName;
+
+
+                    const date =
+                        document.createElement(
+                            "td"
+                        );
+
+                    date.textContent =
+                        record.date;
+
+
+                    const timeIn =
+                        document.createElement(
+                            "td"
+                        );
+
+                    timeIn.textContent =
+                        record.timeIn;
+
+
+                    const timeOut =
+                        document.createElement(
+                            "td"
+                        );
+
+                    timeOut.textContent =
+                        record.timeOut;
+
+
+                    row.appendChild(
+                        studentID
+                    );
+
+                    row.appendChild(
+                        fullName
+                    );
+
+                    row.appendChild(
+                        date
+                    );
+
+                    row.appendChild(
+                        timeIn
+                    );
+
+                    row.appendChild(
+                        timeOut
+                    );
+
+
+                    tableBody.appendChild(
+                        row
+                    );
+
+                }
+            );
+
+
+            recordCount.textContent =
+                "Showing " +
+                filteredRecords.length +
+                " record(s).";
+
+
+            if (
+                filteredRecords.length === 0
+            ) {
+
+                message.textContent =
+                    "No matching records found.";
+
+            }
+
+        }
+
+
+        // CLEAR FILTERS
+        window.clearFilters = function() {
+
+            searchInput.value = "";
+
+            dateFilter.value = "";
+
+            displayRecords();
+
+            message.textContent =
+                "Filters cleared.";
+
+        };
+
+
+        // SEARCH AS USER TYPES
+        searchInput.addEventListener(
+            "input",
+            displayRecords
+        );
+
+
+        // FILTER WHEN DATE CHANGES
+        dateFilter.addEventListener(
+            "change",
+            displayRecords
+        );
+
+
+        // LOAD RECORDS WHEN PAGE OPENS
         loadRecords();
 
     </script>
