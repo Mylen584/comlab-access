@@ -1,14 +1,12 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Computer Laboratory Access System</title>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <style>
-
         * {
             box-sizing: border-box;
         }
@@ -16,7 +14,7 @@
         body {
             margin: 0;
             font-family: Arial, Helvetica, sans-serif;
-            background: #eef5fb;
+            background: #f4f6f8;
             color: #222;
         }
 
@@ -25,57 +23,51 @@
         ========================= */
 
         .topbar {
-            height: 75px;
-            background: linear-gradient(
-                90deg,
-                #1769aa,
-                #2479bd
-            );
+            height: 65px;
+            background: #1f4e79;
             color: white;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 28px;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            padding: 0 25px;
         }
 
-        .system-title {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            font-size: 22px;
+        .topbar-title {
+            font-size: 20px;
             font-weight: bold;
         }
 
-        .system-icon {
-            font-size: 35px;
-        }
-
-        .admin-area {
+        .topbar-right {
             display: flex;
             align-items: center;
             gap: 20px;
         }
 
         .admin-name {
-            font-size: 16px;
+            font-size: 14px;
         }
 
-        .logout-top {
+        .logout-btn {
             border: none;
-            background: transparent;
+            background: #dc3545;
             color: white;
-            font-size: 16px;
+            padding: 9px 15px;
+            border-radius: 5px;
             cursor: pointer;
+            font-weight: bold;
         }
 
-        .logout-top:hover {
-            text-decoration: underline;
+        .logout-btn:hover {
+            background: #b02a37;
+        }
+
+        /* =========================
+           LAYOUT
+        ========================= */
+
+        .layout {
+            display: flex;
+            min-height: calc(100vh - 65px);
         }
 
         /* =========================
@@ -83,111 +75,80 @@
         ========================= */
 
         .sidebar {
-            position: fixed;
-            top: 75px;
-            left: 0;
-            bottom: 0;
-            width: 245px;
-            background: white;
-            border-right: 1px solid #dce5ee;
-            padding: 25px 15px;
-            z-index: 900;
+            width: 230px;
+            background: #173b5c;
+            color: white;
+            padding-top: 20px;
         }
 
-        .menu-button {
+        .sidebar button {
             width: 100%;
             border: none;
             background: transparent;
+            color: white;
             text-align: left;
-            padding: 15px;
-            margin-bottom: 8px;
-            border-radius: 10px;
-            font-size: 16px;
+            padding: 15px 22px;
+            font-size: 15px;
             cursor: pointer;
-            color: #333;
         }
 
-        .menu-button:hover {
-            background: #edf5fc;
-        }
-
-        .menu-button.active {
-            background: #e2f0fc;
-            color: #1769aa;
-            font-weight: bold;
-        }
-
-        .menu-icon {
-            display: inline-block;
-            width: 30px;
-            font-size: 19px;
+        .sidebar button:hover,
+        .sidebar button.active {
+            background: #1f4e79;
         }
 
         /* =========================
-           MAIN CONTENT
+           MAIN
         ========================= */
 
         .main {
-            margin-left: 245px;
-            padding: 105px 30px 40px;
+            flex: 1;
+            padding: 25px;
+            overflow-x: auto;
         }
 
-        .page-section {
+        .page {
             display: none;
         }
 
-        .page-section.active {
+        .page.active {
             display: block;
         }
 
         .page-title {
-            font-size: 27px;
-            margin: 0 0 7px;
-        }
-
-        .page-subtitle {
-            color: #687786;
             margin-top: 0;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
+            color: #1f4e79;
         }
 
         /* =========================
            DASHBOARD CARDS
         ========================= */
 
-        .cards {
+        .dashboard-cards {
             display: grid;
-            grid-template-columns:
-                repeat(3, minmax(0, 1fr));
+            grid-template-columns: repeat(3, 1fr);
             gap: 20px;
             margin-bottom: 25px;
         }
 
         .card {
             background: white;
-            border-radius: 13px;
             padding: 22px;
-            box-shadow:
-                0 2px 10px rgba(0,0,0,0.08);
-            border: 1px solid #e2e9ef;
+            border-radius: 8px;
+            box-shadow: 0 2px 7px rgba(0, 0, 0, 0.08);
         }
 
-        .card-label {
-            color: #65727f;
-            font-size: 15px;
+        .card-title {
+            color: #666;
+            font-size: 14px;
             margin-bottom: 10px;
         }
 
         .card-value {
-            font-size: 35px;
+            font-size: 30px;
             font-weight: bold;
-            color: #1d2730;
-        }
-
-        .card-description {
-            color: #8a959f;
-            font-size: 13px;
-            margin-top: 8px;
+            color: #1f4e79;
         }
 
         /* =========================
@@ -196,17 +157,92 @@
 
         .content-box {
             background: white;
-            border-radius: 13px;
-            padding: 22px;
-            box-shadow:
-                0 2px 10px rgba(0,0,0,0.08);
-            border: 1px solid #e2e9ef;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 7px rgba(0, 0, 0, 0.08);
             margin-bottom: 25px;
         }
 
-        .content-box h2 {
-            margin-top: 0;
-            font-size: 21px;
+        /* =========================
+           FORM
+        ========================= */
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+
+        .form-group input {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .form-buttons {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .primary-btn,
+        .secondary-btn,
+        .edit-btn,
+        .delete-btn {
+            border: none;
+            padding: 9px 14px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .primary-btn {
+            background: #1f4e79;
+            color: white;
+        }
+
+        .primary-btn:hover {
+            background: #163a5c;
+        }
+
+        .secondary-btn {
+            background: #6c757d;
+            color: white;
+        }
+
+        .secondary-btn:hover {
+            background: #565e64;
+        }
+
+        .edit-btn {
+            background: #ffc107;
+            color: #222;
+            margin-right: 5px;
+        }
+
+        .edit-btn:hover {
+            background: #e0a800;
+        }
+
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+        }
+
+        .delete-btn:hover {
+            background: #b02a37;
         }
 
         /* =========================
@@ -214,30 +250,93 @@
         ========================= */
 
         .table-container {
+            width: 100%;
             overflow-x: auto;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
+            min-width: 700px;
+        }
+
+        th,
+        td {
+            padding: 11px 10px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+            font-size: 14px;
         }
 
         th {
-            background: #edf5fc;
-            padding: 13px;
-            text-align: left;
-            font-size: 14px;
-            color: #344454;
-        }
-
-        td {
-            padding: 13px;
-            border-bottom: 1px solid #e4e8ec;
-            font-size: 14px;
+            background: #1f4e79;
+            color: white;
         }
 
         tr:hover td {
-            background: #f8fbfd;
+            background: #f8f9fa;
+        }
+
+        /* =========================
+           STATUS
+        ========================= */
+
+        .status {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .status-in {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-completed {
+            background: #d1e7dd;
+            color: #0f5132;
+        }
+
+        /* =========================
+           SEARCH / FILTER
+        ========================= */
+
+        .filter-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .filter-row input {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        #searchInput {
+            min-width: 280px;
+        }
+
+        .filter-row button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        #searchButton {
+            background: #1f4e79;
+            color: white;
+        }
+
+        #clearButton {
+            background: #6c757d;
+            color: white;
         }
 
         /* =========================
@@ -253,254 +352,135 @@
         }
 
         /* =========================
-           BUTTONS
-        ========================= */
-
-        button {
-            font-family: inherit;
-        }
-
-        .primary-button {
-            background: #1769aa;
-            color: white;
-            border: none;
-            padding: 11px 18px;
-            border-radius: 7px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        .primary-button:hover {
-            background: #12578e;
-        }
-
-        .secondary-button {
-            background: #e8eef3;
-            color: #344454;
-            border: none;
-            padding: 11px 18px;
-            border-radius: 7px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        .secondary-button:hover {
-            background: #dce5ec;
-        }
-
-        .edit-button {
-            background: #edf5fc;
-            color: #1769aa;
-            border: 1px solid #c8deef;
-            padding: 7px 11px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .delete-button {
-            background: #fff0f0;
-            color: #c62828;
-            border: 1px solid #f0c5c5;
-            padding: 7px 11px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        /* =========================
-           FORM
-        ========================= */
-
-        .form-grid {
-            display: grid;
-            grid-template-columns:
-                1fr 1fr auto;
-            gap: 15px;
-            align-items: end;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 7px;
-            font-size: 14px;
-            font-weight: bold;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 11px;
-            border: 1px solid #ccd6df;
-            border-radius: 7px;
-            font-size: 14px;
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: #1769aa;
-        }
-
-        .form-buttons {
-            display: flex;
-            gap: 8px;
-        }
-
-        /* =========================
-           FILTERS
-        ========================= */
-
-        .filter-area {
-            display: grid;
-            grid-template-columns:
-                1fr 180px auto auto;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .filter-area input {
-            padding: 11px;
-            border: 1px solid #ccd6df;
-            border-radius: 7px;
-            font-size: 14px;
-        }
-
-        .filter-area input:focus {
-            outline: none;
-            border-color: #1769aa;
-        }
-
-        /* =========================
-           STATUS
-        ========================= */
-
-        .status {
-            display: inline-block;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        .status-in {
-            background: #dff4e4;
-            color: #28733b;
-        }
-
-        .status-out {
-            background: #edf0f3;
-            color: #59636d;
-        }
-
-        /* =========================
            MESSAGES
         ========================= */
 
         .message {
-            color: #5d6b78;
-            font-size: 14px;
-            margin: 10px 0;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            display: none;
         }
 
-        .count-text {
-            color: #687786;
-            font-size: 14px;
-            margin-top: 15px;
+        .success-message {
+            background: #d1e7dd;
+            color: #0f5132;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #842029;
+        }
+
+        .info-message {
+            background: #cff4fc;
+            color: #055160;
         }
 
         /* =========================
-           EMPTY STATE
+           MODAL
         ========================= */
 
-        .empty-message {
-            text-align: center;
-            padding: 30px;
-            color: #7b8791;
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            width: 100%;
+            max-width: 600px;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25);
+        }
+
+        .modal-title {
+            margin-top: 0;
+            color: #1f4e79;
+        }
+
+        .modal-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .modal-buttons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
         }
 
         /* =========================
            RESPONSIVE
         ========================= */
 
-        @media (max-width: 1000px) {
+        @media (max-width: 800px) {
 
-            .cards {
-                grid-template-columns:
-                    repeat(2, minmax(0, 1fr));
+            .sidebar {
+                width: 190px;
             }
 
-            .form-grid {
-                grid-template-columns: 1fr 1fr;
+            .dashboard-cards {
+                grid-template-columns: 1fr;
             }
 
-            .form-buttons {
-                grid-column: 1 / -1;
+            .form-grid,
+            .modal-form {
+                grid-template-columns: 1fr;
             }
-
-            .filter-area {
-                grid-template-columns: 1fr 1fr;
-            }
-
         }
 
-        @media (max-width: 700px) {
+        @media (max-width: 600px) {
 
             .topbar {
                 padding: 0 15px;
             }
 
-            .system-title {
-                font-size: 15px;
-            }
-
-            .system-icon {
-                display: none;
+            .topbar-title {
+                font-size: 16px;
             }
 
             .admin-name {
                 display: none;
             }
 
+            .layout {
+                flex-direction: column;
+            }
+
             .sidebar {
-                width: 70px;
-                padding: 15px 8px;
+                width: 100%;
+                display: flex;
+                padding-top: 0;
             }
 
-            .menu-button {
+            .sidebar button {
+                padding: 12px 10px;
                 text-align: center;
-                padding: 13px 5px;
-            }
-
-            .menu-text {
-                display: none;
-            }
-
-            .menu-icon {
-                width: auto;
+                font-size: 13px;
             }
 
             .main {
-                margin-left: 70px;
-                padding: 95px 15px 30px;
+                padding: 15px;
             }
-
-            .cards {
-                grid-template-columns: 1fr;
-            }
-
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .form-buttons {
-                grid-column: auto;
-            }
-
-            .filter-area {
-                grid-template-columns: 1fr;
-            }
-
         }
-
     </style>
-
 </head>
 
 <body>
@@ -511,27 +491,17 @@
 
     <div class="topbar">
 
-        <div class="system-title">
-
-            <span class="system-icon">
-                🖥️
-            </span>
-
-            COMPUTER LABORATORY ACCESS SYSTEM
-
+        <div class="topbar-title">
+            Computer Laboratory Access System
         </div>
 
-        <div class="admin-area">
+        <div class="topbar-right">
 
-            <span class="admin-name">
+            <div class="admin-name">
                 Admin User
-            </span>
+            </div>
 
-            <button
-                class="logout-top"
-                id="logoutButton"
-                type="button"
-            >
+            <button class="logout-btn" id="logoutButton">
                 Logout
             </button>
 
@@ -540,148 +510,128 @@
     </div>
 
 
-    <!-- =========================
-         SIDEBAR
-    ========================= -->
+    <div class="layout">
 
-    <div class="sidebar">
+        <!-- =========================
+             SIDEBAR
+        ========================= -->
 
-        <button
-            class="menu-button active"
-            data-page="dashboardPage"
-            type="button"
-        >
+        <div class="sidebar">
 
-            <span class="menu-icon">
-                📊
-            </span>
-
-            <span class="menu-text">
+            <button
+                class="nav-button active"
+                data-page="dashboardPage">
                 Dashboard
-            </span>
+            </button>
 
-        </button>
-
-
-        <button
-            class="menu-button"
-            data-page="studentsPage"
-            type="button"
-        >
-
-            <span class="menu-icon">
-                👥
-            </span>
-
-            <span class="menu-text">
+            <button
+                class="nav-button"
+                data-page="studentsPage">
                 Student Management
-            </span>
+            </button>
 
-        </button>
-
-
-        <button
-            class="menu-button"
-            data-page="recordsPage"
-            type="button"
-        >
-
-            <span class="menu-icon">
-                🗄️
-            </span>
-
-            <span class="menu-text">
+            <button
+                class="nav-button"
+                data-page="recordsPage">
                 Access Records
-            </span>
+            </button>
 
-        </button>
-
-    </div>
-
-
-    <!-- =========================
-         MAIN
-    ========================= -->
-
-    <main class="main">
+        </div>
 
 
         <!-- =========================
-             DASHBOARD PAGE
+             MAIN
         ========================= -->
 
-        <section
-            id="dashboardPage"
-            class="page-section active"
-        >
+        <div class="main">
 
-            <h1 class="page-title">
-                Dashboard
-            </h1>
+            <!-- =========================
+                 DASHBOARD
+            ========================= -->
 
-            <p class="page-subtitle">
-                Overview of the Computer Laboratory Access System.
-            </p>
+            <div id="dashboardPage" class="page active">
 
+                <h2 class="page-title">
+                    Dashboard
+                </h2>
 
-            <div class="cards">
+                <div class="dashboard-cards">
 
+                    <div class="card">
 
-                <div class="card">
+                        <div class="card-title">
+                            Total Students
+                        </div>
 
-                    <div class="card-label">
-                        Total Students
+                        <div
+                            class="card-value"
+                            id="totalStudents">
+                            0
+                        </div>
+
                     </div>
 
-                    <div
-                        class="card-value"
-                        id="dashboardStudentCount"
-                    >
-                        0
+
+                    <div class="card">
+
+                        <div class="card-title">
+                            Currently in Lab
+                        </div>
+
+                        <div
+                            class="card-value"
+                            id="currentlyInLab">
+                            0
+                        </div>
+
                     </div>
 
-                    <div class="card-description">
-                        Registered students
+
+                    <div class="card">
+
+                        <div class="card-title">
+                            Today's Visits
+                        </div>
+
+                        <div
+                            class="card-value"
+                            id="todaysVisits">
+                            0
+                        </div>
+
                     </div>
 
                 </div>
 
 
-                <div class="card">
+                <div class="content-box">
 
-                    <div class="card-label">
-                        Currently in Lab
-                    </div>
+                    <h3>
+                        Recent Lab Activity
+                    </h3>
 
-                    <div
-                        class="card-value"
-                        id="dashboardCurrentlyIn"
-                    >
-                        0
-                    </div>
+                    <div class="table-container">
 
-                    <div class="card-description">
-                        Students without Time Out
-                    </div>
+                        <table>
 
-                </div>
+                            <thead>
 
+                                <tr>
+                                    <th>Student Name</th>
+                                    <th>Student ID</th>
+                                    <th>Date</th>
+                                    <th>Time In</th>
+                                    <th>Time Out</th>
+                                    <th>Status</th>
+                                </tr>
 
-                <div class="card">
+                            </thead>
 
-                    <div class="card-label">
-                        Today's Visits
-                    </div>
+                            <tbody id="recentActivityBody">
+                            </tbody>
 
-                    <div
-                        class="card-value"
-                        id="dashboardTodayVisits"
-                    >
-                        0
-                    </div>
+                        </table>
 
-                    <div class="card-description">
-                        Access records today
                     </div>
 
                 </div>
@@ -689,107 +639,56 @@
             </div>
 
 
-            <div class="content-box">
+            <!-- =========================
+                 STUDENT MANAGEMENT
+            ========================= -->
 
-                <h2>
-                    Recent Lab Activity
-                </h2>
+            <div id="studentsPage" class="page">
 
-                <p
-                    class="message"
-                    id="dashboardMessage"
-                >
-                    Loading recent activity...
-                </p>
-
-
-                <div class="table-container">
-
-                    <table>
-
-                        <thead>
-
-                            <tr>
-
-                                <th>Student Name</th>
-                                <th>Student ID</th>
-                                <th>Date</th>
-                                <th>Time In</th>
-                                <th>Time Out</th>
-                                <th>Status</th>
-
-                            </tr>
-
-                        </thead>
-
-                        <tbody
-                            id="recentRecordsTable"
-                        >
-                        </tbody>
-
-                    </table>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =========================
-             STUDENT MANAGEMENT PAGE
-        ========================= -->
-
-        <section
-            id="studentsPage"
-            class="page-section"
-        >
-
-            <h1 class="page-title">
-                Student Management
-            </h1>
-
-            <p class="page-subtitle">
-                Manage students registered in the Computer Laboratory Access System.
-            </p>
-
-
-            <div class="content-box">
-
-                <h2>
-                    Add Student
+                <h2 class="page-title">
+                    Student Management
                 </h2>
 
 
-                <div class="form-grid">
+                <div class="content-box">
 
+                    <h3 id="studentFormTitle">
+                        Add Student
+                    </h3>
 
-                    <div class="form-group">
-
-                        <label for="studentID">
-                            Student ID
-                        </label>
-
-                        <input
-                            type="text"
-                            id="studentID"
-                            placeholder="Enter Student ID"
-                        >
-
+                    <div
+                        id="studentMessage"
+                        class="message">
                     </div>
 
+                    <div class="form-grid">
 
-                    <div class="form-group">
+                        <div class="form-group">
 
-                        <label for="fullName">
-                            Full Name
-                        </label>
+                            <label for="studentId">
+                                Student ID
+                            </label>
 
-                        <input
-                            type="text"
-                            id="fullName"
-                            placeholder="Enter Full Name"
-                        >
+                            <input
+                                type="text"
+                                id="studentId"
+                                placeholder="Enter Student ID">
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="fullName">
+                                Full Name
+                            </label>
+
+                            <input
+                                type="text"
+                                id="fullName"
+                                placeholder="Enter Full Name">
+
+                        </div>
 
                     </div>
 
@@ -797,19 +696,15 @@
                     <div class="form-buttons">
 
                         <button
-                            class="primary-button"
-                            type="button"
-                            id="saveButton"
-                        >
+                            class="primary-btn"
+                            id="saveStudentButton">
                             Add Student
                         </button>
 
                         <button
-                            class="secondary-button"
-                            type="button"
-                            id="cancelButton"
-                            style="display:none;"
-                        >
+                            class="secondary-btn"
+                            id="cancelStudentButton"
+                            style="display:none;">
                             Cancel
                         </button>
 
@@ -818,161 +713,228 @@
                 </div>
 
 
-                <p
-                    class="message"
-                    id="studentMessage"
-                ></p>
+                <div class="content-box">
+
+                    <h3>
+                        Registered Students
+                    </h3>
+
+                    <div class="table-container">
+
+                        <table>
+
+                            <thead>
+
+                                <tr>
+                                    <th>Student ID</th>
+                                    <th>Full Name</th>
+                                    <th>Actions</th>
+                                </tr>
+
+                            </thead>
+
+                            <tbody id="studentsTableBody">
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
 
             </div>
 
 
-            <div class="content-box">
+            <!-- =========================
+                 ACCESS RECORDS
+            ========================= -->
 
-                <h2>
-                    Registered Students
+            <div id="recordsPage" class="page">
+
+                <h2 class="page-title">
+                    Access Records
                 </h2>
 
 
-                <div class="table-container">
+                <div class="content-box">
 
-                    <table>
+                    <div class="filter-row">
 
-                        <thead>
+                        <input
+                            type="text"
+                            id="searchInput"
+                            placeholder="Search Student ID or Full Name">
 
-                            <tr>
+                        <input
+                            type="date"
+                            id="dateFilter">
 
-                                <th>Student ID</th>
-                                <th>Full Name</th>
-                                <th>Actions</th>
+                        <button id="searchButton">
+                            Search
+                        </button>
 
-                            </tr>
+                        <button id="clearButton">
+                            Clear
+                        </button>
 
-                        </thead>
+                    </div>
 
-                        <tbody
-                            id="studentsTableBody"
-                        >
-                        </tbody>
 
-                    </table>
+                    <div
+                        id="recordMessage"
+                        class="message">
+                    </div>
+
+
+                    <p id="recordCount">
+                        Showing 0 of 0 record(s).
+                    </p>
+
+
+                    <div class="table-container">
+
+                        <table>
+
+                            <thead>
+
+                                <tr>
+                                    <th>Student ID</th>
+                                    <th>Full Name</th>
+                                    <th>Date</th>
+                                    <th>Time In</th>
+                                    <th>Time Out</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+
+                            </thead>
+
+                            <tbody id="recordsTableBody">
+                            </tbody>
+
+                        </table>
+
+                    </div>
 
                 </div>
 
-
-                <p
-                    class="count-text"
-                    id="studentCount"
-                >
-                </p>
-
             </div>
 
-        </section>
+        </div>
+
+    </div>
 
 
-        <!-- =========================
-             ACCESS RECORDS PAGE
-        ========================= -->
+    <!-- =========================
+         EDIT RECORD MODAL
+    ========================= -->
 
-        <section
-            id="recordsPage"
-            class="page-section"
-        >
+    <div
+        class="modal"
+        id="editRecordModal">
 
-            <h1 class="page-title">
-                Access Records
-            </h1>
+        <div class="modal-content">
 
-            <p class="page-subtitle">
-                View and search computer laboratory access records.
-            </p>
+            <h2 class="modal-title">
+                Edit Access Record
+            </h2>
+
+            <div
+                id="editRecordMessage"
+                class="message">
+            </div>
 
 
-            <div class="content-box">
+            <div class="modal-form">
 
+                <div class="form-group">
 
-                <div class="filter-area">
+                    <label for="editRecordStudentId">
+                        Student ID
+                    </label>
 
                     <input
                         type="text"
-                        id="searchInput"
-                        placeholder="Search Student ID or Full Name"
-                    >
+                        id="editRecordStudentId">
 
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="editRecordFullName">
+                        Full Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="editRecordFullName">
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="editRecordDate">
+                        Date
+                    </label>
 
                     <input
                         type="date"
-                        id="dateFilter"
-                    >
-
-
-                    <button
-                        class="primary-button"
-                        type="button"
-                        id="searchButton"
-                    >
-                        Search
-                    </button>
-
-
-                    <button
-                        class="secondary-button"
-                        type="button"
-                        id="clearButton"
-                    >
-                        Clear
-                    </button>
+                        id="editRecordDate">
 
                 </div>
 
 
-                <p
-                    class="message"
-                    id="recordMessage"
-                >
-                    Loading access records...
-                </p>
+                <div class="form-group">
 
+                    <label for="editRecordTimeIn">
+                        Time In
+                    </label>
 
-                <div class="table-container">
-
-                    <table>
-
-                        <thead>
-
-                            <tr>
-
-                                <th>Student ID</th>
-                                <th>Full Name</th>
-                                <th>Date</th>
-                                <th>Time In</th>
-                                <th>Time Out</th>
-
-                            </tr>
-
-                        </thead>
-
-                        <tbody
-                            id="recordsTableBody"
-                        >
-                        </tbody>
-
-                    </table>
+                    <input
+                        type="text"
+                        id="editRecordTimeIn"
+                        placeholder="Example: 10:28:02 AM">
 
                 </div>
 
 
-                <p
-                    class="count-text"
-                    id="recordCount"
-                >
-                </p>
+                <div class="form-group">
+
+                    <label for="editRecordTimeOut">
+                        Time Out
+                    </label>
+
+                    <input
+                        type="text"
+                        id="editRecordTimeOut"
+                        placeholder="Leave blank if still inside">
+
+                </div>
 
             </div>
 
-        </section>
 
-    </main>
+            <div class="modal-buttons">
+
+                <button
+                    class="secondary-btn"
+                    id="cancelEditRecordButton">
+                    Cancel
+                </button>
+
+                <button
+                    class="primary-btn"
+                    id="saveEditRecordButton">
+                    Save Changes
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
 
 
     <!-- =========================
@@ -983,17 +945,13 @@
 
         import {
             initializeApp
-        } from
-        "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-
+        } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
 
         import {
             getAuth,
             onAuthStateChanged,
             signOut
-        } from
-        "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
-
+        } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 
         import {
             getFirestore,
@@ -1003,13 +961,12 @@
             getDoc,
             setDoc,
             deleteDoc
-        } from
-        "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+        } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
 
-        // =========================
-        // FIREBASE CONFIG
-        // =========================
+        /* =========================
+           FIREBASE CONFIG
+        ========================= */
 
         const firebaseConfig = {
 
@@ -1033,630 +990,547 @@
 
             measurementId:
                 "G-6PMJ2STTDD"
-
         };
 
 
         const app =
-            initializeApp(
-                firebaseConfig
-            );
-
+            initializeApp(firebaseConfig);
 
         const auth =
             getAuth(app);
-
 
         const db =
             getFirestore(app);
 
 
-        // =========================
-        // VARIABLES
-        // =========================
+        /* =========================
+           VARIABLES
+        ========================= */
 
         let editingStudentID = null;
 
         let allRecords = [];
 
-
-        // =========================
-        // ELEMENTS
-        // =========================
-
-        const studentIDInput =
-            document.getElementById(
-                "studentID"
-            );
+        let editingRecordID = null;
 
 
-        const fullNameInput =
-            document.getElementById(
-                "fullName"
-            );
+        /* =========================
+           ELEMENTS
+        ========================= */
 
+        const totalStudents =
+            document.getElementById("totalStudents");
 
-        const saveButton =
-            document.getElementById(
-                "saveButton"
-            );
+        const currentlyInLab =
+            document.getElementById("currentlyInLab");
 
-
-        const cancelButton =
-            document.getElementById(
-                "cancelButton"
-            );
-
-
-        const logoutButton =
-            document.getElementById(
-                "logoutButton"
-            );
-
-
-        const studentMessage =
-            document.getElementById(
-                "studentMessage"
-            );
-
+        const todaysVisits =
+            document.getElementById("todaysVisits");
 
         const studentsTableBody =
-            document.getElementById(
-                "studentsTableBody"
-            );
-
-
-        const studentCount =
-            document.getElementById(
-                "studentCount"
-            );
-
-
-        const searchInput =
-            document.getElementById(
-                "searchInput"
-            );
-
-
-        const searchButton =
-            document.getElementById(
-                "searchButton"
-            );
-
-
-        const dateFilter =
-            document.getElementById(
-                "dateFilter"
-            );
-
-
-        const clearButton =
-            document.getElementById(
-                "clearButton"
-            );
-
-
-        const recordMessage =
-            document.getElementById(
-                "recordMessage"
-            );
-
+            document.getElementById("studentsTableBody");
 
         const recordsTableBody =
-            document.getElementById(
-                "recordsTableBody"
-            );
+            document.getElementById("recordsTableBody");
 
+        const recentActivityBody =
+            document.getElementById("recentActivityBody");
+
+        const studentIdInput =
+            document.getElementById("studentId");
+
+        const fullNameInput =
+            document.getElementById("fullName");
+
+        const saveStudentButton =
+            document.getElementById("saveStudentButton");
+
+        const cancelStudentButton =
+            document.getElementById("cancelStudentButton");
+
+        const studentFormTitle =
+            document.getElementById("studentFormTitle");
+
+        const studentMessage =
+            document.getElementById("studentMessage");
+
+        const searchInput =
+            document.getElementById("searchInput");
+
+        const dateFilter =
+            document.getElementById("dateFilter");
+
+        const searchButton =
+            document.getElementById("searchButton");
+
+        const clearButton =
+            document.getElementById("clearButton");
+
+        const recordMessage =
+            document.getElementById("recordMessage");
 
         const recordCount =
-            document.getElementById(
-                "recordCount"
-            );
+            document.getElementById("recordCount");
+
+        const logoutButton =
+            document.getElementById("logoutButton");
 
 
-        // =========================
-        // SIDEBAR NAVIGATION
-        // =========================
+        /* =========================
+           MODAL ELEMENTS
+        ========================= */
 
-        const menuButtons =
-            document.querySelectorAll(
-                ".menu-button"
-            );
+        const editRecordModal =
+            document.getElementById("editRecordModal");
 
+        const editRecordStudentId =
+            document.getElementById("editRecordStudentId");
 
-        const pageSections =
-            document.querySelectorAll(
-                ".page-section"
-            );
+        const editRecordFullName =
+            document.getElementById("editRecordFullName");
 
+        const editRecordDate =
+            document.getElementById("editRecordDate");
 
-        menuButtons.forEach(
-            function(button) {
+        const editRecordTimeIn =
+            document.getElementById("editRecordTimeIn");
 
-                button.addEventListener(
-                    "click",
-                    function() {
+        const editRecordTimeOut =
+            document.getElementById("editRecordTimeOut");
 
-                        const pageID =
-                            button.getAttribute(
-                                "data-page"
-                            );
+        const cancelEditRecordButton =
+            document.getElementById("cancelEditRecordButton");
 
+        const saveEditRecordButton =
+            document.getElementById("saveEditRecordButton");
 
-                        menuButtons.forEach(
-                            function(item) {
-
-                                item.classList.remove(
-                                    "active"
-                                );
-
-                            }
-                        );
+        const editRecordMessage =
+            document.getElementById("editRecordMessage");
 
 
-                        button.classList.add(
-                            "active"
-                        );
+        /* =========================
+           AUTHENTICATION
+        ========================= */
+
+        onAuthStateChanged(auth, function(user) {
+
+            if (!user) {
+
+                window.location.href = "login.html";
+
+                return;
+            }
+
+            loadStudents();
+
+            loadRecords();
+
+        });
 
 
-                        pageSections.forEach(
-                            function(section) {
+        /* =========================
+           NAVIGATION
+        ========================= */
 
-                                section.classList.remove(
-                                    "active"
-                                );
+        const navButtons =
+            document.querySelectorAll(".nav-button");
 
-                            }
-                        );
+        const pages =
+            document.querySelectorAll(".page");
 
 
-                        document
-                            .getElementById(
-                                pageID
-                            )
-                            .classList.add(
-                                "active"
-                            );
+        navButtons.forEach(function(button) {
 
-                    }
+            button.addEventListener("click", function() {
+
+                navButtons.forEach(function(btn) {
+
+                    btn.classList.remove("active");
+
+                });
+
+                button.classList.add("active");
+
+
+                pages.forEach(function(page) {
+
+                    page.classList.remove("active");
+
+                });
+
+
+                const pageID =
+                    button.getAttribute("data-page");
+
+                document
+                    .getElementById(pageID)
+                    .classList.add("active");
+
+            });
+
+        });
+
+
+        /* =========================
+           TODAY'S DATE
+        ========================= */
+
+        function getTodayDate() {
+
+            return new Intl.DateTimeFormat(
+                "en-CA",
+                {
+                    timeZone: "Asia/Manila"
+                }
+            ).format(new Date());
+
+        }
+
+
+        /* =========================
+           ESCAPE HTML
+        ========================= */
+
+        function escapeHTML(value) {
+
+            return String(value ?? "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+
+        }
+
+
+        /* =========================
+           HIGHLIGHT SEARCH
+        ========================= */
+
+        function highlightMatch(
+            value,
+            searchText
+        ) {
+
+            const safeValue =
+                escapeHTML(value);
+
+            if (!searchText) {
+
+                return safeValue;
+            }
+
+
+            const escapedSearch =
+                String(searchText)
+                    .replace(
+                        /[.*+?^${}()|[\]\\]/g,
+                        "\\$&"
+                    );
+
+
+            const regex =
+                new RegExp(
+                    "(" + escapedSearch + ")",
+                    "gi"
                 );
 
+
+            return safeValue.replace(
+                regex,
+                '<span class="search-highlight">$1</span>'
+            );
+
+        }
+
+
+        /* =========================
+           GET RECORD STATUS
+        ========================= */
+
+        function getRecordStatus(record) {
+
+            const timeIn =
+                String(record.timeIn ?? "").trim();
+
+            const timeOut =
+                String(record.timeOut ?? "").trim();
+
+
+            if (
+                timeIn &&
+                timeOut
+            ) {
+
+                return "Completed";
             }
-        );
 
 
-        // =========================
-        // LOGIN CHECK
-        // =========================
+            if (timeIn && !timeOut) {
 
-        onAuthStateChanged(
-            auth,
-            async function(user) {
-
-                if (!user) {
-
-                    window.location.href =
-                        "login.html";
-
-                    return;
-
-                }
+                return "Currently In";
+            }
 
 
-                await loadStudents();
+            return "Currently In";
 
-                await loadRecords();
+        }
+
+
+        /* =========================
+           STATUS HTML
+        ========================= */
+
+        function getStatusHTML(record) {
+
+            const status =
+                getRecordStatus(record);
+
+
+            if (status === "Completed") {
+
+                return `
+                    <span class="status status-completed">
+                        Completed
+                    </span>
+                `;
 
             }
-        );
 
 
-        // =========================
-        // LOAD STUDENTS
-        // =========================
+            return `
+                <span class="status status-in">
+                    Currently In
+                </span>
+            `;
+
+        }
+
+
+        /* =========================
+           LOAD STUDENTS
+        ========================= */
 
         async function loadStudents() {
-
-            studentMessage.textContent =
-                "Loading students...";
-
 
             try {
 
                 const snapshot =
                     await getDocs(
-                        collection(
-                            db,
-                            "students"
-                        )
+                        collection(db, "students")
                     );
 
 
-                studentsTableBody.innerHTML =
-                    "";
+                studentsTableBody.innerHTML = "";
 
 
-                let count = 0;
+                snapshot.forEach(function(studentDoc) {
+
+                    const data =
+                        studentDoc.data();
 
 
-                snapshot.forEach(
-                    function(studentDoc) {
-
-                        const data =
-                            studentDoc.data();
-
-
-                        const studentID =
-                            String(
-                                data.studentId || ""
-                            );
+                    const studentID =
+                        String(
+                            data.studentId ??
+                            studentDoc.id ??
+                            ""
+                        );
 
 
-                        const fullName =
-                            String(
-                                data.fullName || ""
-                            );
+                    const fullName =
+                        String(
+                            data.fullName ??
+                            ""
+                        );
 
 
-                        const row =
-                            document.createElement(
-                                "tr"
-                            );
+                    const row =
+                        document.createElement("tr");
 
 
-                        const idCell =
-                            document.createElement(
-                                "td"
-                            );
+                    row.innerHTML = `
+
+                        <td>
+                            ${escapeHTML(studentID)}
+                        </td>
+
+                        <td>
+                            ${escapeHTML(fullName)}
+                        </td>
+
+                        <td>
+
+                            <button
+                                class="edit-btn"
+                                data-edit-student="${escapeHTML(studentID)}">
+                                Edit
+                            </button>
+
+                            <button
+                                class="delete-btn"
+                                data-delete-student="${escapeHTML(studentID)}">
+                                Delete
+                            </button>
+
+                        </td>
+                    `;
 
 
-                        idCell.textContent =
-                            studentID;
+                    studentsTableBody.appendChild(row);
+
+                });
 
 
-                        const nameCell =
-                            document.createElement(
-                                "td"
-                            );
+                totalStudents.textContent =
+                    snapshot.size;
 
 
-                        nameCell.textContent =
-                            fullName;
+                document
+                    .querySelectorAll(
+                        "[data-edit-student]"
+                    )
+                    .forEach(function(button) {
 
-
-                        const actionCell =
-                            document.createElement(
-                                "td"
-                            );
-
-
-                        const editButton =
-                            document.createElement(
-                                "button"
-                            );
-
-
-                        editButton.className =
-                            "edit-button";
-
-
-                        editButton.textContent =
-                            "Edit";
-
-
-                        editButton.onclick =
+                        button.addEventListener(
+                            "click",
                             function() {
 
                                 editStudent(
-                                    studentID
+                                    button.dataset.editStudent
                                 );
 
-                            };
+                            }
+                        );
+
+                    });
 
 
-                        const deleteButton =
-                            document.createElement(
-                                "button"
-                            );
+                document
+                    .querySelectorAll(
+                        "[data-delete-student]"
+                    )
+                    .forEach(function(button) {
 
-
-                        deleteButton.className =
-                            "delete-button";
-
-
-                        deleteButton.textContent =
-                            "Delete";
-
-
-                        deleteButton.onclick =
+                        button.addEventListener(
+                            "click",
                             function() {
 
                                 deleteStudent(
-                                    studentID,
-                                    fullName
+                                    button.dataset.deleteStudent
                                 );
 
-                            };
-
-
-                        actionCell.appendChild(
-                            editButton
+                            }
                         );
 
+                    });
 
-                        actionCell.appendChild(
-                            document.createTextNode(
-                                " "
-                            )
-                        );
+            }
 
-
-                        actionCell.appendChild(
-                            deleteButton
-                        );
-
-
-                        row.appendChild(
-                            idCell
-                        );
-
-
-                        row.appendChild(
-                            nameCell
-                        );
-
-
-                        row.appendChild(
-                            actionCell
-                        );
-
-
-                        studentsTableBody.appendChild(
-                            row
-                        );
-
-
-                        count++;
-
-                    }
-                );
-
-
-                studentCount.textContent =
-                    "Total students: " +
-                    count;
-
-
-                document.getElementById(
-                    "dashboardStudentCount"
-                ).textContent =
-                    count;
-
-
-                studentMessage.textContent =
-                    "Students loaded successfully.";
-
-
-            } catch (error) {
+            catch (error) {
 
                 console.error(
-                    "Student loading error:",
+                    "Error loading students:",
                     error
                 );
-
-
-                studentMessage.textContent =
-                    "Unable to load students.";
 
             }
 
         }
 
 
-        // =========================
-        // ADD / UPDATE STUDENT
-        // =========================
+        /* =========================
+           ADD / UPDATE STUDENT
+        ========================= */
 
-        saveButton.onclick =
+        saveStudentButton.addEventListener(
+            "click",
             async function() {
 
                 const studentID =
-                    studentIDInput.value.trim();
-
+                    studentIdInput.value.trim();
 
                 const fullName =
                     fullNameInput.value.trim();
 
 
-                if (
-                    studentID === "" ||
-                    fullName === ""
-                ) {
+                if (!studentID || !fullName) {
 
-                    studentMessage.textContent =
-                        "Please enter both Student ID and Full Name.";
+                    showMessage(
+                        studentMessage,
+                        "Please enter both Student ID and Full Name.",
+                        "error"
+                    );
 
                     return;
-
                 }
-
-
-                saveButton.disabled =
-                    true;
 
 
                 try {
 
-                    if (
-                        editingStudentID !== null
-                    ) {
-
-                        const oldStudentRef =
-                            doc(
-                                db,
-                                "students",
-                                editingStudentID
-                            );
-
-
-                        if (
-                            editingStudentID !==
+                    await setDoc(
+                        doc(
+                            db,
+                            "students",
                             studentID
-                        ) {
+                        ),
+                        {
+                            studentId:
+                                studentID,
 
-                            const newStudentRef =
-                                doc(
-                                    db,
-                                    "students",
-                                    studentID
-                                );
-
-
-                            const existingStudent =
-                                await getDoc(
-                                    newStudentRef
-                                );
-
-
-                            if (
-                                existingStudent.exists()
-                            ) {
-
-                                studentMessage.textContent =
-                                    "That Student ID already exists.";
-
-                                saveButton.disabled =
-                                    false;
-
-                                return;
-
-                            }
-
-
-                            await setDoc(
-                                newStudentRef,
-                                {
-
-                                    studentId:
-                                        studentID,
-
-                                    fullName:
-                                        fullName
-
-                                }
-                            );
-
-
-                            await deleteDoc(
-                                oldStudentRef
-                            );
-
-
-                        } else {
-
-                            await setDoc(
-                                oldStudentRef,
-                                {
-
-                                    studentId:
-                                        studentID,
-
-                                    fullName:
-                                        fullName
-
-                                }
-                            );
-
+                            fullName:
+                                fullName
                         }
+                    );
 
 
-                        studentMessage.textContent =
-                            "Student updated successfully.";
+                    if (editingStudentID) {
 
-
-                    } else {
-
-                        const studentRef =
-                            doc(
-                                db,
-                                "students",
-                                studentID
-                            );
-
-
-                        const existingStudent =
-                            await getDoc(
-                                studentRef
-                            );
-
-
-                        if (
-                            existingStudent.exists()
-                        ) {
-
-                            studentMessage.textContent =
-                                "That Student ID already exists.";
-
-                            saveButton.disabled =
-                                false;
-
-                            return;
-
-                        }
-
-
-                        await setDoc(
-                            studentRef,
-                            {
-
-                                studentId:
-                                    studentID,
-
-                                fullName:
-                                    fullName
-
-                            }
+                        showMessage(
+                            studentMessage,
+                            "Student updated successfully.",
+                            "success"
                         );
 
+                    }
+                    else {
 
-                        studentMessage.textContent =
-                            "Student added successfully.";
+                        showMessage(
+                            studentMessage,
+                            "Student added successfully.",
+                            "success"
+                        );
 
                     }
 
 
-                    clearForm();
+                    clearStudentForm();
 
                     await loadStudents();
 
+                }
 
-                } catch (error) {
+                catch (error) {
 
-                    console.error(
-                        "Student save error:",
-                        error
+                    console.error(error);
+
+                    showMessage(
+                        studentMessage,
+                        "Error saving student.",
+                        "error"
                     );
-
-
-                    studentMessage.textContent =
-                        "Unable to save student.";
 
                 }
 
-
-                saveButton.disabled =
-                    false;
-
-            };
+            }
+        );
 
 
-        // =========================
-        // EDIT STUDENT
-        // =========================
+        /* =========================
+           EDIT STUDENT
+        ========================= */
 
-        async function editStudent(
-            studentID
-        ) {
+        async function editStudent(studentID) {
 
             try {
 
@@ -1668,99 +1542,95 @@
                     );
 
 
-                const snapshot =
-                    await getDoc(
-                        studentRef
+                const studentDoc =
+                    await getDoc(studentRef);
+
+
+                if (!studentDoc.exists()) {
+
+                    showMessage(
+                        studentMessage,
+                        "Student not found.",
+                        "error"
                     );
 
-
-                if (
-                    !snapshot.exists()
-                ) {
-
-                    studentMessage.textContent =
-                        "Student not found.";
-
                     return;
-
                 }
 
 
                 const data =
-                    snapshot.data();
-
-
-                studentIDInput.value =
-                    data.studentId || "";
-
-
-                fullNameInput.value =
-                    data.fullName || "";
+                    studentDoc.data();
 
 
                 editingStudentID =
                     studentID;
 
 
-                saveButton.textContent =
+                studentIdInput.value =
+                    data.studentId ??
+                    studentID;
+
+
+                fullNameInput.value =
+                    data.fullName ??
+                    "";
+
+
+                studentIdInput.disabled =
+                    true;
+
+
+                studentFormTitle.textContent =
+                    "Edit Student";
+
+
+                saveStudentButton.textContent =
                     "Update Student";
 
 
-                cancelButton.style.display =
+                cancelStudentButton.style.display =
                     "inline-block";
 
 
-                studentMessage.textContent =
-                    "Editing student " +
-                    studentID +
-                    ".";
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth"
+                });
 
+            }
 
-                document
-                    .querySelector(
-                        '[data-page="studentsPage"]'
-                    )
-                    .click();
+            catch (error) {
 
+                console.error(error);
 
-            } catch (error) {
-
-                console.error(
-                    error
+                showMessage(
+                    studentMessage,
+                    "Error loading student.",
+                    "error"
                 );
-
-
-                studentMessage.textContent =
-                    "Unable to load student.";
 
             }
 
         }
 
 
-        // =========================
-        // DELETE STUDENT
-        // =========================
+        /* =========================
+           DELETE STUDENT
+        ========================= */
 
-        async function deleteStudent(
-            studentID,
-            fullName
-        ) {
+        async function deleteStudent(studentID) {
 
             const confirmed =
                 confirm(
-                    "Are you sure you want to delete " +
-                    fullName +
-                    " (" +
+                    "Are you sure you want to delete student " +
                     studentID +
-                    ")?"
+                    "?"
                 );
 
 
             if (!confirmed) {
 
                 return;
-
             }
 
 
@@ -1775,109 +1645,76 @@
                 );
 
 
-                studentMessage.textContent =
-                    "Student deleted successfully.";
+                showMessage(
+                    studentMessage,
+                    "Student deleted successfully.",
+                    "success"
+                );
 
 
                 await loadStudents();
 
+            }
 
-            } catch (error) {
+            catch (error) {
 
-                console.error(
-                    error
+                console.error(error);
+
+                showMessage(
+                    studentMessage,
+                    "Error deleting student.",
+                    "error"
                 );
-
-
-                studentMessage.textContent =
-                    "Unable to delete student.";
 
             }
 
         }
 
 
-        // =========================
-        // CANCEL EDIT
-        // =========================
+        /* =========================
+           CANCEL STUDENT EDIT
+        ========================= */
 
-        cancelButton.onclick =
+        cancelStudentButton.addEventListener(
+            "click",
             function() {
 
-                clearForm();
+                clearStudentForm();
+
+            }
+        );
 
 
-                studentMessage.textContent =
-                    "Edit cancelled.";
+        function clearStudentForm() {
 
-            };
+            editingStudentID = null;
 
+            studentIdInput.value = "";
 
-        // =========================
-        // CLEAR FORM
-        // =========================
+            fullNameInput.value = "";
 
-        function clearForm() {
+            studentIdInput.disabled = false;
 
-            studentIDInput.value =
-                "";
-
-
-            fullNameInput.value =
-                "";
-
-
-            editingStudentID =
-                null;
-
-
-            saveButton.textContent =
+            studentFormTitle.textContent =
                 "Add Student";
 
+            saveStudentButton.textContent =
+                "Add Student";
 
-            cancelButton.style.display =
+            cancelStudentButton.style.display =
+                "none";
+
+            studentMessage.style.display =
                 "none";
 
         }
 
 
-        // =========================
-        // GET TODAY'S DATE
-        // =========================
-
-        function getTodayDate() {
-
-            return new Intl.DateTimeFormat(
-                "en-CA",
-                {
-                    timeZone:
-                        "Asia/Manila",
-
-                    year:
-                        "numeric",
-
-                    month:
-                        "2-digit",
-
-                    day:
-                        "2-digit"
-                }
-            ).format(
-                new Date()
-            );
-
-        }
-
-
-        // =========================
-        // LOAD ACCESS RECORDS
-        // =========================
+        /* =========================
+           LOAD ACCESS RECORDS
+        ========================= */
 
         async function loadRecords() {
-
-            recordMessage.textContent =
-                "Loading access records...";
-
 
             try {
 
@@ -1890,66 +1727,67 @@
                     );
 
 
-                allRecords =
-                    [];
+                allRecords = [];
 
 
-                snapshot.forEach(
-                    function(recordDoc) {
+                snapshot.forEach(function(recordDoc) {
 
-                        const data =
-                            recordDoc.data();
+                    const data =
+                        recordDoc.data();
 
 
-                        allRecords.push({
+                    allRecords.push({
 
-                            studentId:
-                                String(
-                                    data.studentId ?? ""
-                                ),
+                        id:
+                            recordDoc.id,
 
-                            fullName:
-                                String(
-                                    data.fullName ?? ""
-                                ),
+                        studentId:
+                            String(
+                                data.studentId ??
+                                ""
+                            ),
 
-                            date:
-                                String(
-                                    data.date ?? ""
-                                ),
+                        fullName:
+                            String(
+                                data.fullName ??
+                                ""
+                            ),
 
-                            timeIn:
-                                String(
-                                    data.timeIn ?? ""
-                                ),
+                        date:
+                            String(
+                                data.date ??
+                                ""
+                            ),
 
-                            timeOut:
-                                String(
-                                    data.timeOut ?? ""
-                                )
+                        timeIn:
+                            String(
+                                data.timeIn ??
+                                ""
+                            ),
 
-                        });
+                        timeOut:
+                            String(
+                                data.timeOut ??
+                                ""
+                            )
 
-                    }
-                );
+                    });
+
+                });
 
 
                 allRecords.sort(
                     function(a, b) {
 
-                        if (
-                            a.date !== b.date
-                        ) {
+                        const dateA =
+                            a.date + " " + a.timeIn;
 
-                            return b.date.localeCompare(
-                                a.date
-                            );
-
-                        }
+                        const dateB =
+                            b.date + " " + b.timeIn;
 
 
-                        return b.timeIn.localeCompare(
-                            a.timeIn
+                        return dateB.localeCompare(
+                            dateA
                         );
 
                     }
@@ -1958,37 +1796,34 @@
 
                 updateDashboard();
 
-
                 displayRecords(
                     searchInput.value,
                     dateFilter.value
                 );
 
+            }
 
-                recordMessage.textContent =
-                    "Access records loaded successfully.";
-
-
-            } catch (error) {
+            catch (error) {
 
                 console.error(
-                    "Access record error:",
+                    "Error loading access records:",
                     error
                 );
 
-
-                recordMessage.textContent =
-                    "Unable to load access records. " +
-                    error.message;
+                showMessage(
+                    recordMessage,
+                    "Error loading access records.",
+                    "error"
+                );
 
             }
 
         }
 
 
-        // =========================
-        // UPDATE DASHBOARD
-        // =========================
+        /* =========================
+           UPDATE DASHBOARD
+        ========================= */
 
         function updateDashboard() {
 
@@ -2000,303 +1835,100 @@
                 allRecords.filter(
                     function(record) {
 
-                        return (
-                            normalizeValue(
-                                record.date
-                            ) ===
-                            normalizeValue(
-                                today
-                            )
-                        );
+                        return record.date === today;
 
                     }
                 );
 
 
-            const currentlyIn =
-                todayRecords.filter(
+            const currentRecords =
+                allRecords.filter(
                     function(record) {
 
                         return (
-                            record.timeIn !== "" &&
-                            record.timeOut === ""
+                            record.timeIn &&
+                            !record.timeOut
                         );
 
                     }
                 );
 
 
-            document.getElementById(
-                "dashboardTodayVisits"
-            ).textContent =
+            todaysVisits.textContent =
                 todayRecords.length;
 
 
-            document.getElementById(
-                "dashboardCurrentlyIn"
-            ).textContent =
-                currentlyIn.length;
+            currentlyInLab.textContent =
+                currentRecords.length;
 
 
-            const recentRecords =
-                allRecords.slice(
-                    0,
-                    10
-                );
-
-
-            const recentTable =
-                document.getElementById(
-                    "recentRecordsTable"
-                );
-
-
-            recentTable.innerHTML =
+            recentActivityBody.innerHTML =
                 "";
 
 
-            if (
-                recentRecords.length === 0
-            ) {
+            const recentRecords =
+                allRecords.slice(0, 10);
 
-                recentTable.innerHTML =
-                    `
-                    <tr>
-                        <td
-                            colspan="6"
-                            class="empty-message"
-                        >
-                            No access records available.
+
+            recentRecords.forEach(
+                function(record) {
+
+                    const row =
+                        document.createElement("tr");
+
+
+                    row.innerHTML = `
+
+                        <td>
+                            ${escapeHTML(record.fullName)}
                         </td>
-                    </tr>
+
+                        <td>
+                            ${escapeHTML(record.studentId)}
+                        </td>
+
+                        <td>
+                            ${escapeHTML(record.date)}
+                        </td>
+
+                        <td>
+                            ${escapeHTML(record.timeIn)}
+                        </td>
+
+                        <td>
+                            ${escapeHTML(record.timeOut)}
+                        </td>
+
+                        <td>
+                            ${getStatusHTML(record)}
+                        </td>
+
                     `;
 
-            } else {
 
-                recentRecords.forEach(
-                    function(record) {
+                    recentActivityBody.appendChild(row);
 
-                        const row =
-                            document.createElement(
-                                "tr"
-                            );
-
-
-                        let statusHTML;
-
-
-                        if (
-                            record.timeOut === ""
-                        ) {
-
-                            statusHTML =
-                                `
-                                <span
-                                    class="status status-in"
-                                >
-                                    In Lab
-                                </span>
-                                `;
-
-                        } else {
-
-                            statusHTML =
-                                `
-                                <span
-                                    class="status status-out"
-                                >
-                                    Completed
-                                </span>
-                                `;
-
-                        }
-
-
-                        row.innerHTML =
-                            `
-                            <td>
-                                ${escapeHTML(record.fullName)}
-                            </td>
-
-                            <td>
-                                ${escapeHTML(record.studentId)}
-                            </td>
-
-                            <td>
-                                ${escapeHTML(record.date)}
-                            </td>
-
-                            <td>
-                                ${escapeHTML(record.timeIn)}
-                            </td>
-
-                            <td>
-                                ${escapeHTML(record.timeOut || "-")}
-                            </td>
-
-                            <td>
-                                ${statusHTML}
-                            </td>
-                            `;
-
-
-                        recentTable.appendChild(
-                            row
-                        );
-
-                    }
-                );
-
-            }
-
-
-            document.getElementById(
-                "dashboardMessage"
-            ).textContent =
-                recentRecords.length +
-                " recent record(s) displayed.";
+                }
+            );
 
         }
 
 
-        // =========================
-        // NORMALIZE SEARCH VALUE
-        // =========================
-
-        function normalizeValue(
-            value
-        ) {
-
-            return String(
-                value ?? ""
-            )
-            .trim()
-            .toLowerCase();
-
-        }
-
-
-        // =========================
-        // HIGHLIGHT SEARCH TEXT
-        // =========================
-
-        function highlightMatch(
-            value,
-            searchText
-        ) {
-
-            const text =
-                String(
-                    value ?? ""
-                );
-
-
-            const search =
-                String(
-                    searchText ?? ""
-                ).trim();
-
-
-            if (
-                search === ""
-            ) {
-
-                return escapeHTML(
-                    text
-                );
-
-            }
-
-
-            const lowerText =
-                text.toLowerCase();
-
-
-            const lowerSearch =
-                search.toLowerCase();
-
-
-            let result = "";
-
-            let currentIndex = 0;
-
-            let matchIndex =
-                lowerText.indexOf(
-                    lowerSearch
-                );
-
-
-            while (
-                matchIndex !== -1
-            ) {
-
-                result +=
-                    escapeHTML(
-                        text.substring(
-                            currentIndex,
-                            matchIndex
-                        )
-                    );
-
-
-                result +=
-                    '<span class="search-highlight">' +
-                    escapeHTML(
-                        text.substring(
-                            matchIndex,
-                            matchIndex +
-                            search.length
-                        )
-                    ) +
-                    '</span>';
-
-
-                currentIndex =
-                    matchIndex +
-                    search.length;
-
-
-                matchIndex =
-                    lowerText.indexOf(
-                        lowerSearch,
-                        currentIndex
-                    );
-
-            }
-
-
-            result +=
-                escapeHTML(
-                    text.substring(
-                        currentIndex
-                    )
-                );
-
-
-            return result;
-
-        }
-
-
-        // =========================
-        // DISPLAY ACCESS RECORDS
-        // =========================
+        /* =========================
+           DISPLAY RECORDS
+        ========================= */
 
         function displayRecords(
             searchText,
             selectedDate
         ) {
 
-            const search =
-                normalizeValue(
-                    searchText
-                );
-
-
-            const date =
+            const normalizedSearch =
                 String(
-                    selectedDate ?? ""
-                ).trim();
+                    searchText ?? ""
+                )
+                .trim()
+                .toLowerCase();
 
 
             const filteredRecords =
@@ -2304,36 +1936,33 @@
                     function(record) {
 
                         const studentID =
-                            normalizeValue(
-                                record.studentId
-                            );
+                            String(
+                                record.studentId ??
+                                ""
+                            ).toLowerCase();
 
 
                         const fullName =
-                            normalizeValue(
-                                record.fullName
-                            );
-
-
-                        const recordDate =
                             String(
-                                record.date ?? ""
-                            ).trim();
+                                record.fullName ??
+                                ""
+                            ).toLowerCase();
 
 
                         const matchesSearch =
-                            search === "" ||
+                            !normalizedSearch ||
                             studentID.includes(
-                                search
+                                normalizedSearch
                             ) ||
                             fullName.includes(
-                                search
+                                normalizedSearch
                             );
 
 
                         const matchesDate =
-                            date === "" ||
-                            recordDate === date;
+                            !selectedDate ||
+                            record.date ===
+                                selectedDate;
 
 
                         return (
@@ -2345,99 +1974,79 @@
                 );
 
 
-            // =========================
-            // CLEAR TABLE
-            // =========================
-
             recordsTableBody.innerHTML =
                 "";
 
 
-            // =========================
-            // NO RESULTS
-            // =========================
+            filteredRecords.forEach(
+                function(record) {
 
-            if (
-                filteredRecords.length === 0
-            ) {
+                    const row =
+                        document.createElement("tr");
 
-                recordsTableBody.innerHTML =
-                    `
-                    <tr>
-                        <td
-                            colspan="5"
-                            class="empty-message"
-                        >
-                            No matching access records found.
+
+                    row.innerHTML = `
+
+                        <td>
+                            ${highlightMatch(
+                                record.studentId,
+                                searchText
+                            )}
                         </td>
-                    </tr>
+
+                        <td>
+                            ${highlightMatch(
+                                record.fullName,
+                                searchText
+                            )}
+                        </td>
+
+                        <td>
+                            ${escapeHTML(
+                                record.date
+                            )}
+                        </td>
+
+                        <td>
+                            ${escapeHTML(
+                                record.timeIn
+                            )}
+                        </td>
+
+                        <td>
+                            ${escapeHTML(
+                                record.timeOut
+                            )}
+                        </td>
+
+                        <td>
+                            ${getStatusHTML(record)}
+                        </td>
+
+                        <td>
+
+                            <button
+                                class="edit-btn"
+                                data-edit-record="${escapeHTML(record.id)}">
+                                Edit
+                            </button>
+
+                            <button
+                                class="delete-btn"
+                                data-delete-record="${escapeHTML(record.id)}">
+                                Delete
+                            </button>
+
+                        </td>
+
                     `;
 
-            } else {
 
+                    recordsTableBody.appendChild(row);
 
-                // =========================
-                // DISPLAY RESULTS
-                // =========================
+                }
+            );
 
-                filteredRecords.forEach(
-                    function(record) {
-
-                        const row =
-                            document.createElement(
-                                "tr"
-                            );
-
-
-                        row.innerHTML =
-                            `
-                            <td>
-                                ${highlightMatch(
-                                    record.studentId,
-                                    searchText
-                                )}
-                            </td>
-
-                            <td>
-                                ${highlightMatch(
-                                    record.fullName,
-                                    searchText
-                                )}
-                            </td>
-
-                            <td>
-                                ${escapeHTML(
-                                    record.date
-                                )}
-                            </td>
-
-                            <td>
-                                ${escapeHTML(
-                                    record.timeIn
-                                )}
-                            </td>
-
-                            <td>
-                                ${escapeHTML(
-                                    record.timeOut || "-"
-                                )}
-                            </td>
-                            `;
-
-
-                        recordsTableBody.appendChild(
-                            row
-                        );
-
-                    }
-                );
-
-            }
-
-
-            // =========================
-            // UPDATE COUNT
-            // =========================
 
             recordCount.textContent =
                 "Showing " +
@@ -2446,12 +2055,60 @@
                 allRecords.length +
                 " record(s).";
 
+
+            /* =========================
+               RECORD EDIT BUTTONS
+            ========================= */
+
+            document
+                .querySelectorAll(
+                    "[data-edit-record]"
+                )
+                .forEach(function(button) {
+
+                    button.addEventListener(
+                        "click",
+                        function() {
+
+                            openEditRecord(
+                                button.dataset.editRecord
+                            );
+
+                        }
+                    );
+
+                });
+
+
+            /* =========================
+               RECORD DELETE BUTTONS
+            ========================= */
+
+            document
+                .querySelectorAll(
+                    "[data-delete-record]"
+                )
+                .forEach(function(button) {
+
+                    button.addEventListener(
+                        "click",
+                        function() {
+
+                            deleteRecord(
+                                button.dataset.deleteRecord
+                            );
+
+                        }
+                    );
+
+                });
+
         }
 
 
-        // =========================
-        // APPLY RECORD FILTERS
-        // =========================
+        /* =========================
+           SEARCH
+        ========================= */
 
         function applyRecordFilters() {
 
@@ -2463,10 +2120,6 @@
         }
 
 
-        // =========================
-        // SEARCH BUTTON
-        // =========================
-
         searchButton.addEventListener(
             "click",
             function() {
@@ -2476,10 +2129,6 @@
             }
         );
 
-
-        // =========================
-        // SEARCH WHILE TYPING
-        // =========================
 
         searchInput.addEventListener(
             "input",
@@ -2491,10 +2140,6 @@
         );
 
 
-        // =========================
-        // DATE FILTER
-        // =========================
-
         dateFilter.addEventListener(
             "change",
             function() {
@@ -2505,10 +2150,6 @@
         );
 
 
-        // =========================
-        // CLEAR FILTERS
-        // =========================
-
         clearButton.addEventListener(
             "click",
             function() {
@@ -2516,10 +2157,8 @@
                 searchInput.value =
                     "";
 
-
                 dateFilter.value =
                     "";
-
 
                 displayRecords(
                     "",
@@ -2530,44 +2169,349 @@
         );
 
 
-        // =========================
-        // ESCAPE HTML
-        // =========================
+        /* =========================
+           OPEN EDIT RECORD
+        ========================= */
 
-        function escapeHTML(
-            value
-        ) {
+        function openEditRecord(recordID) {
 
-            return String(
-                value ?? ""
-            )
-            .replace(
-                /&/g,
-                "&amp;"
-            )
-            .replace(
-                /</g,
-                "&lt;"
-            )
-            .replace(
-                />/g,
-                "&gt;"
-            )
-            .replace(
-                /"/g,
-                "&quot;"
-            )
-            .replace(
-                /'/g,
-                "&#039;"
+            const record =
+                allRecords.find(
+                    function(item) {
+
+                        return item.id === recordID;
+
+                    }
+                );
+
+
+            if (!record) {
+
+                showMessage(
+                    recordMessage,
+                    "Record not found.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            editingRecordID =
+                recordID;
+
+
+            editRecordStudentId.value =
+                record.studentId;
+
+
+            editRecordFullName.value =
+                record.fullName;
+
+
+            editRecordDate.value =
+                record.date;
+
+
+            editRecordTimeIn.value =
+                record.timeIn;
+
+
+            editRecordTimeOut.value =
+                record.timeOut;
+
+
+            editRecordMessage.style.display =
+                "none";
+
+
+            editRecordModal.classList.add(
+                "show"
             );
 
         }
 
 
-        // =========================
-        // LOGOUT
-        // =========================
+        /* =========================
+           CLOSE EDIT RECORD
+        ========================= */
+
+        cancelEditRecordButton.addEventListener(
+            "click",
+            function() {
+
+                closeEditRecordModal();
+
+            }
+        );
+
+
+        function closeEditRecordModal() {
+
+            editingRecordID =
+                null;
+
+            editRecordModal.classList.remove(
+                "show"
+            );
+
+        }
+
+
+        /* =========================
+           SAVE EDITED RECORD
+        ========================= */
+
+        saveEditRecordButton.addEventListener(
+            "click",
+            async function() {
+
+                if (!editingRecordID) {
+
+                    return;
+                }
+
+
+                const studentID =
+                    editRecordStudentId.value.trim();
+
+                const fullName =
+                    editRecordFullName.value.trim();
+
+                const date =
+                    editRecordDate.value.trim();
+
+                const timeIn =
+                    editRecordTimeIn.value.trim();
+
+                const timeOut =
+                    editRecordTimeOut.value.trim();
+
+
+                if (
+                    !studentID ||
+                    !fullName ||
+                    !date ||
+                    !timeIn
+                ) {
+
+                    showMessage(
+                        editRecordMessage,
+                        "Please complete Student ID, Full Name, Date, and Time In.",
+                        "error"
+                    );
+
+                    return;
+                }
+
+
+                try {
+
+                    await setDoc(
+                        doc(
+                            db,
+                            "accessRecords",
+                            editingRecordID
+                        ),
+                        {
+
+                            studentId:
+                                studentID,
+
+                            fullName:
+                                fullName,
+
+                            date:
+                                date,
+
+                            timeIn:
+                                timeIn,
+
+                            timeOut:
+                                timeOut
+
+                        }
+                    );
+
+
+                    closeEditRecordModal();
+
+
+                    showMessage(
+                        recordMessage,
+                        "Access record updated successfully.",
+                        "success"
+                    );
+
+
+                    await loadRecords();
+
+                }
+
+                catch (error) {
+
+                    console.error(
+                        "Error updating record:",
+                        error
+                    );
+
+
+                    showMessage(
+                        editRecordMessage,
+                        "Error updating access record.",
+                        "error"
+                    );
+
+                }
+
+            }
+        );
+
+
+        /* =========================
+           DELETE RECORD
+        ========================= */
+
+        async function deleteRecord(recordID) {
+
+            const record =
+                allRecords.find(
+                    function(item) {
+
+                        return item.id === recordID;
+
+                    }
+                );
+
+
+            if (!record) {
+
+                return;
+            }
+
+
+            const confirmed =
+                confirm(
+                    "Are you sure you want to delete this access record?\n\n" +
+                    "Student: " +
+                    record.fullName +
+                    "\n" +
+                    "Date: " +
+                    record.date +
+                    "\n" +
+                    "Time In: " +
+                    record.timeIn
+                );
+
+
+            if (!confirmed) {
+
+                return;
+            }
+
+
+            try {
+
+                await deleteDoc(
+                    doc(
+                        db,
+                        "accessRecords",
+                        recordID
+                    )
+                );
+
+
+                showMessage(
+                    recordMessage,
+                    "Access record deleted successfully.",
+                    "success"
+                );
+
+
+                await loadRecords();
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "Error deleting record:",
+                    error
+                );
+
+
+                showMessage(
+                    recordMessage,
+                    "Error deleting access record.",
+                    "error"
+                );
+
+            }
+
+        }
+
+
+        /* =========================
+           SHOW MESSAGE
+        ========================= */
+
+        function showMessage(
+            element,
+            message,
+            type
+        ) {
+
+            element.textContent =
+                message;
+
+
+            element.className =
+                "message";
+
+
+            if (type === "success") {
+
+                element.classList.add(
+                    "success-message"
+                );
+
+            }
+            else if (type === "error") {
+
+                element.classList.add(
+                    "error-message"
+                );
+
+            }
+            else {
+
+                element.classList.add(
+                    "info-message"
+                );
+
+            }
+
+
+            element.style.display =
+                "block";
+
+
+            setTimeout(
+                function() {
+
+                    element.style.display =
+                        "none";
+
+                },
+                4000
+            );
+
+        }
+
+
+        /* =========================
+           LOGOUT
+        ========================= */
 
         logoutButton.addEventListener(
             "click",
@@ -2575,20 +2519,41 @@
 
                 try {
 
-                    await signOut(
-                        auth
-                    );
-
+                    await signOut(auth);
 
                     window.location.href =
                         "login.html";
 
+                }
 
-                } catch (error) {
+                catch (error) {
 
                     console.error(
+                        "Logout error:",
                         error
                     );
+
+                }
+
+            }
+        );
+
+
+        /* =========================
+           CLOSE MODAL WHEN CLICKING
+           OUTSIDE THE MODAL
+        ========================= */
+
+        editRecordModal.addEventListener(
+            "click",
+            function(event) {
+
+                if (
+                    event.target ===
+                    editRecordModal
+                ) {
+
+                    closeEditRecordModal();
 
                 }
 
@@ -2598,5 +2563,4 @@
     </script>
 
 </body>
-
 </html>
