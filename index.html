@@ -48,15 +48,12 @@
             initializeApp
         } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
 
+
         import {
             getFirestore,
             doc,
             getDoc,
-            collection,
-            addDoc,
-            query,
-            where,
-            getDocs,
+            setDoc,
             updateDoc
         } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
@@ -87,7 +84,9 @@
 
 
         const app =
-            initializeApp(firebaseConfig);
+            initializeApp(
+                firebaseConfig
+            );
 
 
         const db =
@@ -100,229 +99,237 @@
             );
 
 
-        window.recordAccess = async function() {
+        window.recordAccess =
+            async function() {
 
-            const studentID =
-                document
-                    .getElementById("studentID")
-                    .value
-                    .trim();
-
-
-            if (studentID === "") {
-
-                message.textContent =
-                    "Please enter your Student ID.";
-
-                return;
-
-            }
+                const studentID =
+                    document
+                        .getElementById(
+                            "studentID"
+                        )
+                        .value
+                        .trim();
 
 
-            message.textContent =
-                "Processing...";
-
-
-            try {
-
-                // FIND STUDENT
-                const studentRef =
-                    doc(
-                        db,
-                        "students",
-                        studentID
-                    );
-
-
-                const studentSnapshot =
-                    await getDoc(
-                        studentRef
-                    );
-
-
-                if (!studentSnapshot.exists()) {
+                if (
+                    studentID === ""
+                ) {
 
                     message.textContent =
-                        "Student ID not found. Please enter a valid Student ID.";
+                        "Please enter your Student ID.";
 
                     return;
 
                 }
 
 
-                const studentData =
-                    studentSnapshot.data();
-
-
-                const fullName =
-                    studentData.fullName;
-
-
-                // PHILIPPINE DATE
-                const now =
-                    new Date();
-
-
-                const date =
-                    new Intl.DateTimeFormat(
-                        "en-CA",
-                        {
-                            timeZone:
-                                "Asia/Manila",
-
-                            year:
-                                "numeric",
-
-                            month:
-                                "2-digit",
-
-                            day:
-                                "2-digit"
-                        }
-                    ).format(now);
-
-
-                // PHILIPPINE TIME
-                const time =
-                    new Intl.DateTimeFormat(
-                        "en-US",
-                        {
-                            timeZone:
-                                "Asia/Manila",
-
-                            hour:
-                                "numeric",
-
-                            minute:
-                                "2-digit",
-
-                            second:
-                                "2-digit",
-
-                            hour12:
-                                true
-                        }
-                    ).format(now);
-
-
-                // CHECK FOR OPEN RECORD
-                const recordsRef =
-                    collection(
-                        db,
-                        "accessRecords"
-                    );
-
-
-                const q =
-                    query(
-
-                        recordsRef,
-
-                        where(
-                            "studentId",
-                            "==",
-                            studentID
-                        ),
-
-                        where(
-                            "date",
-                            "==",
-                            date
-                        ),
-
-                        where(
-                            "timeOut",
-                            "==",
-                            ""
-                        )
-
-                    );
-
-
-                const existingRecords =
-                    await getDocs(q);
-
-
-                // TIME OUT
-                if (
-                    !existingRecords.empty
-                ) {
-
-                    const existingRecord =
-                        existingRecords.docs[0];
-
-
-                    await updateDoc(
-
-                        existingRecord.ref,
-
-                        {
-                            timeOut:
-                                time
-                        }
-
-                    );
-
-
-                    message.textContent =
-                        "Time Out recorded successfully for " +
-                        fullName +
-                        ".";
-
-                }
-
-                // TIME IN
-                else {
-
-                    await addDoc(
-
-                        recordsRef,
-
-                        {
-
-                            studentId:
-                                studentID,
-
-                            fullName:
-                                fullName,
-
-                            date:
-                                date,
-
-                            timeIn:
-                                time,
-
-                            timeOut:
-                                ""
-
-                        }
-
-                    );
-
-
-                    message.textContent =
-                        "Time In recorded successfully for " +
-                        fullName +
-                        ".";
-
-                }
-
-
-                document
-                    .getElementById("studentID")
-                    .value = "";
-
-
-            } catch (error) {
-
-                console.error(error);
-
                 message.textContent =
-                    "Unable to record access. Please try again.";
+                    "Processing...";
 
-            }
 
-        };
+                try {
+
+                    // FIND STUDENT
+                    const studentRef =
+                        doc(
+                            db,
+                            "students",
+                            studentID
+                        );
+
+
+                    const studentSnapshot =
+                        await getDoc(
+                            studentRef
+                        );
+
+
+                    if (
+                        !studentSnapshot.exists()
+                    ) {
+
+                        message.textContent =
+                            "Student ID not found. Please enter a valid Student ID.";
+
+                        return;
+
+                    }
+
+
+                    const studentData =
+                        studentSnapshot.data();
+
+
+                    const fullName =
+                        studentData.fullName;
+
+
+                    // CURRENT DATE AND TIME
+                    const now =
+                        new Date();
+
+
+                    const date =
+                        new Intl.DateTimeFormat(
+                            "en-CA",
+                            {
+                                timeZone:
+                                    "Asia/Manila",
+
+                                year:
+                                    "numeric",
+
+                                month:
+                                    "2-digit",
+
+                                day:
+                                    "2-digit"
+                            }
+                        ).format(now);
+
+
+                    const time =
+                        new Intl.DateTimeFormat(
+                            "en-US",
+                            {
+                                timeZone:
+                                    "Asia/Manila",
+
+                                hour:
+                                    "numeric",
+
+                                minute:
+                                    "2-digit",
+
+                                second:
+                                    "2-digit",
+
+                                hour12:
+                                    true
+                            }
+                        ).format(now);
+
+
+                    // ONE DOCUMENT PER STUDENT PER DAY
+                    const recordID =
+                        studentID +
+                        "_" +
+                        date;
+
+
+                    const recordRef =
+                        doc(
+                            db,
+                            "accessRecords",
+                            recordID
+                        );
+
+
+                    const recordSnapshot =
+                        await getDoc(
+                            recordRef
+                        );
+
+
+                    // TIME OUT
+                    if (
+                        recordSnapshot.exists()
+                    ) {
+
+                        const existingData =
+                            recordSnapshot.data();
+
+
+                        if (
+                            existingData.timeOut !== ""
+                        ) {
+
+                            message.textContent =
+                                "Time Out has already been recorded for " +
+                                fullName +
+                                " today.";
+
+                            return;
+
+                        }
+
+
+                        await updateDoc(
+
+                            recordRef,
+
+                            {
+
+                                timeOut:
+                                    time
+
+                            }
+
+                        );
+
+
+                        message.textContent =
+                            "Time Out recorded successfully for " +
+                            fullName +
+                            ".";
+
+                    }
+
+
+                    // TIME IN
+                    else {
+
+                        await setDoc(
+
+                            recordRef,
+
+                            {
+
+                                studentId:
+                                    studentID,
+
+                                fullName:
+                                    fullName,
+
+                                date:
+                                    date,
+
+                                timeIn:
+                                    time,
+
+                                timeOut:
+                                    ""
+
+                            }
+
+                        );
+
+
+                        message.textContent =
+                            "Time In recorded successfully for " +
+                            fullName +
+                            ".";
+
+                    }
+
+
+                    document
+                        .getElementById(
+                            "studentID"
+                        )
+                        .value = "";
+
+
+                } catch (error) {
+
+                    console.error(error);
+
+                    message.textContent =
+                        "Unable to record access. Please try again.";
+
+                }
+
+            };
 
     </script>
 
