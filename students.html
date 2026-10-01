@@ -1,20 +1,34 @@
 <!DOCTYPE html>
 <html>
 <head>
+
     <title>Student Management - Computer Laboratory</title>
+
 </head>
 
 <body>
 
     <h1>Student Management</h1>
 
-    <p>Add, update, or remove student information.</p>
+    <p>
+        Manage students registered in the Computer Laboratory Access System.
+    </p>
+
+    <button
+        type="button"
+        id="logoutButton"
+    >
+        Logout
+    </button>
 
     <hr>
 
-    <h2>Add / Update Student</h2>
+    <h2>Add Student</h2>
 
-    <label for="studentID">Student ID:</label>
+    <label for="studentID">
+        Student ID:
+    </label>
+
     <br>
 
     <input
@@ -25,7 +39,10 @@
 
     <br><br>
 
-    <label for="fullName">Full Name:</label>
+    <label for="fullName">
+        Full Name:
+    </label>
+
     <br>
 
     <input
@@ -36,34 +53,45 @@
 
     <br><br>
 
-    <button type="button" onclick="saveStudent()">
-        Save Student
+    <button
+        type="button"
+        id="saveButton"
+    >
+        Add Student
     </button>
 
-    <button type="button" onclick="clearForm()">
-        Clear
+    <button
+        type="button"
+        id="cancelButton"
+        style="display: none;"
+    >
+        Cancel Edit
     </button>
 
     <p id="message"></p>
 
     <hr>
 
-    <h2>Student List</h2>
+    <h2>Registered Students</h2>
 
     <table border="1" cellpadding="8">
 
         <thead>
+
             <tr>
                 <th>Student ID</th>
                 <th>Full Name</th>
-                <th>Action</th>
+                <th>Actions</th>
             </tr>
+
         </thead>
 
-        <tbody id="studentTableBody">
+        <tbody id="studentsTableBody">
         </tbody>
 
     </table>
+
+    <p id="studentCount"></p>
 
 
     <script type="module">
@@ -73,12 +101,19 @@
         } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
 
         import {
+            getAuth,
+            onAuthStateChanged,
+            signOut
+        } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
+        import {
             getFirestore,
-            doc,
-            setDoc,
-            deleteDoc,
             collection,
-            getDocs
+            getDocs,
+            doc,
+            getDoc,
+            setDoc,
+            deleteDoc
         } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
 
@@ -110,95 +145,92 @@
         const app =
             initializeApp(firebaseConfig);
 
+
+        const auth =
+            getAuth(app);
+
+
         const db =
             getFirestore(app);
 
+
+        const studentIDInput =
+            document.getElementById(
+                "studentID"
+            );
+
+
+        const fullNameInput =
+            document.getElementById(
+                "fullName"
+            );
+
+
+        const saveButton =
+            document.getElementById(
+                "saveButton"
+            );
+
+
+        const cancelButton =
+            document.getElementById(
+                "cancelButton"
+            );
+
+
+        const logoutButton =
+            document.getElementById(
+                "logoutButton"
+            );
+
+
         const message =
-            document.getElementById("message");
+            document.getElementById(
+                "message"
+            );
 
 
-        // SAVE / UPDATE STUDENT
-        window.saveStudent = async function() {
-
-            const studentID =
-                document
-                    .getElementById("studentID")
-                    .value
-                    .trim();
-
-            const fullName =
-                document
-                    .getElementById("fullName")
-                    .value
-                    .trim();
+        const tableBody =
+            document.getElementById(
+                "studentsTableBody"
+            );
 
 
-            if (studentID === "") {
-
-                message.textContent =
-                    "Please enter a Student ID.";
-
-                return;
-
-            }
+        const studentCount =
+            document.getElementById(
+                "studentCount"
+            );
 
 
-            if (fullName === "") {
-
-                message.textContent =
-                    "Please enter the student's full name.";
-
-                return;
-
-            }
+        let editingStudentID = null;
 
 
-            try {
+        // CHECK LOGIN STATUS
+        onAuthStateChanged(
+            auth,
+            function(user) {
 
-                await setDoc(
+                if (!user) {
 
-                    doc(
-                        db,
-                        "students",
-                        studentID
-                    ),
+                    window.location.href =
+                        "login.html";
 
-                    {
-                        studentId: studentID,
-                        fullName: fullName
-                    }
+                    return;
 
-                );
+                }
 
-
-                message.textContent =
-                    "Student saved successfully.";
-
-                clearForm();
 
                 loadStudents();
 
-
-            } catch (error) {
-
-                console.error(error);
-
-                message.textContent =
-                    "Unable to save student.";
-
             }
-
-        };
+        );
 
 
         // LOAD STUDENTS
         async function loadStudents() {
 
-            const tableBody =
-                document
-                    .getElementById("studentTableBody");
-
-            tableBody.innerHTML = "";
+            message.textContent =
+                "Loading students...";
 
 
             try {
@@ -212,64 +244,105 @@
                     );
 
 
+                tableBody.innerHTML = "";
+
+
+                let count = 0;
+
+
                 snapshot.forEach(
-                    (student) => {
+                    function(studentDoc) {
 
                         const data =
-                            student.data();
+                            studentDoc.data();
+
+
+                        const studentID =
+                            String(
+                                data.studentId || ""
+                            );
+
+
+                        const fullName =
+                            String(
+                                data.fullName || ""
+                            );
+
 
                         const row =
-                            document.createElement("tr");
+                            document.createElement(
+                                "tr"
+                            );
 
 
                         const idCell =
-                            document.createElement("td");
+                            document.createElement(
+                                "td"
+                            );
 
                         idCell.textContent =
-                            data.studentId;
+                            studentID;
 
 
                         const nameCell =
-                            document.createElement("td");
+                            document.createElement(
+                                "td"
+                            );
 
                         nameCell.textContent =
-                            data.fullName;
+                            fullName;
 
 
                         const actionCell =
-                            document.createElement("td");
+                            document.createElement(
+                                "td"
+                            );
 
 
-                        // EDIT BUTTON
                         const editButton =
-                            document.createElement("button");
+                            document.createElement(
+                                "button"
+                            );
+
 
                         editButton.textContent =
                             "Edit";
+
+
+                        editButton.type =
+                            "button";
+
 
                         editButton.onclick =
                             function() {
 
                                 editStudent(
-                                    data.studentId,
-                                    data.fullName
+                                    studentID
                                 );
 
                             };
 
 
-                        // DELETE BUTTON
                         const deleteButton =
-                            document.createElement("button");
+                            document.createElement(
+                                "button"
+                            );
+
 
                         deleteButton.textContent =
                             "Delete";
+
+
+                        deleteButton.type =
+                            "button";
+
 
                         deleteButton.onclick =
                             function() {
 
                                 deleteStudent(
-                                    data.studentId
+                                    studentID,
+                                    fullName
                                 );
 
                             };
@@ -279,9 +352,13 @@
                             editButton
                         );
 
+
                         actionCell.appendChild(
-                            document.createTextNode(" ")
+                            document.createTextNode(
+                                " "
+                            )
                         );
+
 
                         actionCell.appendChild(
                             deleteButton
@@ -292,9 +369,11 @@
                             idCell
                         );
 
+
                         row.appendChild(
                             nameCell
                         );
+
 
                         row.appendChild(
                             actionCell
@@ -305,9 +384,20 @@
                             row
                         );
 
+
+                        count++;
+
                     }
                 );
 
+
+                studentCount.textContent =
+                    "Total students: " +
+                    count;
+
+
+                message.textContent =
+                    "Students loaded successfully.";
 
             } catch (error) {
 
@@ -321,65 +411,265 @@
         }
 
 
+        // ADD / UPDATE STUDENT
+        saveButton.onclick =
+            async function() {
+
+                const studentID =
+                    studentIDInput.value.trim();
+
+
+                const fullName =
+                    fullNameInput.value.trim();
+
+
+                if (
+                    studentID === "" ||
+                    fullName === ""
+                ) {
+
+                    message.textContent =
+                        "Please enter both Student ID and Full Name.";
+
+                    return;
+
+                }
+
+
+                saveButton.disabled =
+                    true;
+
+
+                try {
+
+                    // UPDATE EXISTING STUDENT
+                    if (
+                        editingStudentID !== null
+                    ) {
+
+                        const studentRef =
+                            doc(
+                                db,
+                                "students",
+                                editingStudentID
+                            );
+
+
+                        await setDoc(
+                            studentRef,
+                            {
+
+                                studentId:
+                                    studentID,
+
+                                fullName:
+                                    fullName
+
+                            }
+                        );
+
+
+                        message.textContent =
+                            "Student updated successfully.";
+
+
+                    }
+
+                    // ADD NEW STUDENT
+                    else {
+
+                        const studentRef =
+                            doc(
+                                db,
+                                "students",
+                                studentID
+                            );
+
+
+                        const existingStudent =
+                            await getDoc(
+                                studentRef
+                            );
+
+
+                        if (
+                            existingStudent.exists()
+                        ) {
+
+                            message.textContent =
+                                "That Student ID already exists.";
+
+                            saveButton.disabled =
+                                false;
+
+                            return;
+
+                        }
+
+
+                        await setDoc(
+                            studentRef,
+                            {
+
+                                studentId:
+                                    studentID,
+
+                                fullName:
+                                    fullName
+
+                            }
+                        );
+
+
+                        message.textContent =
+                            "Student added successfully.";
+
+                    }
+
+
+                    clearForm();
+
+                    await loadStudents();
+
+
+                } catch (error) {
+
+                    console.error(error);
+
+                    message.textContent =
+                        "Unable to save student.";
+
+                }
+
+
+                saveButton.disabled =
+                    false;
+
+            };
+
+
         // EDIT STUDENT
-        window.editStudent = function(
+        async function editStudent(studentID) {
+
+            try {
+
+                const studentRef =
+                    doc(
+                        db,
+                        "students",
+                        studentID
+                    );
+
+
+                const studentSnapshot =
+                    await getDoc(
+                        studentRef
+                    );
+
+
+                if (
+                    !studentSnapshot.exists()
+                ) {
+
+                    message.textContent =
+                        "Student not found.";
+
+                    return;
+
+                }
+
+
+                const data =
+                    studentSnapshot.data();
+
+
+                studentIDInput.value =
+                    data.studentId || "";
+
+
+                fullNameInput.value =
+                    data.fullName || "";
+
+
+                editingStudentID =
+                    studentID;
+
+
+                saveButton.textContent =
+                    "Update Student";
+
+
+                cancelButton.style.display =
+                    "inline-block";
+
+
+                message.textContent =
+                    "Editing student " +
+                    studentID +
+                    ".";
+
+
+                window.scrollTo(
+                    0,
+                    0
+                );
+
+
+            } catch (error) {
+
+                console.error(error);
+
+                message.textContent =
+                    "Unable to load student information.";
+
+            }
+
+        }
+
+
+        // DELETE STUDENT
+        async function deleteStudent(
             studentID,
             fullName
         ) {
 
-            document
-                .getElementById("studentID")
-                .value =
-                studentID;
-
-
-            document
-                .getElementById("fullName")
-                .value =
-                fullName;
-
-
-            message.textContent =
-                "Student information loaded. Make your changes and click Save Student.";
-
-        };
-
-
-        // DELETE STUDENT
-        window.deleteStudent = async function(
-            studentID
-        ) {
-
-            const confirmDelete =
+            const confirmed =
                 confirm(
-                    "Delete student " +
+                    "Are you sure you want to delete " +
+                    fullName +
+                    " (" +
                     studentID +
-                    "?"
+                    ")?"
                 );
 
 
-            if (!confirmDelete) {
+            if (!confirmed) {
+
                 return;
+
             }
 
 
             try {
 
-                await deleteDoc(
-
+                const studentRef =
                     doc(
                         db,
                         "students",
                         studentID
-                    )
+                    );
 
+
+                await deleteDoc(
+                    studentRef
                 );
 
 
                 message.textContent =
                     "Student deleted successfully.";
 
-                loadStudents();
+
+                await loadStudents();
 
 
             } catch (error) {
@@ -391,27 +681,69 @@
 
             }
 
-        };
+        }
+
+
+        // CANCEL EDIT
+        cancelButton.onclick =
+            function() {
+
+                clearForm();
+
+                message.textContent =
+                    "Edit cancelled.";
+
+            };
 
 
         // CLEAR FORM
-        window.clearForm = function() {
+        function clearForm() {
 
-            document
-                .getElementById("studentID")
-                .value = "";
+            studentIDInput.value =
+                "";
 
-            document
-                .getElementById("fullName")
-                .value = "";
+            fullNameInput.value =
+                "";
 
-            message.textContent = "";
-
-        };
+            editingStudentID =
+                null;
 
 
-        // LOAD STUDENTS WHEN PAGE OPENS
-        loadStudents();
+            saveButton.textContent =
+                "Add Student";
+
+
+            cancelButton.style.display =
+                "none";
+
+        }
+
+
+        // LOGOUT
+        logoutButton.onclick =
+            async function() {
+
+                try {
+
+                    await signOut(
+                        auth
+                    );
+
+
+                    window.location.href =
+                        "login.html";
+
+
+                } catch (error) {
+
+                    console.error(error);
+
+                    message.textContent =
+                        "Unable to log out.";
+
+                }
+
+            };
 
     </script>
 
