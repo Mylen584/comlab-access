@@ -50,7 +50,7 @@
 
     <h2>Student List</h2>
 
-    <table border="1" cellpadding="8" id="studentTable">
+    <table border="1" cellpadding="8">
 
         <thead>
             <tr>
@@ -110,16 +110,14 @@
         const app =
             initializeApp(firebaseConfig);
 
-
         const db =
             getFirestore(app);
-
 
         const message =
             document.getElementById("message");
 
 
-        // Save or update student
+        // SAVE / UPDATE STUDENT
         window.saveStudent = async function() {
 
             const studentID =
@@ -127,7 +125,6 @@
                     .getElementById("studentID")
                     .value
                     .trim();
-
 
             const fullName =
                 document
@@ -167,11 +164,8 @@
                     ),
 
                     {
-                        studentId:
-                            studentID,
-
-                        fullName:
-                            fullName
+                        studentId: studentID,
+                        fullName: fullName
                     }
 
                 );
@@ -179,7 +173,6 @@
 
                 message.textContent =
                     "Student saved successfully.";
-
 
                 clearForm();
 
@@ -198,16 +191,14 @@
         };
 
 
-        // Load students
+        // LOAD STUDENTS
         async function loadStudents() {
 
             const tableBody =
                 document
                     .getElementById("studentTableBody");
 
-
-            tableBody.innerHTML =
-                "";
+            tableBody.innerHTML = "";
 
 
             try {
@@ -227,44 +218,92 @@
                         const data =
                             student.data();
 
-
                         const row =
                             document.createElement("tr");
 
 
-                        row.innerHTML = `
+                        const idCell =
+                            document.createElement("td");
 
-                            <td>
-                                ${data.studentId}
-                            </td>
-
-                            <td>
-                                ${data.fullName}
-                            </td>
-
-                            <td>
-
-                                <button
-                                    onclick="editStudent(
-                                        '${data.studentId}',
-                                        '${data.fullName.replace(/'/g, "\\'")}'
-                                    )"
-                                >
-                                    Edit
-                                </button>
-
-                                <button
-                                    onclick="deleteStudent('${data.studentId}')"
-                                >
-                                    Delete
-                                </button>
-
-                            </td>
-
-                        `;
+                        idCell.textContent =
+                            data.studentId;
 
 
-                        tableBody.appendChild(row);
+                        const nameCell =
+                            document.createElement("td");
+
+                        nameCell.textContent =
+                            data.fullName;
+
+
+                        const actionCell =
+                            document.createElement("td");
+
+
+                        // EDIT BUTTON
+                        const editButton =
+                            document.createElement("button");
+
+                        editButton.textContent =
+                            "Edit";
+
+                        editButton.onclick =
+                            function() {
+
+                                editStudent(
+                                    data.studentId,
+                                    data.fullName
+                                );
+
+                            };
+
+
+                        // DELETE BUTTON
+                        const deleteButton =
+                            document.createElement("button");
+
+                        deleteButton.textContent =
+                            "Delete";
+
+                        deleteButton.onclick =
+                            function() {
+
+                                deleteStudent(
+                                    data.studentId
+                                );
+
+                            };
+
+
+                        actionCell.appendChild(
+                            editButton
+                        );
+
+                        actionCell.appendChild(
+                            document.createTextNode(" ")
+                        );
+
+                        actionCell.appendChild(
+                            deleteButton
+                        );
+
+
+                        row.appendChild(
+                            idCell
+                        );
+
+                        row.appendChild(
+                            nameCell
+                        );
+
+                        row.appendChild(
+                            actionCell
+                        );
+
+
+                        tableBody.appendChild(
+                            row
+                        );
 
                     }
                 );
@@ -282,7 +321,7 @@
         }
 
 
-        // Edit student
+        // EDIT STUDENT
         window.editStudent = function(
             studentID,
             fullName
@@ -306,7 +345,7 @@
         };
 
 
-        // Delete student
+        // DELETE STUDENT
         window.deleteStudent = async function(
             studentID
         ) {
@@ -320,9 +359,7 @@
 
 
             if (!confirmDelete) {
-
                 return;
-
             }
 
 
@@ -342,7 +379,6 @@
                 message.textContent =
                     "Student deleted successfully.";
 
-
                 loadStudents();
 
 
@@ -358,25 +394,23 @@
         };
 
 
-        // Clear form
+        // CLEAR FORM
         window.clearForm = function() {
 
             document
                 .getElementById("studentID")
                 .value = "";
 
-
             document
                 .getElementById("fullName")
                 .value = "";
-
 
             message.textContent = "";
 
         };
 
 
-        // Load students when page opens
+        // LOAD STUDENTS WHEN PAGE OPENS
         loadStudents();
 
     </script>
