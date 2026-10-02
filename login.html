@@ -1,60 +1,521 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 
-    <title>Administrator Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Administrator Login - Computer Laboratory Access System</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f1f5f9;
+            color: #1e293b;
+            min-height: 100vh;
+        }
+
+
+        /* =========================
+           TOP HEADER
+        ========================= */
+
+        .topbar {
+            background: #1f4e79;
+            color: white;
+            padding: 20px 30px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .topbar-content {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .system-title {
+            font-size: 25px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .system-subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+
+        /* =========================
+           LOGIN AREA
+        ========================= */
+
+        .login-container {
+            min-height: calc(100vh - 89px);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 40px 20px;
+        }
+
+
+        /* =========================
+           LOGIN CARD
+        ========================= */
+
+        .login-card {
+            width: 100%;
+            max-width: 430px;
+
+            background: white;
+
+            border-radius: 14px;
+
+            padding: 40px;
+
+            box-shadow:
+                0 8px 25px rgba(0, 0, 0, 0.08);
+
+            border: 1px solid #e2e8f0;
+        }
+
+
+        /* =========================
+           ICON
+        ========================= */
+
+        .icon-container {
+            width: 78px;
+            height: 78px;
+
+            background: #e8f1f8;
+
+            border-radius: 50%;
+
+            margin: 0 auto 20px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 34px;
+        }
+
+
+        /* =========================
+           TITLE
+        ========================= */
+
+        .login-title {
+            text-align: center;
+
+            color: #1f4e79;
+
+            font-size: 27px;
+
+            margin-bottom: 9px;
+        }
+
+        .login-description {
+            text-align: center;
+
+            color: #64748b;
+
+            font-size: 14px;
+
+            line-height: 1.6;
+
+            margin-bottom: 30px;
+        }
+
+
+        /* =========================
+           FORM
+        ========================= */
+
+        .form-group {
+            margin-bottom: 19px;
+        }
+
+        .form-label {
+            display: block;
+
+            font-weight: bold;
+
+            color: #334155;
+
+            font-size: 14px;
+
+            margin-bottom: 8px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .form-input {
+            width: 100%;
+
+            padding: 14px 15px;
+
+            border: 1px solid #cbd5e1;
+
+            border-radius: 7px;
+
+            font-size: 15px;
+
+            outline: none;
+
+            transition: 0.2s;
+
+            background: white;
+        }
+
+        .password-input {
+            padding-right: 75px;
+        }
+
+        .form-input:focus {
+            border-color: #1f4e79;
+
+            box-shadow:
+                0 0 0 3px rgba(31, 78, 121, 0.12);
+        }
+
+
+        /* =========================
+           SHOW PASSWORD
+        ========================= */
+
+        .show-password {
+            position: absolute;
+
+            right: 12px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            border: none;
+
+            background: transparent;
+
+            color: #1f4e79;
+
+            font-size: 12px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            padding: 5px;
+        }
+
+        .show-password:hover {
+            color: #173a5c;
+        }
+
+
+        /* =========================
+           LOGIN BUTTON
+        ========================= */
+
+        .login-button {
+            width: 100%;
+
+            padding: 15px;
+
+            margin-top: 5px;
+
+            border: none;
+
+            border-radius: 7px;
+
+            background: #1f4e79;
+
+            color: white;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .login-button:hover {
+            background: #173a5c;
+        }
+
+        .login-button:active {
+            transform: scale(0.99);
+        }
+
+        .login-button:disabled {
+            background: #94a3b8;
+
+            cursor: not-allowed;
+
+            transform: none;
+        }
+
+
+        /* =========================
+           ERROR MESSAGE
+        ========================= */
+
+        #message {
+            display: none;
+
+            margin-top: 18px;
+
+            padding: 13px;
+
+            border-radius: 7px;
+
+            text-align: center;
+
+            font-size: 13px;
+
+            line-height: 1.5;
+
+            font-weight: bold;
+        }
+
+        .error-message {
+            display: block !important;
+
+            background: #fef2f2;
+
+            color: #b91c1c;
+
+            border: 1px solid #fecaca;
+        }
+
+        .success-message {
+            display: block !important;
+
+            background: #ecfdf5;
+
+            color: #047857;
+
+            border: 1px solid #a7f3d0;
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        .login-footer {
+            text-align: center;
+
+            margin-top: 25px;
+
+            color: #94a3b8;
+
+            font-size: 12px;
+
+            line-height: 1.5;
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 600px) {
+
+            .topbar {
+                padding: 18px 20px;
+            }
+
+            .system-title {
+                font-size: 20px;
+            }
+
+            .system-subtitle {
+                font-size: 12px;
+            }
+
+            .login-container {
+                padding: 25px 15px;
+            }
+
+            .login-card {
+                padding: 30px 22px;
+            }
+
+            .login-title {
+                font-size: 23px;
+            }
+
+        }
+
+    </style>
 
 </head>
 
+
 <body>
 
-    <h1>Administrator Login</h1>
 
-    <p>
-        Please enter your administrator account.
-    </p>
+    <!-- =========================
+         TOP HEADER
+    ========================= -->
 
-    <hr>
+    <header class="topbar">
 
-    <label for="email">
-        Email:
-    </label>
+        <div class="topbar-content">
 
-    <br>
+            <div class="system-title">
+                Computer Laboratory Access System
+            </div>
 
-    <input
-        type="email"
-        id="email"
-        placeholder="Enter administrator email"
-    >
+            <div class="system-subtitle">
+                Access Monitoring System
+            </div>
 
-    <br><br>
+        </div>
 
-    <label for="password">
-        Password:
-    </label>
+    </header>
 
-    <br>
 
-    <input
-        type="password"
-        id="password"
-        placeholder="Enter password"
-    >
 
-    <br><br>
+    <!-- =========================
+         LOGIN AREA
+    ========================= -->
 
-    <button
-        type="button"
-        id="loginButton"
-    >
-        Login
-    </button>
+    <main class="login-container">
 
-    <p id="message">
-        Please enter your administrator credentials.
-    </p>
+        <div class="login-card">
 
+
+            <!-- ICON -->
+
+            <div class="icon-container">
+                🔐
+            </div>
+
+
+            <!-- TITLE -->
+
+            <h1 class="login-title">
+                Administrator Login
+            </h1>
+
+            <p class="login-description">
+                Sign in to access the computer laboratory
+                access monitoring dashboard.
+            </p>
+
+
+
+            <!-- EMAIL -->
+
+            <div class="form-group">
+
+                <label
+                    for="email"
+                    class="form-label">
+
+                    Email Address
+
+                </label>
+
+                <input
+                    type="email"
+                    id="email"
+                    class="form-input"
+                    placeholder="Enter your email address"
+                    autocomplete="username"
+                >
+
+            </div>
+
+
+
+            <!-- PASSWORD -->
+
+            <div class="form-group">
+
+                <label
+                    for="password"
+                    class="form-label">
+
+                    Password
+
+                </label>
+
+                <div class="input-wrapper">
+
+                    <input
+                        type="password"
+                        id="password"
+                        class="form-input password-input"
+                        placeholder="Enter your password"
+                        autocomplete="current-password"
+                    >
+
+                    <button
+                        type="button"
+                        id="showPassword"
+                        class="show-password">
+
+                        Show
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- LOGIN BUTTON -->
+
+            <button
+                type="button"
+                id="loginButton"
+                class="login-button">
+
+                Login
+
+            </button>
+
+
+
+            <!-- MESSAGE -->
+
+            <div id="message"></div>
+
+
+
+            <!-- FOOTER -->
+
+            <div class="login-footer">
+
+                Authorized administrators only.<br>
+                Computer Laboratory Access Monitoring System
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+
+    <!-- =========================
+         FIREBASE AUTHENTICATION
+    ========================= -->
 
     <script type="module">
 
@@ -68,9 +529,15 @@
         } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 
 
+
+        // =========================
+        // FIREBASE CONFIG
+        // =========================
+
         const firebaseConfig = {
 
-            apiKey: "AIzaSyC8vy5n9RcdZXCgxK7HZAWGo9NzTtqOga8",
+            apiKey:
+                "AIzaSyC8vy5n9RcdZXCgxK7HZAWGo9NzTtqOga8",
 
             authDomain:
                 "comlab-access-system.firebaseapp.com",
@@ -93,66 +560,168 @@
         };
 
 
-        const app =
-            initializeApp(
-                firebaseConfig
-            );
 
+        // =========================
+        // INITIALIZE FIREBASE
+        // =========================
+
+        const app =
+            initializeApp(firebaseConfig);
 
         const auth =
             getAuth(app);
 
 
-        const emailInput =
-            document.getElementById(
-                "email"
-            );
 
+        // =========================
+        // ELEMENTS
+        // =========================
+
+        const emailInput =
+            document.getElementById("email");
 
         const passwordInput =
-            document.getElementById(
-                "password"
-            );
-
+            document.getElementById("password");
 
         const loginButton =
-            document.getElementById(
-                "loginButton"
-            );
+            document.getElementById("loginButton");
 
+        const showPasswordButton =
+            document.getElementById("showPassword");
 
         const message =
-            document.getElementById(
-                "message"
-            );
+            document.getElementById("message");
 
 
-        loginButton.onclick =
-            async function() {
+
+        // =========================
+        // SHOW MESSAGE
+        // =========================
+
+        function showMessage(
+            text,
+            type
+        ) {
+
+            message.textContent = text;
+
+            message.className = "";
+
+            if (type === "error") {
+
+                message.classList.add(
+                    "error-message"
+                );
+
+            }
+
+            else {
+
+                message.classList.add(
+                    "success-message"
+                );
+
+            }
+
+        }
+
+
+
+        // =========================
+        // SHOW / HIDE PASSWORD
+        // =========================
+
+        showPasswordButton.addEventListener(
+            "click",
+            function () {
+
+                if (
+                    passwordInput.type === "password"
+                ) {
+
+                    passwordInput.type =
+                        "text";
+
+                    showPasswordButton.textContent =
+                        "Hide";
+
+                }
+
+                else {
+
+                    passwordInput.type =
+                        "password";
+
+                    showPasswordButton.textContent =
+                        "Show";
+
+                }
+
+            }
+        );
+
+
+
+        // =========================
+        // LOGIN
+        // =========================
+
+        loginButton.addEventListener(
+            "click",
+            async function () {
 
                 const email =
                     emailInput.value.trim();
-
 
                 const password =
                     passwordInput.value;
 
 
-                if (
-                    email === "" ||
-                    password === ""
-                ) {
+                // Clear previous message
 
-                    message.textContent =
-                        "Please enter your email and password.";
+                message.textContent = "";
+
+                message.className = "";
+
+
+                // Check email
+
+                if (!email) {
+
+                    showMessage(
+                        "Please enter your email address.",
+                        "error"
+                    );
+
+                    emailInput.focus();
 
                     return;
 
                 }
 
 
-                message.textContent =
-                    "Logging in...";
+                // Check password
+
+                if (!password) {
+
+                    showMessage(
+                        "Please enter your password.",
+                        "error"
+                    );
+
+                    passwordInput.focus();
+
+                    return;
+
+                }
+
+
+                // Disable button
+
+                loginButton.disabled = true;
+
+                loginButton.textContent =
+                    "Signing in...";
 
 
                 try {
@@ -164,25 +733,155 @@
                     );
 
 
-                    message.textContent =
-                        "Login successful. Redirecting...";
+                    showMessage(
+                        "Login successful. Opening dashboard...",
+                        "success"
+                    );
 
 
-                    window.location.href =
-                        "students.html";
+                    // Give the message a moment
+                    // before redirecting
+
+                    setTimeout(
+                        function () {
+
+                            window.location.href =
+                                "admin.html";
+
+                        },
+                        500
+                    );
+
+                }
 
 
-                } catch (error) {
+                catch (error) {
 
                     console.error(error);
 
 
-                    message.textContent =
-                        "Login failed. Please check your email and password.";
+                    let errorMessage =
+                        "Unable to sign in. Please check your email and password.";
+
+
+                    if (
+                        error.code ===
+                        "auth/invalid-credential"
+                    ) {
+
+                        errorMessage =
+                            "Incorrect email or password.";
+
+                    }
+
+                    else if (
+                        error.code ===
+                        "auth/user-not-found"
+                    ) {
+
+                        errorMessage =
+                            "No administrator account was found with this email.";
+
+                    }
+
+                    else if (
+                        error.code ===
+                        "auth/wrong-password"
+                    ) {
+
+                        errorMessage =
+                            "Incorrect password.";
+
+                    }
+
+                    else if (
+                        error.code ===
+                        "auth/invalid-email"
+                    ) {
+
+                        errorMessage =
+                            "Please enter a valid email address.";
+
+                    }
+
+                    else if (
+                        error.code ===
+                        "auth/too-many-requests"
+                    ) {
+
+                        errorMessage =
+                            "Too many failed login attempts. Please try again later.";
+
+                    }
+
+
+                    showMessage(
+                        errorMessage,
+                        "error"
+                    );
+
+
+                    loginButton.disabled =
+                        false;
+
+                    loginButton.textContent =
+                        "Login";
 
                 }
 
-            };
+            }
+        );
+
+
+
+        // =========================
+        // ENTER KEY LOGIN
+        // =========================
+
+        passwordInput.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (
+                    event.key === "Enter"
+                ) {
+
+                    loginButton.click();
+
+                }
+
+            }
+        );
+
+
+        emailInput.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (
+                    event.key === "Enter"
+                ) {
+
+                    passwordInput.focus();
+
+                }
+
+            }
+        );
+
+
+        // =========================
+        // AUTO FOCUS
+        // =========================
+
+        window.addEventListener(
+            "load",
+            function () {
+
+                emailInput.focus();
+
+            }
+        );
 
     </script>
 
