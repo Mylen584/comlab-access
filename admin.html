@@ -7,6 +7,7 @@
     <title>Computer Laboratory Access System</title>
 
     <style>
+
         * {
             box-sizing: border-box;
         }
@@ -18,6 +19,7 @@
             color: #222;
         }
 
+
         /* =========================
            TOP BAR
         ========================= */
@@ -26,9 +28,11 @@
             height: 65px;
             background: #1f4e79;
             color: white;
+
             display: flex;
             align-items: center;
             justify-content: space-between;
+
             padding: 0 25px;
         }
 
@@ -51,15 +55,20 @@
             border: none;
             background: #dc3545;
             color: white;
+
             padding: 9px 15px;
+
             border-radius: 5px;
+
             cursor: pointer;
+
             font-weight: bold;
         }
 
         .logout-btn:hover {
             background: #b02a37;
         }
+
 
         /* =========================
            LAYOUT
@@ -70,6 +79,7 @@
             min-height: calc(100vh - 65px);
         }
 
+
         /* =========================
            SIDEBAR
         ========================= */
@@ -78,17 +88,23 @@
             width: 230px;
             background: #173b5c;
             color: white;
+
             padding-top: 20px;
         }
 
         .sidebar button {
             width: 100%;
+
             border: none;
             background: transparent;
             color: white;
+
             text-align: left;
+
             padding: 15px 22px;
+
             font-size: 15px;
+
             cursor: pointer;
         }
 
@@ -97,13 +113,16 @@
             background: #1f4e79;
         }
 
+
         /* =========================
            MAIN
         ========================= */
 
         .main {
             flex: 1;
+
             padding: 25px;
+
             overflow-x: auto;
         }
 
@@ -118,8 +137,10 @@
         .page-title {
             margin-top: 0;
             margin-bottom: 20px;
+
             color: #1f4e79;
         }
+
 
         /* =========================
            DASHBOARD CARDS
@@ -127,29 +148,47 @@
 
         .dashboard-cards {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
             gap: 20px;
+
             margin-bottom: 25px;
         }
 
         .card {
             background: white;
+
             padding: 22px;
+
             border-radius: 8px;
-            box-shadow: 0 2px 7px rgba(0, 0, 0, 0.08);
+
+            box-shadow:
+                0 2px 7px rgba(
+                    0,
+                    0,
+                    0,
+                    0.08
+                );
         }
 
         .card-title {
             color: #666;
+
             font-size: 14px;
+
             margin-bottom: 10px;
         }
 
         .card-value {
             font-size: 30px;
+
             font-weight: bold;
+
             color: #1f4e79;
         }
+
 
         /* =========================
            CONTENT BOX
@@ -157,11 +196,22 @@
 
         .content-box {
             background: white;
+
             padding: 20px;
+
             border-radius: 8px;
-            box-shadow: 0 2px 7px rgba(0, 0, 0, 0.08);
+
+            box-shadow:
+                0 2px 7px rgba(
+                    0,
+                    0,
+                    0,
+                    0.08
+                );
+
             margin-bottom: 25px;
         }
+
 
         /* =========================
            FORM
@@ -169,31 +219,42 @@
 
         .form-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+
+            grid-template-columns:
+                1fr 1fr;
+
             gap: 15px;
         }
 
         .form-group {
             display: flex;
+
             flex-direction: column;
         }
 
         .form-group label {
             font-weight: bold;
+
             margin-bottom: 6px;
+
             font-size: 14px;
         }
 
         .form-group input {
             padding: 10px;
+
             border: 1px solid #ccc;
+
             border-radius: 5px;
+
             font-size: 14px;
         }
 
         .form-buttons {
             margin-top: 15px;
+
             display: flex;
+
             gap: 10px;
         }
 
@@ -202,9 +263,13 @@
         .edit-btn,
         .delete-btn {
             border: none;
+
             padding: 9px 14px;
+
             border-radius: 5px;
+
             cursor: pointer;
+
             font-weight: bold;
         }
 
@@ -229,6 +294,7 @@
         .edit-btn {
             background: #ffc107;
             color: #222;
+
             margin-right: 5px;
         }
 
@@ -245,31 +311,40 @@
             background: #b02a37;
         }
 
+
         /* =========================
            TABLE
         ========================= */
 
         .table-container {
             width: 100%;
+
             overflow-x: auto;
         }
 
         table {
             width: 100%;
+
             border-collapse: collapse;
-            min-width: 700px;
+
+            min-width: 850px;
         }
 
         th,
         td {
             padding: 11px 10px;
-            border-bottom: 1px solid #ddd;
+
+            border-bottom:
+                1px solid #ddd;
+
             text-align: left;
+
             font-size: 14px;
         }
 
         th {
             background: #1f4e79;
+
             color: white;
         }
 
@@ -277,27 +352,35 @@
             background: #f8f9fa;
         }
 
+
         /* =========================
            STATUS
         ========================= */
 
         .status {
             display: inline-block;
+
             padding: 5px 9px;
+
             border-radius: 15px;
+
             font-size: 12px;
+
             font-weight: bold;
         }
 
         .status-in {
             background: #fff3cd;
+
             color: #856404;
         }
 
         .status-completed {
             background: #d1e7dd;
+
             color: #0f5132;
         }
+
 
         /* =========================
            SEARCH / FILTER
@@ -305,15 +388,21 @@
 
         .filter-row {
             display: flex;
+
             flex-wrap: wrap;
+
             gap: 10px;
+
             margin-bottom: 15px;
         }
 
         .filter-row input {
             padding: 10px;
+
             border: 1px solid #ccc;
+
             border-radius: 5px;
+
             font-size: 14px;
         }
 
@@ -323,21 +412,28 @@
 
         .filter-row button {
             padding: 10px 15px;
+
             border: none;
+
             border-radius: 5px;
+
             cursor: pointer;
+
             font-weight: bold;
         }
 
         #searchButton {
             background: #1f4e79;
+
             color: white;
         }
 
         #clearButton {
             background: #6c757d;
+
             color: white;
         }
+
 
         /* =========================
            SEARCH HIGHLIGHT
@@ -345,11 +441,16 @@
 
         .search-highlight {
             background: #fff176;
+
             color: #222;
+
             font-weight: bold;
+
             padding: 1px 3px;
+
             border-radius: 3px;
         }
+
 
         /* =========================
            MESSAGES
@@ -357,25 +458,50 @@
 
         .message {
             padding: 10px;
+
             margin-bottom: 15px;
+
             border-radius: 5px;
+
             display: none;
         }
 
         .success-message {
             background: #d1e7dd;
+
             color: #0f5132;
         }
 
         .error-message {
             background: #f8d7da;
+
             color: #842029;
         }
 
         .info-message {
             background: #cff4fc;
+
             color: #055160;
         }
+
+
+        /* =========================
+           STUDENT TOTAL
+        ========================= */
+
+        .student-total-row td {
+            background: #eef5fb;
+
+            font-weight: bold;
+
+            border-bottom:
+                2px solid #c8dceb;
+        }
+
+        .total-label {
+            color: #1f4e79;
+        }
+
 
         /* =========================
            MODAL
@@ -383,15 +509,29 @@
 
         .modal {
             display: none;
+
             position: fixed;
+
             z-index: 1000;
+
             left: 0;
             top: 0;
+
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+
+            background:
+                rgba(
+                    0,
+                    0,
+                    0,
+                    0.5
+                );
+
             align-items: center;
+
             justify-content: center;
+
             padding: 20px;
         }
 
@@ -401,30 +541,49 @@
 
         .modal-content {
             background: white;
+
             width: 100%;
+
             max-width: 600px;
+
             border-radius: 8px;
+
             padding: 25px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25);
+
+            box-shadow:
+                0 5px 20px rgba(
+                    0,
+                    0,
+                    0,
+                    0.25
+                );
         }
 
         .modal-title {
             margin-top: 0;
+
             color: #1f4e79;
         }
 
         .modal-form {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+
+            grid-template-columns:
+                1fr 1fr;
+
             gap: 15px;
         }
 
         .modal-buttons {
             margin-top: 20px;
+
             display: flex;
+
             justify-content: flex-end;
+
             gap: 10px;
         }
+
 
         /* =========================
            RESPONSIVE
@@ -444,7 +603,9 @@
             .modal-form {
                 grid-template-columns: 1fr;
             }
+
         }
+
 
         @media (max-width: 600px) {
 
@@ -466,24 +627,32 @@
 
             .sidebar {
                 width: 100%;
+
                 display: flex;
+
                 padding-top: 0;
             }
 
             .sidebar button {
                 padding: 12px 10px;
+
                 text-align: center;
+
                 font-size: 13px;
             }
 
             .main {
                 padding: 15px;
             }
+
         }
+
     </style>
 </head>
 
+
 <body>
+
 
     <!-- =========================
          TOP BAR
@@ -501,8 +670,12 @@
                 Admin User
             </div>
 
-            <button class="logout-btn" id="logoutButton">
+            <button
+                class="logout-btn"
+                id="logoutButton">
+
                 Logout
+
             </button>
 
         </div>
@@ -510,7 +683,12 @@
     </div>
 
 
+    <!-- =========================
+         LAYOUT
+    ========================= -->
+
     <div class="layout">
+
 
         <!-- =========================
              SIDEBAR
@@ -521,19 +699,27 @@
             <button
                 class="nav-button active"
                 data-page="dashboardPage">
+
                 Dashboard
+
             </button>
+
 
             <button
                 class="nav-button"
                 data-page="studentsPage">
+
                 Student Management
+
             </button>
+
 
             <button
                 class="nav-button"
                 data-page="recordsPage">
+
                 Access Records
+
             </button>
 
         </div>
@@ -545,17 +731,22 @@
 
         <div class="main">
 
+
             <!-- =========================
                  DASHBOARD
             ========================= -->
 
-            <div id="dashboardPage" class="page active">
+            <div
+                id="dashboardPage"
+                class="page active">
 
                 <h2 class="page-title">
                     Dashboard
                 </h2>
 
+
                 <div class="dashboard-cards">
+
 
                     <div class="card">
 
@@ -566,7 +757,9 @@
                         <div
                             class="card-value"
                             id="totalStudents">
+
                             0
+
                         </div>
 
                     </div>
@@ -581,7 +774,9 @@
                         <div
                             class="card-value"
                             id="currentlyInLab">
+
                             0
+
                         </div>
 
                     </div>
@@ -596,7 +791,9 @@
                         <div
                             class="card-value"
                             id="todaysVisits">
+
                             0
+
                         </div>
 
                     </div>
@@ -610,6 +807,7 @@
                         Recent Lab Activity
                     </h3>
 
+
                     <div class="table-container">
 
                         <table>
@@ -617,17 +815,42 @@
                             <thead>
 
                                 <tr>
-                                    <th>Student Name</th>
-                                    <th>Student ID</th>
-                                    <th>Date</th>
-                                    <th>Time In</th>
-                                    <th>Time Out</th>
-                                    <th>Status</th>
+
+                                    <th>
+                                        Student Name
+                                    </th>
+
+                                    <th>
+                                        Student ID
+                                    </th>
+
+                                    <th>
+                                        Date
+                                    </th>
+
+                                    <th>
+                                        Time In
+                                    </th>
+
+                                    <th>
+                                        Time Out
+                                    </th>
+
+                                    <th>
+                                        Duration
+                                    </th>
+
+                                    <th>
+                                        Status
+                                    </th>
+
                                 </tr>
 
                             </thead>
 
-                            <tbody id="recentActivityBody">
+
+                            <tbody
+                                id="recentActivityBody">
                             </tbody>
 
                         </table>
@@ -643,7 +866,9 @@
                  STUDENT MANAGEMENT
             ========================= -->
 
-            <div id="studentsPage" class="page">
+            <div
+                id="studentsPage"
+                class="page">
 
                 <h2 class="page-title">
                     Student Management
@@ -656,12 +881,15 @@
                         Add Student
                     </h3>
 
+
                     <div
                         id="studentMessage"
                         class="message">
                     </div>
 
+
                     <div class="form-grid">
+
 
                         <div class="form-group">
 
@@ -698,14 +926,19 @@
                         <button
                             class="primary-btn"
                             id="saveStudentButton">
+
                             Add Student
+
                         </button>
+
 
                         <button
                             class="secondary-btn"
                             id="cancelStudentButton"
                             style="display:none;">
+
                             Cancel
+
                         </button>
 
                     </div>
@@ -719,6 +952,7 @@
                         Registered Students
                     </h3>
 
+
                     <div class="table-container">
 
                         <table>
@@ -726,14 +960,26 @@
                             <thead>
 
                                 <tr>
-                                    <th>Student ID</th>
-                                    <th>Full Name</th>
-                                    <th>Actions</th>
+
+                                    <th>
+                                        Student ID
+                                    </th>
+
+                                    <th>
+                                        Full Name
+                                    </th>
+
+                                    <th>
+                                        Actions
+                                    </th>
+
                                 </tr>
 
                             </thead>
 
-                            <tbody id="studentsTableBody">
+
+                            <tbody
+                                id="studentsTableBody">
                             </tbody>
 
                         </table>
@@ -749,7 +995,9 @@
                  ACCESS RECORDS
             ========================= -->
 
-            <div id="recordsPage" class="page">
+            <div
+                id="recordsPage"
+                class="page">
 
                 <h2 class="page-title">
                     Access Records
@@ -758,6 +1006,7 @@
 
                 <div class="content-box">
 
+
                     <div class="filter-row">
 
                         <input
@@ -765,16 +1014,25 @@
                             id="searchInput"
                             placeholder="Search Student ID or Full Name">
 
+
                         <input
                             type="date"
                             id="dateFilter">
 
-                        <button id="searchButton">
+
+                        <button
+                            id="searchButton">
+
                             Search
+
                         </button>
 
-                        <button id="clearButton">
+
+                        <button
+                            id="clearButton">
+
                             Clear
+
                         </button>
 
                     </div>
@@ -798,18 +1056,46 @@
                             <thead>
 
                                 <tr>
-                                    <th>Student ID</th>
-                                    <th>Full Name</th>
-                                    <th>Date</th>
-                                    <th>Time In</th>
-                                    <th>Time Out</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
+
+                                    <th>
+                                        Student ID
+                                    </th>
+
+                                    <th>
+                                        Full Name
+                                    </th>
+
+                                    <th>
+                                        Visit #
+                                    </th>
+
+                                    <th>
+                                        Time In
+                                    </th>
+
+                                    <th>
+                                        Time Out
+                                    </th>
+
+                                    <th>
+                                        Duration
+                                    </th>
+
+                                    <th>
+                                        Status
+                                    </th>
+
+                                    <th>
+                                        Actions
+                                    </th>
+
                                 </tr>
 
                             </thead>
 
-                            <tbody id="recordsTableBody">
+
+                            <tbody
+                                id="recordsTableBody">
                             </tbody>
 
                         </table>
@@ -833,11 +1119,14 @@
         class="modal"
         id="editRecordModal">
 
+
         <div class="modal-content">
+
 
             <h2 class="modal-title">
                 Edit Access Record
             </h2>
+
 
             <div
                 id="editRecordMessage"
@@ -846,6 +1135,7 @@
 
 
             <div class="modal-form">
+
 
                 <div class="form-group">
 
@@ -921,13 +1211,18 @@
                 <button
                     class="secondary-btn"
                     id="cancelEditRecordButton">
+
                     Cancel
+
                 </button>
+
 
                 <button
                     class="primary-btn"
                     id="saveEditRecordButton">
+
                     Save Changes
+
                 </button>
 
             </div>
@@ -945,13 +1240,17 @@
 
         import {
             initializeApp
-        } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+        } from
+        "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+
 
         import {
             getAuth,
             onAuthStateChanged,
             signOut
-        } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+        } from
+        "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
 
         import {
             getFirestore,
@@ -961,7 +1260,8 @@
             getDoc,
             setDoc,
             deleteDoc
-        } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+        } from
+        "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
 
         /* =========================
@@ -971,7 +1271,7 @@
         const firebaseConfig = {
 
             apiKey:
-                "AIzaSyC8vy5n9RcdZXCgxK7HZAWGo9NzTtqOga8",
+                "AIzaSyC8vy5n9RcdZXCgxK7HZAWGo9NzTtQOga8",
 
             authDomain:
                 "comlab-access-system.firebaseapp.com",
@@ -990,14 +1290,23 @@
 
             measurementId:
                 "G-6PMJ2STTDD"
+
         };
 
 
+        /* =========================
+           INITIALIZE FIREBASE
+        ========================= */
+
         const app =
-            initializeApp(firebaseConfig);
+            initializeApp(
+                firebaseConfig
+            );
+
 
         const auth =
             getAuth(app);
+
 
         const db =
             getFirestore(app);
@@ -1019,61 +1328,117 @@
         ========================= */
 
         const totalStudents =
-            document.getElementById("totalStudents");
+            document.getElementById(
+                "totalStudents"
+            );
+
 
         const currentlyInLab =
-            document.getElementById("currentlyInLab");
+            document.getElementById(
+                "currentlyInLab"
+            );
+
 
         const todaysVisits =
-            document.getElementById("todaysVisits");
+            document.getElementById(
+                "todaysVisits"
+            );
+
 
         const studentsTableBody =
-            document.getElementById("studentsTableBody");
+            document.getElementById(
+                "studentsTableBody"
+            );
+
 
         const recordsTableBody =
-            document.getElementById("recordsTableBody");
+            document.getElementById(
+                "recordsTableBody"
+            );
+
 
         const recentActivityBody =
-            document.getElementById("recentActivityBody");
+            document.getElementById(
+                "recentActivityBody"
+            );
+
 
         const studentIdInput =
-            document.getElementById("studentId");
+            document.getElementById(
+                "studentId"
+            );
+
 
         const fullNameInput =
-            document.getElementById("fullName");
+            document.getElementById(
+                "fullName"
+            );
+
 
         const saveStudentButton =
-            document.getElementById("saveStudentButton");
+            document.getElementById(
+                "saveStudentButton"
+            );
+
 
         const cancelStudentButton =
-            document.getElementById("cancelStudentButton");
+            document.getElementById(
+                "cancelStudentButton"
+            );
+
 
         const studentFormTitle =
-            document.getElementById("studentFormTitle");
+            document.getElementById(
+                "studentFormTitle"
+            );
+
 
         const studentMessage =
-            document.getElementById("studentMessage");
+            document.getElementById(
+                "studentMessage"
+            );
+
 
         const searchInput =
-            document.getElementById("searchInput");
+            document.getElementById(
+                "searchInput"
+            );
+
 
         const dateFilter =
-            document.getElementById("dateFilter");
+            document.getElementById(
+                "dateFilter"
+            );
+
 
         const searchButton =
-            document.getElementById("searchButton");
+            document.getElementById(
+                "searchButton"
+            );
+
 
         const clearButton =
-            document.getElementById("clearButton");
+            document.getElementById(
+                "clearButton"
+            );
+
 
         const recordMessage =
-            document.getElementById("recordMessage");
+            document.getElementById(
+                "recordMessage"
+            );
+
 
         const recordCount =
-            document.getElementById("recordCount");
+            document.getElementById(
+                "recordCount"
+            );
+
 
         const logoutButton =
-            document.getElementById("logoutButton");
+            document.getElementById(
+                "logoutButton"
+            );
 
 
         /* =========================
@@ -1081,51 +1446,82 @@
         ========================= */
 
         const editRecordModal =
-            document.getElementById("editRecordModal");
+            document.getElementById(
+                "editRecordModal"
+            );
+
 
         const editRecordStudentId =
-            document.getElementById("editRecordStudentId");
+            document.getElementById(
+                "editRecordStudentId"
+            );
+
 
         const editRecordFullName =
-            document.getElementById("editRecordFullName");
+            document.getElementById(
+                "editRecordFullName"
+            );
+
 
         const editRecordDate =
-            document.getElementById("editRecordDate");
+            document.getElementById(
+                "editRecordDate"
+            );
+
 
         const editRecordTimeIn =
-            document.getElementById("editRecordTimeIn");
+            document.getElementById(
+                "editRecordTimeIn"
+            );
+
 
         const editRecordTimeOut =
-            document.getElementById("editRecordTimeOut");
+            document.getElementById(
+                "editRecordTimeOut"
+            );
+
 
         const cancelEditRecordButton =
-            document.getElementById("cancelEditRecordButton");
+            document.getElementById(
+                "cancelEditRecordButton"
+            );
+
 
         const saveEditRecordButton =
-            document.getElementById("saveEditRecordButton");
+            document.getElementById(
+                "saveEditRecordButton"
+            );
+
 
         const editRecordMessage =
-            document.getElementById("editRecordMessage");
+            document.getElementById(
+                "editRecordMessage"
+            );
 
 
         /* =========================
            AUTHENTICATION
         ========================= */
 
-        onAuthStateChanged(auth, function(user) {
+        onAuthStateChanged(
+            auth,
+            function(user) {
 
-            if (!user) {
+                if (!user) {
 
-                window.location.href = "login.html";
+                    window.location.href =
+                        "login.html";
 
-                return;
+                    return;
+                }
+
+
+                loadStudents();
+
+                loadRecords();
+
             }
-
-            loadStudents();
-
-            loadRecords();
-
-        });
+        );
 
 
         /* =========================
@@ -1133,42 +1529,70 @@
         ========================= */
 
         const navButtons =
-            document.querySelectorAll(".nav-button");
+            document.querySelectorAll(
+                ".nav-button"
+            );
+
 
         const pages =
-            document.querySelectorAll(".page");
+            document.querySelectorAll(
+                ".page"
+            );
 
 
-        navButtons.forEach(function(button) {
+        navButtons.forEach(
+            function(button) {
 
-            button.addEventListener("click", function() {
+                button.addEventListener(
+                    "click",
+                    function() {
 
-                navButtons.forEach(function(btn) {
+                        navButtons.forEach(
+                            function(btn) {
 
-                    btn.classList.remove("active");
+                                btn.classList.remove(
+                                    "active"
+                                );
 
-                });
-
-                button.classList.add("active");
-
-
-                pages.forEach(function(page) {
-
-                    page.classList.remove("active");
-
-                });
+                            }
+                        );
 
 
-                const pageID =
-                    button.getAttribute("data-page");
+                        button.classList.add(
+                            "active"
+                        );
 
-                document
-                    .getElementById(pageID)
-                    .classList.add("active");
 
-            });
+                        pages.forEach(
+                            function(page) {
 
-        });
+                                page.classList.remove(
+                                    "active"
+                                );
+
+                            }
+                        );
+
+
+                        const pageID =
+                            button.getAttribute(
+                                "data-page"
+                            );
+
+
+                        document
+                            .getElementById(
+                                pageID
+                            )
+                            .classList.add(
+                                "active"
+                            );
+
+                    }
+                );
+
+            }
+        );
 
 
         /* =========================
@@ -1180,9 +1604,12 @@
             return new Intl.DateTimeFormat(
                 "en-CA",
                 {
-                    timeZone: "Asia/Manila"
+                    timeZone:
+                        "Asia/Manila"
                 }
-            ).format(new Date());
+            ).format(
+                new Date()
+            );
 
         }
 
@@ -1193,12 +1620,29 @@
 
         function escapeHTML(value) {
 
-            return String(value ?? "")
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-                .replace(/"/g, "&quot;")
-                .replace(/'/g, "&#039;");
+            return String(
+                value ?? ""
+            )
+                .replace(
+                    /&/g,
+                    "&amp;"
+                )
+                .replace(
+                    /</g,
+                    "&lt;"
+                )
+                .replace(
+                    />/g,
+                    "&gt;"
+                )
+                .replace(
+                    /"/g,
+                    "&quot;"
+                )
+                .replace(
+                    /'/g,
+                    "&#039;"
+                );
 
         }
 
@@ -1215,9 +1659,11 @@
             const safeValue =
                 escapeHTML(value);
 
+
             if (!searchText) {
 
                 return safeValue;
+
             }
 
 
@@ -1231,7 +1677,9 @@
 
             const regex =
                 new RegExp(
-                    "(" + escapedSearch + ")",
+                    "(" +
+                    escapedSearch +
+                    ")",
                     "gi"
                 );
 
@@ -1251,10 +1699,15 @@
         function getRecordStatus(record) {
 
             const timeIn =
-                String(record.timeIn ?? "").trim();
+                String(
+                    record.timeIn ?? ""
+                ).trim();
+
 
             const timeOut =
-                String(record.timeOut ?? "").trim();
+                String(
+                    record.timeOut ?? ""
+                ).trim();
 
 
             if (
@@ -1263,12 +1716,7 @@
             ) {
 
                 return "Completed";
-            }
 
-
-            if (timeIn && !timeOut) {
-
-                return "Currently In";
             }
 
 
@@ -1287,7 +1735,10 @@
                 getRecordStatus(record);
 
 
-            if (status === "Completed") {
+            if (
+                status ===
+                "Completed"
+            ) {
 
                 return `
                     <span class="status status-completed">
@@ -1308,6 +1759,322 @@
 
 
         /* =========================
+           TIME TO MINUTES
+        ========================= */
+
+        function timeToMinutes(
+            timeString
+        ) {
+
+            if (!timeString) {
+
+                return null;
+
+            }
+
+
+            const match =
+                String(timeString)
+                    .trim()
+                    .match(
+                        /^(\d{1,2}):(\d{2})(?::(\d{2}))?\s*(AM|PM)$/i
+                    );
+
+
+            if (!match) {
+
+                return null;
+
+            }
+
+
+            let hour =
+                parseInt(
+                    match[1],
+                    10
+                );
+
+
+            const minute =
+                parseInt(
+                    match[2],
+                    10
+                );
+
+
+            const second =
+                parseInt(
+                    match[3] || "0",
+                    10
+                );
+
+
+            const period =
+                match[4].toUpperCase();
+
+
+            if (period === "AM") {
+
+                if (hour === 12) {
+
+                    hour = 0;
+
+                }
+
+            }
+            else {
+
+                if (hour !== 12) {
+
+                    hour += 12;
+
+                }
+
+            }
+
+
+            return (
+                hour * 60 +
+                minute +
+                second / 60
+            );
+
+        }
+
+
+        /* =========================
+           GET DURATION IN MINUTES
+        ========================= */
+
+        function getDurationMinutes(
+            record
+        ) {
+
+            if (
+                !record.timeIn ||
+                !record.timeOut
+            ) {
+
+                return null;
+
+            }
+
+
+            const start =
+                timeToMinutes(
+                    record.timeIn
+                );
+
+
+            const end =
+                timeToMinutes(
+                    record.timeOut
+                );
+
+
+            if (
+                start === null ||
+                end === null
+            ) {
+
+                return null;
+
+            }
+
+
+            let duration =
+                end - start;
+
+
+            /*
+             * Handles a session that
+             * crosses midnight.
+             */
+
+            if (duration < 0) {
+
+                duration += 24 * 60;
+
+            }
+
+
+            return duration;
+
+        }
+
+
+        /* =========================
+           FORMAT DURATION
+        ========================= */
+
+        function formatDuration(
+            minutes
+        ) {
+
+            if (
+                minutes === null ||
+                minutes === undefined ||
+                isNaN(minutes)
+            ) {
+
+                return "—";
+
+            }
+
+
+            const totalMinutes =
+                Math.round(minutes);
+
+
+            const hours =
+                Math.floor(
+                    totalMinutes / 60
+                );
+
+
+            const remainingMinutes =
+                totalMinutes % 60;
+
+
+            if (hours === 0) {
+
+                return (
+                    remainingMinutes +
+                    "m"
+                );
+
+            }
+
+
+            if (
+                remainingMinutes === 0
+            ) {
+
+                return (
+                    hours +
+                    "h"
+                );
+
+            }
+
+
+            return (
+                hours +
+                "h " +
+                remainingMinutes +
+                "m"
+            );
+
+        }
+
+
+        /* =========================
+           SORT RECORDS
+        ========================= */
+
+        function sortRecords(
+            records
+        ) {
+
+            return records.sort(
+                function(a, b) {
+
+                    const dateA =
+                        a.date +
+                        " " +
+                        a.timeIn;
+
+
+                    const dateB =
+                        b.date +
+                        " " +
+                        b.timeIn;
+
+
+                    return dateB.localeCompare(
+                        dateA
+                    );
+
+                }
+            );
+
+        }
+
+
+        /* =========================
+           GET VISIT NUMBER
+        ========================= */
+
+        function getVisitNumbers(
+            records
+        ) {
+
+            const counters = {};
+
+            const sorted =
+                [...records].sort(
+                    function(a, b) {
+
+                        const dateA =
+                            a.date +
+                            " " +
+                            a.timeIn;
+
+
+                        const dateB =
+                            b.date +
+                            " " +
+                            b.timeIn;
+
+
+                        return dateA.localeCompare(
+                            dateB
+                        );
+
+                    }
+                );
+
+
+            const visitNumbers =
+                new Map();
+
+
+            sorted.forEach(
+                function(record) {
+
+                    const key =
+                        record.studentId +
+                        "|" +
+                        record.date;
+
+
+                    if (
+                        !counters[key]
+                    ) {
+
+                        counters[key] = 0;
+
+                    }
+
+
+                    counters[key]++;
+
+
+                    visitNumbers.set(
+                        record.id,
+                        counters[key]
+                    );
+
+                }
+            );
+
+
+            return visitNumbers;
+
+        }
+
+
+        /* =========================
            LOAD STUDENTS
         ========================= */
 
@@ -1317,69 +2084,85 @@
 
                 const snapshot =
                     await getDocs(
-                        collection(db, "students")
+                        collection(
+                            db,
+                            "students"
+                        )
                     );
 
 
-                studentsTableBody.innerHTML = "";
+                studentsTableBody.innerHTML =
+                    "";
 
 
-                snapshot.forEach(function(studentDoc) {
+                snapshot.forEach(
+                    function(studentDoc) {
 
-                    const data =
-                        studentDoc.data();
+                        const data =
+                            studentDoc.data();
 
 
-                    const studentID =
-                        String(
-                            data.studentId ??
-                            studentDoc.id ??
-                            ""
+                        const studentID =
+                            String(
+                                data.studentId ??
+                                studentDoc.id ??
+                                ""
+                            );
+
+
+                        const fullName =
+                            String(
+                                data.fullName ??
+                                ""
+                            );
+
+
+                        const row =
+                            document.createElement(
+                                "tr"
+                            );
+
+
+                        row.innerHTML = `
+
+                            <td>
+                                ${escapeHTML(studentID)}
+                            </td>
+
+                            <td>
+                                ${escapeHTML(fullName)}
+                            </td>
+
+                            <td>
+
+                                <button
+                                    class="edit-btn"
+                                    data-edit-student="${escapeHTML(studentID)}">
+
+                                    Edit
+
+                                </button>
+
+
+                                <button
+                                    class="delete-btn"
+                                    data-delete-student="${escapeHTML(studentID)}">
+
+                                    Delete
+
+                                </button>
+
+                            </td>
+
+                        `;
+
+
+                        studentsTableBody.appendChild(
+                            row
                         );
 
-
-                    const fullName =
-                        String(
-                            data.fullName ??
-                            ""
-                        );
-
-
-                    const row =
-                        document.createElement("tr");
-
-
-                    row.innerHTML = `
-
-                        <td>
-                            ${escapeHTML(studentID)}
-                        </td>
-
-                        <td>
-                            ${escapeHTML(fullName)}
-                        </td>
-
-                        <td>
-
-                            <button
-                                class="edit-btn"
-                                data-edit-student="${escapeHTML(studentID)}">
-                                Edit
-                            </button>
-
-                            <button
-                                class="delete-btn"
-                                data-delete-student="${escapeHTML(studentID)}">
-                                Delete
-                            </button>
-
-                        </td>
-                    `;
-
-
-                    studentsTableBody.appendChild(row);
-
-                });
+                    }
+                );
 
 
                 totalStudents.textContent =
@@ -1390,40 +2173,44 @@
                     .querySelectorAll(
                         "[data-edit-student]"
                     )
-                    .forEach(function(button) {
+                    .forEach(
+                        function(button) {
 
-                        button.addEventListener(
-                            "click",
-                            function() {
+                            button.addEventListener(
+                                "click",
+                                function() {
 
-                                editStudent(
-                                    button.dataset.editStudent
-                                );
+                                    editStudent(
+                                        button.dataset.editStudent
+                                    );
 
-                            }
-                        );
+                                }
+                            );
 
-                    });
+                        }
+                    );
 
 
                 document
                     .querySelectorAll(
                         "[data-delete-student]"
                     )
-                    .forEach(function(button) {
+                    .forEach(
+                        function(button) {
 
-                        button.addEventListener(
-                            "click",
-                            function() {
+                            button.addEventListener(
+                                "click",
+                                function() {
 
-                                deleteStudent(
-                                    button.dataset.deleteStudent
-                                );
+                                    deleteStudent(
+                                        button.dataset.deleteStudent
+                                    );
 
-                            }
-                        );
+                                }
+                            );
 
-                    });
+                        }
+                    );
 
             }
 
@@ -1450,11 +2237,15 @@
                 const studentID =
                     studentIdInput.value.trim();
 
+
                 const fullName =
                     fullNameInput.value.trim();
 
 
-                if (!studentID || !fullName) {
+                if (
+                    !studentID ||
+                    !fullName
+                ) {
 
                     showMessage(
                         studentMessage,
@@ -1463,6 +2254,7 @@
                     );
 
                     return;
+
                 }
 
 
@@ -1475,16 +2267,20 @@
                             studentID
                         ),
                         {
+
                             studentId:
                                 studentID,
 
                             fullName:
                                 fullName
+
                         }
                     );
 
 
-                    if (editingStudentID) {
+                    if (
+                        editingStudentID
+                    ) {
 
                         showMessage(
                             studentMessage,
@@ -1512,7 +2308,10 @@
 
                 catch (error) {
 
-                    console.error(error);
+                    console.error(
+                        error
+                    );
+
 
                     showMessage(
                         studentMessage,
@@ -1530,7 +2329,9 @@
            EDIT STUDENT
         ========================= */
 
-        async function editStudent(studentID) {
+        async function editStudent(
+            studentID
+        ) {
 
             try {
 
@@ -1543,10 +2344,14 @@
 
 
                 const studentDoc =
-                    await getDoc(studentRef);
+                    await getDoc(
+                        studentRef
+                    );
 
 
-                if (!studentDoc.exists()) {
+                if (
+                    !studentDoc.exists()
+                ) {
 
                     showMessage(
                         studentMessage,
@@ -1555,6 +2360,7 @@
                     );
 
                     return;
+
                 }
 
 
@@ -1601,7 +2407,10 @@
 
             catch (error) {
 
-                console.error(error);
+                console.error(
+                    error
+                );
+
 
                 showMessage(
                     studentMessage,
@@ -1618,7 +2427,9 @@
            DELETE STUDENT
         ========================= */
 
-        async function deleteStudent(studentID) {
+        async function deleteStudent(
+            studentID
+        ) {
 
             const confirmed =
                 confirm(
@@ -1631,6 +2442,7 @@
             if (!confirmed) {
 
                 return;
+
             }
 
 
@@ -1658,7 +2470,10 @@
 
             catch (error) {
 
-                console.error(error);
+                console.error(
+                    error
+                );
+
 
                 showMessage(
                     studentMessage,
@@ -1687,22 +2502,33 @@
 
         function clearStudentForm() {
 
-            editingStudentID = null;
+            editingStudentID =
+                null;
 
-            studentIdInput.value = "";
 
-            fullNameInput.value = "";
+            studentIdInput.value =
+                "";
 
-            studentIdInput.disabled = false;
+
+            fullNameInput.value =
+                "";
+
+
+            studentIdInput.disabled =
+                false;
+
 
             studentFormTitle.textContent =
                 "Add Student";
 
+
             saveStudentButton.textContent =
                 "Add Student";
 
+
             cancelStudentButton.style.display =
                 "none";
+
 
             studentMessage.style.display =
                 "none";
@@ -1730,71 +2556,61 @@
                 allRecords = [];
 
 
-                snapshot.forEach(function(recordDoc) {
+                snapshot.forEach(
+                    function(recordDoc) {
 
-                    const data =
-                        recordDoc.data();
-
-
-                    allRecords.push({
-
-                        id:
-                            recordDoc.id,
-
-                        studentId:
-                            String(
-                                data.studentId ??
-                                ""
-                            ),
-
-                        fullName:
-                            String(
-                                data.fullName ??
-                                ""
-                            ),
-
-                        date:
-                            String(
-                                data.date ??
-                                ""
-                            ),
-
-                        timeIn:
-                            String(
-                                data.timeIn ??
-                                ""
-                            ),
-
-                        timeOut:
-                            String(
-                                data.timeOut ??
-                                ""
-                            )
-
-                    });
-
-                });
+                        const data =
+                            recordDoc.data();
 
 
-                allRecords.sort(
-                    function(a, b) {
+                        allRecords.push({
 
-                        const dateA =
-                            a.date + " " + a.timeIn;
+                            id:
+                                recordDoc.id,
 
-                        const dateB =
-                            b.date + " " + b.timeIn;
+                            studentId:
+                                String(
+                                    data.studentId ??
+                                    ""
+                                ),
 
+                            fullName:
+                                String(
+                                    data.fullName ??
+                                    ""
+                                ),
 
-                        return dateB.localeCompare(
-                            dateA
-                        );
+                            date:
+                                String(
+                                    data.date ??
+                                    ""
+                                ),
+
+                            timeIn:
+                                String(
+                                    data.timeIn ??
+                                    ""
+                                ),
+
+                            timeOut:
+                                String(
+                                    data.timeOut ??
+                                    ""
+                                )
+
+                        });
 
                     }
                 );
 
 
+                sortRecords(
+                    allRecords
+                );
+
+
                 updateDashboard();
+
 
                 displayRecords(
                     searchInput.value,
@@ -1809,6 +2625,7 @@
                     "Error loading access records:",
                     error
                 );
+
 
                 showMessage(
                     recordMessage,
@@ -1835,7 +2652,10 @@
                 allRecords.filter(
                     function(record) {
 
-                        return record.date === today;
+                        return (
+                            record.date ===
+                            today
+                        );
 
                     }
                 );
@@ -1867,46 +2687,83 @@
 
 
             const recentRecords =
-                allRecords.slice(0, 10);
+                allRecords.slice(
+                    0,
+                    10
+                );
 
 
             recentRecords.forEach(
                 function(record) {
 
                     const row =
-                        document.createElement("tr");
+                        document.createElement(
+                            "tr"
+                        );
+
+
+                    const duration =
+                        getDurationMinutes(
+                            record
+                        );
 
 
                     row.innerHTML = `
 
                         <td>
-                            ${escapeHTML(record.fullName)}
+                            ${escapeHTML(
+                                record.fullName
+                            )}
                         </td>
 
                         <td>
-                            ${escapeHTML(record.studentId)}
+                            ${escapeHTML(
+                                record.studentId
+                            )}
                         </td>
 
                         <td>
-                            ${escapeHTML(record.date)}
+                            ${escapeHTML(
+                                record.date
+                            )}
                         </td>
 
                         <td>
-                            ${escapeHTML(record.timeIn)}
+                            ${escapeHTML(
+                                record.timeIn
+                            )}
                         </td>
 
                         <td>
-                            ${escapeHTML(record.timeOut)}
+                            ${
+                                record.timeOut
+                                    ? escapeHTML(
+                                        record.timeOut
+                                      )
+                                    : "—"
+                            }
                         </td>
 
                         <td>
-                            ${getStatusHTML(record)}
+                            ${
+                                formatDuration(
+                                    duration
+                                )
+                            }
+                        </td>
+
+                        <td>
+                            ${getStatusHTML(
+                                record
+                            )}
                         </td>
 
                     `;
 
 
-                    recentActivityBody.appendChild(row);
+                    recentActivityBody.appendChild(
+                        row
+                    );
 
                 }
             );
@@ -1927,8 +2784,8 @@
                 String(
                     searchText ?? ""
                 )
-                .trim()
-                .toLowerCase();
+                    .trim()
+                    .toLowerCase();
 
 
             const filteredRecords =
@@ -1962,7 +2819,7 @@
                         const matchesDate =
                             !selectedDate ||
                             record.date ===
-                                selectedDate;
+                            selectedDate;
 
 
                         return (
@@ -1978,74 +2835,317 @@
                 "";
 
 
+            /*
+             * Visit numbers are calculated
+             * from the original records.
+             */
+
+            const visitNumbers =
+                getVisitNumbers(
+                    allRecords
+                );
+
+
+            /*
+             * Group filtered records
+             * by student.
+             */
+
+            const groups = {};
+
+
             filteredRecords.forEach(
                 function(record) {
 
-                    const row =
-                        document.createElement("tr");
+                    const key =
+                        record.studentId +
+                        "|" +
+                        record.fullName;
 
 
-                    row.innerHTML = `
+                    if (
+                        !groups[key]
+                    ) {
 
-                        <td>
-                            ${highlightMatch(
-                                record.studentId,
-                                searchText
-                            )}
-                        </td>
+                        groups[key] = [];
 
-                        <td>
-                            ${highlightMatch(
-                                record.fullName,
-                                searchText
-                            )}
-                        </td>
-
-                        <td>
-                            ${escapeHTML(
-                                record.date
-                            )}
-                        </td>
-
-                        <td>
-                            ${escapeHTML(
-                                record.timeIn
-                            )}
-                        </td>
-
-                        <td>
-                            ${escapeHTML(
-                                record.timeOut
-                            )}
-                        </td>
-
-                        <td>
-                            ${getStatusHTML(record)}
-                        </td>
-
-                        <td>
-
-                            <button
-                                class="edit-btn"
-                                data-edit-record="${escapeHTML(record.id)}">
-                                Edit
-                            </button>
-
-                            <button
-                                class="delete-btn"
-                                data-delete-record="${escapeHTML(record.id)}">
-                                Delete
-                            </button>
-
-                        </td>
-
-                    `;
+                    }
 
 
-                    recordsTableBody.appendChild(row);
+                    groups[key].push(
+                        record
+                    );
 
                 }
             );
+
+
+            Object.keys(groups)
+                .forEach(
+                    function(groupKey) {
+
+                        const studentRecords =
+                            groups[groupKey];
+
+
+                        /*
+                         * Sort each student's
+                         * records chronologically.
+                         */
+
+                        studentRecords.sort(
+                            function(a, b) {
+
+                                const dateA =
+                                    a.date +
+                                    " " +
+                                    a.timeIn;
+
+
+                                const dateB =
+                                    b.date +
+                                    " " +
+                                    b.timeIn;
+
+
+                                return dateA.localeCompare(
+                                    dateB
+                                );
+
+                            }
+                        );
+
+
+                        let completedMinutes =
+                            0;
+
+
+                        let completedVisits =
+                            0;
+
+
+                        let currentRecord =
+                            null;
+
+
+                        studentRecords.forEach(
+                            function(record) {
+
+                                const duration =
+                                    getDurationMinutes(
+                                        record
+                                    );
+
+
+                                if (
+                                    duration !== null
+                                ) {
+
+                                    completedMinutes +=
+                                        duration;
+
+                                    completedVisits++;
+
+                                }
+
+
+                                if (
+                                    getRecordStatus(
+                                        record
+                                    ) ===
+                                    "Currently In"
+                                ) {
+
+                                    currentRecord =
+                                        record;
+
+                                }
+
+
+                                const row =
+                                    document.createElement(
+                                        "tr"
+                                    );
+
+
+                                const visitNumber =
+                                    visitNumbers.get(
+                                        record.id
+                                    ) || 1;
+
+
+                                row.innerHTML = `
+
+                                    <td>
+                                        ${highlightMatch(
+                                            record.studentId,
+                                            searchText
+                                        )}
+                                    </td>
+
+                                    <td>
+                                        ${highlightMatch(
+                                            record.fullName,
+                                            searchText
+                                        )}
+                                    </td>
+
+                                    <td>
+                                        Visit ${visitNumber}
+                                    </td>
+
+                                    <td>
+                                        ${escapeHTML(
+                                            record.timeIn
+                                        )}
+                                    </td>
+
+                                    <td>
+                                        ${
+                                            record.timeOut
+                                                ? escapeHTML(
+                                                    record.timeOut
+                                                  )
+                                                : "—"
+                                        }
+                                    </td>
+
+                                    <td>
+                                        ${formatDuration(
+                                            duration
+                                        )}
+                                    </td>
+
+                                    <td>
+                                        ${getStatusHTML(
+                                            record
+                                        )}
+                                    </td>
+
+                                    <td>
+
+                                        <button
+                                            class="edit-btn"
+                                            data-edit-record="${escapeHTML(record.id)}">
+
+                                            Edit
+
+                                        </button>
+
+
+                                        <button
+                                            class="delete-btn"
+                                            data-delete-record="${escapeHTML(record.id)}">
+
+                                            Delete
+
+                                        </button>
+
+                                    </td>
+
+                                `;
+
+
+                                recordsTableBody.appendChild(
+                                    row
+                                );
+
+                            }
+                        );
+
+
+                        /*
+                         * Student total row
+                         */
+
+                        const totalRow =
+                            document.createElement(
+                                "tr"
+                            );
+
+
+                        totalRow.className =
+                            "student-total-row";
+
+
+                        const studentName =
+                            studentRecords[0]
+                                ?.fullName ||
+                            "";
+
+
+                        const totalVisitCount =
+                            studentRecords.length;
+
+
+                        let totalText =
+                            "TOTAL: " +
+                            totalVisitCount +
+                            " visit";
+
+
+                        if (
+                            totalVisitCount !== 1
+                        ) {
+
+                            totalText +=
+                                "s";
+
+                        }
+
+
+                        if (
+                            completedMinutes > 0
+                        ) {
+
+                            totalText +=
+                                " • " +
+                                formatDuration(
+                                    completedMinutes
+                                ) +
+                                " completed time";
+
+                        }
+
+
+                        if (
+                            currentRecord
+                        ) {
+
+                            totalText +=
+                                " • Current session: Started " +
+                                currentRecord.timeIn;
+
+                        }
+
+
+                        totalRow.innerHTML = `
+
+                            <td colspan="8">
+
+                                <span class="total-label">
+                                    ${escapeHTML(
+                                        studentName
+                                    )}
+                                </span>
+
+                                &nbsp;&nbsp;
+
+                                ${escapeHTML(
+                                    totalText
+                                )}
+
+                            </td>
+
+                        `;
+
+
+                        recordsTableBody.appendChild(
+                            totalRow
+                        );
+
+                    }
+                );
 
 
             recordCount.textContent =
@@ -2064,20 +3164,22 @@
                 .querySelectorAll(
                     "[data-edit-record]"
                 )
-                .forEach(function(button) {
+                .forEach(
+                    function(button) {
 
-                    button.addEventListener(
-                        "click",
-                        function() {
+                        button.addEventListener(
+                            "click",
+                            function() {
 
-                            openEditRecord(
-                                button.dataset.editRecord
-                            );
+                                openEditRecord(
+                                    button.dataset.editRecord
+                                );
 
-                        }
-                    );
+                            }
+                        );
 
-                });
+                    }
+                );
 
 
             /* =========================
@@ -2088,20 +3190,22 @@
                 .querySelectorAll(
                     "[data-delete-record]"
                 )
-                .forEach(function(button) {
+                .forEach(
+                    function(button) {
 
-                    button.addEventListener(
-                        "click",
-                        function() {
+                        button.addEventListener(
+                            "click",
+                            function() {
 
-                            deleteRecord(
-                                button.dataset.deleteRecord
-                            );
+                                deleteRecord(
+                                    button.dataset.deleteRecord
+                                );
 
-                        }
-                    );
+                            }
+                        );
 
-                });
+                    }
+                );
 
         }
 
@@ -2157,8 +3261,10 @@
                 searchInput.value =
                     "";
 
+
                 dateFilter.value =
                     "";
+
 
                 displayRecords(
                     "",
@@ -2173,13 +3279,18 @@
            OPEN EDIT RECORD
         ========================= */
 
-        function openEditRecord(recordID) {
+        function openEditRecord(
+            recordID
+        ) {
 
             const record =
                 allRecords.find(
                     function(item) {
 
-                        return item.id === recordID;
+                        return (
+                            item.id ===
+                            recordID
+                        );
 
                     }
                 );
@@ -2194,6 +3305,7 @@
                 );
 
                 return;
+
             }
 
 
@@ -2251,6 +3363,7 @@
             editingRecordID =
                 null;
 
+
             editRecordModal.classList.remove(
                 "show"
             );
@@ -2269,20 +3382,25 @@
                 if (!editingRecordID) {
 
                     return;
+
                 }
 
 
                 const studentID =
                     editRecordStudentId.value.trim();
 
+
                 const fullName =
                     editRecordFullName.value.trim();
+
 
                 const date =
                     editRecordDate.value.trim();
 
+
                 const timeIn =
                     editRecordTimeIn.value.trim();
+
 
                 const timeOut =
                     editRecordTimeOut.value.trim();
@@ -2302,6 +3420,7 @@
                     );
 
                     return;
+
                 }
 
 
@@ -2372,13 +3491,18 @@
            DELETE RECORD
         ========================= */
 
-        async function deleteRecord(recordID) {
+        async function deleteRecord(
+            recordID
+        ) {
 
             const record =
                 allRecords.find(
                     function(item) {
 
-                        return item.id === recordID;
+                        return (
+                            item.id ===
+                            recordID
+                        );
 
                     }
                 );
@@ -2387,6 +3511,7 @@
             if (!record) {
 
                 return;
+
             }
 
 
@@ -2407,6 +3532,7 @@
             if (!confirmed) {
 
                 return;
+
             }
 
 
@@ -2469,14 +3595,20 @@
                 "message";
 
 
-            if (type === "success") {
+            if (
+                type ===
+                "success"
+            ) {
 
                 element.classList.add(
                     "success-message"
                 );
 
             }
-            else if (type === "error") {
+            else if (
+                type ===
+                "error"
+            ) {
 
                 element.classList.add(
                     "error-message"
@@ -2519,7 +3651,10 @@
 
                 try {
 
-                    await signOut(auth);
+                    await signOut(
+                        auth
+                    );
+
 
                     window.location.href =
                         "login.html";
@@ -2540,8 +3675,7 @@
 
 
         /* =========================
-           CLOSE MODAL WHEN CLICKING
-           OUTSIDE THE MODAL
+           CLOSE MODAL OUTSIDE
         ========================= */
 
         editRecordModal.addEventListener(
